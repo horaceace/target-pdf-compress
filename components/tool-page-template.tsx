@@ -22,7 +22,11 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
             <h1>{page.h1}</h1>
             <p>{page.intro}</p>
           </div>
-          <UploadCard heading={page.h1} copy={page.targetLabel} />
+          <UploadCard
+            copy={page.targetLabel}
+            heading={page.h1}
+            initialTarget={page.targetLabel.replace("Target size: ", "").replace("Compression goal: ", "")}
+          />
         </div>
       </section>
 
