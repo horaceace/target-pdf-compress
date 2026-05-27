@@ -12,268 +12,272 @@ export type ToolPageConfig = {
 };
 
 export const homepage = {
-  title: "Compress PDF to a Specific Size Online",
+  title: "Compress PDF to the Smallest Size Online",
   description:
-    "Compress PDF to 200KB, 500KB, 1MB, and more. Reduce PDF file size online for forms, email attachments, and document uploads.",
-  h1: "Compress PDF to a Specific Size",
+    "Compress PDF online with maximum size reduction for uploads, forms, and email attachments. Reduce PDF files as much as possible in your browser.",
+  h1: "Compress PDF to the Smallest Size",
   subheading:
-    "Reduce your PDF to 200KB, 500KB, 1MB, and other target sizes for uploads, forms, and email attachments.",
+    "Reduce PDF files as much as possible for uploads, email attachments, resumes, and document portals.",
   quickLinks: [
-    "compress-pdf-to-200kb",
-    "compress-pdf-to-500kb",
-    "compress-pdf-to-1mb",
-    "compress-pdf-under-1mb",
-    "compress-pdf-without-losing-quality"
+    "compress-pdf-for-upload",
+    "compress-resume-pdf",
+    "compress-pdf-for-email",
+    "compress-scanned-pdf",
+    "compress-pdf-without-losing-readability"
   ],
-  useCases: ["For form uploads", "For job applications", "For email attachments"],
+  useCases: [
+    "For form uploads",
+    "For resumes and job applications",
+    "For email attachments"
+  ],
   faq: [
     {
-      question: "How do I compress a PDF to a specific size?",
+      question: "How do I compress a PDF to the smallest size?",
       answer:
-        "Upload your PDF, choose a target size, and start compression. The final result depends on the content and structure of your file."
+        "Upload your PDF and run the strongest available compression mode. The final result depends on the content of the file, especially images and scanned pages."
     },
     {
-      question: "Can I compress a PDF to 500KB or 1MB exactly?",
+      question: "Will this always reach the smallest possible PDF size?",
       answer:
-        "In many cases you can get very close, but exact output size is not always possible. Scanned files and image-heavy PDFs are usually harder to reduce precisely."
+        "Not always. Some PDFs can shrink a lot, while image-heavy or scanned files may stay relatively large even after processing."
     },
     {
-      question: "Will PDF compression reduce quality?",
+      question: "Why is maximum compression more useful than a target size?",
       answer:
-        "Compression may reduce image quality depending on the file. Text-based PDFs usually keep their readability better than scanned or image-based documents."
+        "Most users do not care about hitting an exact number. They want the file to become small enough to upload or share successfully."
     },
     {
-      question: "Is this tool useful for upload limits?",
+      question: "Will compression affect quality?",
       answer:
-        "Yes. This tool is designed for common size-restricted scenarios like application forms, portals, and email attachments."
+        "It can. Maximum compression usually trades file size against image quality, so scanned documents and image-based PDFs may lose more detail than text-heavy files."
     }
   ]
 };
 
 export const toolPages: ToolPageConfig[] = [
   {
-    slug: "compress-pdf-to-200kb",
-    title: "Compress PDF to 200KB Online Free",
+    slug: "compress-pdf-for-upload",
+    title: "Compress PDF for Upload Online",
     description:
-      "Compress PDF to 200KB online for forms and document uploads. Reduce file size quickly and download the optimized PDF in seconds.",
-    h1: "Compress PDF to 200KB Online",
+      "Compress PDF for upload limits, forms, and portals. Reduce PDF size as much as possible before submitting documents online.",
+    h1: "Compress PDF for Upload",
     subheading:
-      "Reduce PDF size to around 200KB for forms, applications, and file size limits.",
-    targetLabel: "Target size: 200KB",
+      "Shrink your PDF as much as possible for portals, forms, and document upload limits.",
+    targetLabel: "Compression mode: maximum size reduction",
     intro:
-      "Use this page when you need a smaller PDF for strict upload limits. It works best for text-heavy documents and simple PDFs.",
+      "Use this page when your PDF is too large to upload and you want the smallest practical file size instead of aiming for an exact number.",
     steps: [
-      "Upload your PDF file",
-      "Compress toward 200KB",
-      "Download the optimized PDF"
+      "Upload your PDF",
+      "Run maximum compression",
+      "Download the smallest processed version"
     ],
     faq: [
       {
-        question: "How can I compress a PDF to 200KB?",
+        question: "Why use maximum compression for uploads?",
         answer:
-          "Upload the file and start compression with a 200KB target. If your PDF contains many images, the result may stay above the target size."
+          "Upload systems usually reject files above a limit. In that situation, reducing the file as much as possible is more useful than targeting a fixed size."
       },
       {
-        question: "Why is 200KB hard to reach?",
+        question: "Will this help with form submissions?",
         answer:
-          "A 200KB target is very small. PDFs with scanned pages, photos, or complex layouts often need stronger compression and may still not reach that size."
+          "Yes. This mode is designed for cases where a form or portal blocks larger PDFs and you need a smaller version quickly."
       },
       {
-        question: "Is 200KB good for application forms?",
+        question: "What if my file is still too large?",
         answer:
-          "Yes. Many portals and forms have strict limits, so 200KB is a common target for resumes, ID scans, and document uploads."
+          "That can happen with scanned or image-heavy PDFs. Those files often need stronger server-side compression than browser-side rewriting can provide."
       },
       {
-        question: "Will text stay readable after compression?",
+        question: "Is this good for PDF uploads on mobile portals?",
         answer:
-          "Text-based PDFs usually remain readable. Scanned documents may lose more visual quality because they rely on image compression."
+          "Yes. Maximum compression is often the fastest way to improve compatibility with mobile and web upload systems."
       }
     ],
     relatedSlugs: [
-      "compress-pdf-to-500kb",
-      "compress-pdf-to-1mb",
-      "compress-pdf-under-1mb",
-      "compress-pdf-without-losing-quality"
+      "compress-resume-pdf",
+      "compress-pdf-for-email",
+      "compress-scanned-pdf",
+      "compress-pdf-without-losing-readability"
     ]
   },
   {
-    slug: "compress-pdf-to-500kb",
-    title: "Compress PDF to 500KB Online Free",
+    slug: "compress-resume-pdf",
+    title: "Compress Resume PDF Online",
     description:
-      "Compress PDF to 500KB online for email attachments, forms, and uploads. Fast PDF size reduction with a simple target-size workflow.",
-    h1: "Compress PDF to 500KB Online",
+      "Compress resume PDF files for job applications and career portals. Reduce file size while keeping the document readable and easy to upload.",
+    h1: "Compress Resume PDF",
     subheading:
-      "Reduce your PDF to around 500KB for file uploads, online forms, and email sharing.",
-    targetLabel: "Target size: 500KB",
+      "Make your resume PDF smaller for job applications, hiring systems, and document submissions.",
+    targetLabel: "Compression mode: smaller resume file",
     intro:
-      "This page is useful when your document is slightly too large for upload or email limits and needs a more practical target than extreme compression.",
+      "Resume PDFs often need to stay small enough for applicant tracking systems while still looking clean and readable after compression.",
     steps: [
-      "Upload your PDF",
-      "Compress toward 500KB",
-      "Download the smaller file"
+      "Upload your resume PDF",
+      "Run compression with a smaller-file focus",
+      "Download the updated PDF"
     ],
     faq: [
       {
-        question: "How do I compress a PDF to 500KB online?",
+        question: "Is this good for job application portals?",
         answer:
-          "Upload your PDF, choose the 500KB target, and start compression. The final output depends on how much image content is inside the file."
+          "Yes. Resume files often hit upload restrictions, and this flow helps reduce file size before submission."
       },
       {
-        question: "Why is my PDF still above 500KB?",
+        question: "Will my resume stay readable?",
         answer:
-          "Some PDFs contain high-resolution images or scanned pages that cannot be reduced much further without stronger quality loss."
+          "Usually yes for text-based resumes. Image-heavy resumes may lose more detail during stronger compression."
       },
       {
-        question: "Is 500KB a common upload limit?",
+        question: "Why compress a resume instead of targeting 200KB?",
         answer:
-          "Yes. It is a common target for online forms, email attachments, and document portals that reject larger files."
+          "Different hiring systems use different limits. Making the file smaller is often more practical than chasing one number."
       },
       {
-        question: "Can scanned PDFs be compressed to 500KB?",
+        question: "Can this help with scanned certificates too?",
         answer:
-          "Sometimes, yes. But scanned files are image-heavy, so the result depends on image resolution and page count."
+          "It can help somewhat, but scanned documents are harder to shrink and may need stronger compression than this browser-first version can provide."
       }
     ],
     relatedSlugs: [
-      "compress-pdf-to-200kb",
-      "compress-pdf-to-1mb",
-      "compress-pdf-under-1mb",
-      "compress-pdf-without-losing-quality"
+      "compress-pdf-for-upload",
+      "compress-pdf-for-email",
+      "compress-scanned-pdf",
+      "compress-pdf-without-losing-readability"
     ]
   },
   {
-    slug: "compress-pdf-to-1mb",
-    title: "Compress PDF to 1MB Online Free",
+    slug: "compress-pdf-for-email",
+    title: "Compress PDF for Email Online",
     description:
-      "Compress PDF to 1MB online for uploads, forms, and email. Reduce large PDF files to a more manageable size in a few clicks.",
-    h1: "Compress PDF to 1MB Online",
+      "Compress PDF files for email attachments. Reduce large PDFs before sending documents, contracts, reports, or resumes by email.",
+    h1: "Compress PDF for Email",
     subheading:
-      "Reduce PDF size to around 1MB for easier sharing, uploads, and file submission limits.",
-    targetLabel: "Target size: 1MB",
+      "Make PDF attachments smaller for easier email sharing and fewer attachment issues.",
+    targetLabel: "Compression mode: email-friendly file size",
     intro:
-      "A 1MB target is a common balance between file size and quality, especially for resumes, application documents, and shared PDFs.",
+      "Email attachments often fail because PDF files are too large. This page focuses on making the file smaller enough for easier sending and sharing.",
     steps: [
-      "Upload your PDF",
-      "Compress toward 1MB",
-      "Download the optimized version"
+      "Upload your PDF attachment",
+      "Run compression for a smaller file",
+      "Download and send the result"
     ],
     faq: [
       {
-        question: "How can I compress a PDF to 1MB?",
+        question: "Why compress PDFs for email?",
         answer:
-          "Upload the file and compress it with a 1MB target. This usually works well for common office documents and mixed text-image PDFs."
+          "Large attachments can fail to send or trigger limits. A smaller PDF is easier to attach, forward, and store."
       },
       {
-        question: "Why choose 1MB instead of 500KB?",
+        question: "Will this help with report and contract PDFs?",
         answer:
-          "A 1MB target often keeps more image quality and is easier to reach, especially when the file includes visuals, scans, or charts."
+          "Yes. Text-heavy reports and contracts usually respond well to basic PDF rewriting and compression."
       },
       {
-        question: "Will the compressed PDF still look clear?",
+        question: "What if the email attachment is still too large?",
         answer:
-          "In many cases, yes. A 1MB target is less aggressive than smaller targets, so it often preserves readability and layout better."
+          "That usually means the file contains many images or scanned pages. Those files may need stronger compression than this MVP currently provides."
       },
       {
-        question: "Can I use this for email attachments?",
+        question: "Can I use this for invoices and forms?",
         answer:
-          "Yes. Reducing a PDF to around 1MB makes it easier to send by email or upload to systems with moderate size limits."
+          "Yes. It works well for common office PDFs that need a smaller attachment size."
       }
     ],
     relatedSlugs: [
-      "compress-pdf-to-200kb",
-      "compress-pdf-to-500kb",
-      "compress-pdf-under-1mb",
-      "compress-pdf-without-losing-quality"
+      "compress-pdf-for-upload",
+      "compress-resume-pdf",
+      "compress-scanned-pdf",
+      "compress-pdf-without-losing-readability"
     ]
   },
   {
-    slug: "compress-pdf-under-1mb",
-    title: "Compress PDF Under 1MB Online",
+    slug: "compress-scanned-pdf",
+    title: "Compress Scanned PDF Online",
     description:
-      "Compress PDF under 1MB online for upload limits and email attachments. Reduce file size below 1MB with a simple target-based workflow.",
-    h1: "Compress PDF Under 1MB",
+      "Compress scanned PDF files online. Reduce file size for scanned documents, image-based forms, and uploaded PDF scans.",
+    h1: "Compress Scanned PDF",
     subheading:
-      "Reduce your PDF below 1MB for uploads, sharing, and document portals with file size limits.",
-    targetLabel: "Target size: under 1MB",
+      "Reduce the size of scanned PDF files for uploads, forms, and sharing.",
+    targetLabel: "Compression mode: aggressive for scanned files",
     intro:
-      "This page is for users who only need the file to stay below a limit, not hit an exact size. That makes it a practical option for many upload scenarios.",
+      "Scanned PDFs are usually much larger than text-based files because they are image-heavy. This page focuses on shrinking scanned documents as much as possible.",
     steps: [
-      "Upload your PDF",
-      "Compress below 1MB",
-      "Download the reduced file"
+      "Upload your scanned PDF",
+      "Run the strongest available compression",
+      "Download the processed file"
     ],
     faq: [
       {
-        question: "What is the difference between under 1MB and exactly 1MB?",
+        question: "Why are scanned PDFs harder to compress?",
         answer:
-          "Under 1MB means the file only needs to stay below the limit. It does not need to match a precise number, which is often easier to achieve."
+          "Scanned PDFs are mostly images, and image-heavy pages usually stay much larger than text-based documents."
       },
       {
-        question: "Why is this page useful for uploads?",
+        question: "Will quality drop on scanned PDFs?",
         answer:
-          "Many systems only care whether your file stays below a maximum size. In that case, an under-1MB target is more practical than an exact target."
+          "It can. Maximum compression for scanned files often reduces image detail more than it would for a regular document."
       },
       {
-        question: "Can a PDF still stay over 1MB after compression?",
+        question: "Can this make a large scan uploadable?",
         answer:
-          "Yes. Very large or image-heavy files may still remain above the limit if they cannot be reduced enough without heavy quality loss."
+          "Sometimes yes, but not always. Very large scans may still need stronger server-side compression to become small enough."
       },
       {
-        question: "Should I use this page or the 1MB page?",
+        question: "Is this better than a fixed target size page?",
         answer:
-          "Use this page if your goal is simply to stay below an upload limit. Use the 1MB page if you want a more specific size target."
+          "Yes. For scanned files, the important question is usually how much the file can shrink at all, not whether it lands on one exact number."
       }
     ],
     relatedSlugs: [
-      "compress-pdf-to-1mb",
-      "compress-pdf-to-500kb",
-      "compress-pdf-to-200kb",
-      "compress-pdf-without-losing-quality"
+      "compress-pdf-for-upload",
+      "compress-resume-pdf",
+      "compress-pdf-for-email",
+      "compress-pdf-without-losing-readability"
     ]
   },
   {
-    slug: "compress-pdf-without-losing-quality",
-    title: "Compress PDF Without Losing Quality",
+    slug: "compress-pdf-without-losing-readability",
+    title: "Compress PDF Without Losing Readability",
     description:
-      "Compress PDF online while keeping readability and layout as clear as possible. Reduce file size for uploads, sharing, and storage.",
-    h1: "Compress PDF Without Losing Quality",
+      "Compress PDF files while keeping the document readable. Reduce file size for uploads and sharing without making the file hard to use.",
+    h1: "Compress PDF Without Losing Readability",
     subheading:
-      "Reduce PDF file size while preserving readability, layout, and document clarity as much as possible.",
-    targetLabel: "Compression goal: smaller size with better clarity",
+      "Make your PDF smaller while keeping the text, layout, and document content usable.",
+    targetLabel: "Compression mode: balanced readability",
     intro:
-      "This page is designed for users who care more about readable output than hitting a very small target size. It is useful for resumes, reports, and documents with visual detail.",
+      "This page is for documents where readability matters more than extreme size reduction. It is useful for resumes, reports, and office documents that still need to look clean.",
     steps: [
       "Upload your PDF",
-      "Compress with clarity in mind",
-      "Download the optimized file"
+      "Run balanced compression",
+      "Download the smaller readable file"
     ],
     faq: [
       {
-        question: "Can I compress a PDF without losing any quality at all?",
+        question: "What does readable compression mean?",
         answer:
-          "Not always. Most compression involves trade-offs, especially for scanned or image-based PDFs. The goal is to keep the file as clear as possible while reducing size."
+          "It means reducing file size without pushing the document so far that text, layout, or page clarity become hard to use."
       },
       {
-        question: "Which PDFs keep quality better after compression?",
+        question: "Is this better for resumes and reports?",
         answer:
-          "Text-based documents usually compress better. Scanned pages, photos, and graphics-heavy files are more likely to show quality changes."
+          "Yes. Those documents usually need to stay clean and legible, so balanced compression is a better fit than aggressive shrinking."
       },
       {
-        question: "Should I use this page or a target-size page?",
+        question: "Why not always use maximum compression?",
         answer:
-          "Use this page if clarity matters more than hitting an exact size. Use a target-size page if you need to meet a strict upload limit."
+          "Maximum compression can reduce image quality or visual clarity more aggressively. That is not always the best trade-off."
       },
       {
-        question: "Is this good for resumes and reports?",
+        question: "Can I still use this for uploads?",
         answer:
-          "Yes. It is a useful option when the document needs to stay readable and professional after compression."
+          "Yes. This mode is useful when the file needs to be smaller but still look professional and readable."
       }
     ],
     relatedSlugs: [
-      "compress-pdf-to-1mb",
-      "compress-pdf-to-500kb",
-      "compress-pdf-under-1mb",
-      "compress-pdf-to-200kb"
+      "compress-pdf-for-upload",
+      "compress-resume-pdf",
+      "compress-pdf-for-email",
+      "compress-scanned-pdf"
     ]
   }
 ];

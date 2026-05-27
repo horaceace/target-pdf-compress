@@ -4,9 +4,9 @@ import { SiteShell } from "@/components/site-shell";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://example.com"),
-  title: "Target PDF Compress",
+  title: "Max PDF Compress",
   description:
-    "Compress PDF to 200KB, 500KB, 1MB, and more for uploads, forms, and email attachments."
+    "Compress PDF to the smallest practical size for uploads, forms, resumes, and email attachments."
 };
 
 export default function RootLayout({

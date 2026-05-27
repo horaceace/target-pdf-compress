@@ -18,14 +18,17 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy">
-            <span className="eyebrow">Target-size workflow</span>
+            <span className="eyebrow">Scenario-driven compression</span>
             <h1>{page.h1}</h1>
             <p>{page.intro}</p>
           </div>
           <UploadCard
             copy={page.targetLabel}
             heading={page.h1}
-            initialTarget={page.targetLabel.replace("Target size: ", "").replace("Compression goal: ", "")}
+            initialTarget={page.targetLabel
+              .replace("Compression mode: ", "")
+              .replace("Target size: ", "")
+              .replace("Compression goal: ", "")}
           />
         </div>
       </section>
@@ -56,7 +59,7 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">Related target sizes</h2>
+          <h2 className="section-title">Related compression pages</h2>
           <div className="related-links">
             {relatedPages.map((related) => (
               <Link className="related-link" href={`/${related.slug}`} key={related.slug}>

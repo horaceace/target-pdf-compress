@@ -25,14 +25,16 @@ function formatBytes(bytes: number) {
 export function UploadCard({
   heading = "Upload your PDF",
   copy = "PDF only. Compression results depend on file content.",
-  targets = ["200KB", "500KB", "1MB", "Under 1MB"],
+  targets = ["Maximum compression", "Balanced", "Better readability"],
   initialTarget
 }: UploadCardProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "ready" | "processing" | "done">("idle");
-  const [activeTarget, setActiveTarget] = useState(initialTarget ?? targets[0] ?? "200KB");
+  const [activeTarget, setActiveTarget] = useState(
+    initialTarget ?? targets[0] ?? "Maximum compression"
+  );
   const [result, setResult] = useState<CompressionResult | null>(null);
 
   const helperLabel = useMemo(() => {
@@ -126,15 +128,15 @@ export function UploadCard({
       return null;
     }
 
-    if (result.reachedTarget) {
-      return `Target reached for ${result.targetLabel}.`;
+    if (result.compressedBytes < result.originalBytes) {
+      return `Compression finished using ${result.modeLabel.toLowerCase()}.`;
     }
 
-    return `File processed, but it is still above the ${result.targetLabel} target.`;
+    return `Compression finished, but this PDF did not get smaller in ${result.modeLabel.toLowerCase()}.`;
   }, [result]);
 
   const processingLabel =
-    status === "processing" ? `Compressing toward ${activeTarget}...` : "Start compression";
+    status === "processing" ? `Compressing with ${activeTarget.toLowerCase()}...` : "Compress PDF";
 
   const readyHint =
     status === "ready" ? "Ready to compress this PDF in the browser." : null;
@@ -147,8 +149,8 @@ export function UploadCard({
       <div className="dropzone">
         <h3>{heading}</h3>
         <p>
-          Pick a PDF, choose a target size, and run browser-side compression. The
-          first version rewrites the PDF locally and lets you download the result.
+          Pick a PDF, choose a compression mode, and run browser-side compression.
+          This version focuses on making the file smaller instead of chasing an exact number.
         </p>
 
         <input
@@ -197,7 +199,7 @@ export function UploadCard({
         </div>
 
         <div className="status-card">
-          <strong>Selected target</strong>
+          <strong>Selected mode</strong>
           <span>{activeTarget}</span>
         </div>
 
@@ -205,7 +207,7 @@ export function UploadCard({
           <strong>MVP limits</strong>
           <span>
             Browser-side rewriting is live now. Some PDFs shrink well, while
-            image-heavy or scanned files may stay above the selected target.
+            image-heavy or scanned files may not shrink much without stronger server-side compression.
           </span>
         </div>
 
