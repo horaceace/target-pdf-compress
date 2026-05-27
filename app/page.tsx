@@ -5,7 +5,19 @@ import { UploadCard } from "@/components/upload-card";
 
 export const metadata: Metadata = {
   title: homepage.title,
-  description: homepage.description
+  description: homepage.description,
+  alternates: {
+    canonical: "/"
+  },
+  openGraph: {
+    title: homepage.title,
+    description: homepage.description,
+    url: "https://filesmaller.space"
+  },
+  twitter: {
+    title: homepage.title,
+    description: homepage.description
+  }
 };
 
 export default function HomePage() {
@@ -14,13 +26,17 @@ export default function HomePage() {
     .filter((item) => Boolean(item));
 
   const searchPaths = [
-    "compress pdf for upload",
-    "compress resume pdf",
-    "compress pdf for email",
-    "compress scanned pdf",
-    "compress pdf without losing readability",
-    "make pdf smaller for application"
-  ];
+    "compress-pdf-online",
+    "reduce-pdf-size-online",
+    "free-pdf-compressor",
+    "compress-pdf-for-upload",
+    "compress-pdf-for-email",
+    "compress-scanned-pdf",
+    "compress-pdf-without-losing-quality",
+    "reduce-pdf-size-for-job-application"
+  ]
+    .map((slug) => toolPageMap.get(slug))
+    .filter((item) => Boolean(item));
 
   const toolPaths = [
     {
@@ -38,16 +54,37 @@ export default function HomePage() {
   ];
 
   const nextBatch = [
-    "shrink-pdf-for-job-application",
-    "compress-pdf-before-whatsapp",
-    "reduce-pdf-size-for-visa-application",
-    "make-pdf-smaller-for-email-attachment",
-    "compress-pdf-for-mobile-upload",
-    "reduce-pdf-size-for-college-form"
-  ];
+    "reduce-pdf-size-for-attachment",
+    "reduce-pdf-size-for-whatsapp",
+    "reduce-pdf-size-for-gmail",
+    "compress-pdf-to-send-by-email",
+    "compress-large-pdf",
+    "compress-pdf-under-upload-limit",
+    "make-scanned-pdf-smaller",
+    "best-pdf-compressor-online"
+  ]
+    .map((slug) => toolPageMap.get(slug))
+    .filter((item) => Boolean(item));
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homepage.faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer
+      }
+    }))
+  };
 
   return (
     <main className="container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy">
@@ -152,9 +189,11 @@ export default function HomePage() {
           <h2 className="section-title">Search paths</h2>
           <div className="search-grid">
             {searchPaths.map((item) => (
-              <div className="search-chip" key={item}>
-                {item}
-              </div>
+              item ? (
+                <Link className="search-chip" href={`/${item.slug}`} key={item.slug}>
+                  {item.h1}
+                </Link>
+              ) : null
             ))}
           </div>
         </div>
@@ -190,12 +229,18 @@ export default function HomePage() {
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">Next page opportunities</h2>
+          <h2 className="section-title">More compression pages</h2>
           <div className="search-grid">
             {nextBatch.map((item) => (
-              <div className="search-chip search-chip--muted" key={item}>
-                {item}
-              </div>
+              item ? (
+                <Link
+                  className="search-chip search-chip--muted"
+                  href={`/${item.slug}`}
+                  key={item.slug}
+                >
+                  {item.h1}
+                </Link>
+              ) : null
             ))}
           </div>
         </div>

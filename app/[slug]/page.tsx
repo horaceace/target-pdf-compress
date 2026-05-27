@@ -21,7 +21,19 @@ export function generateMetadata({
 
     return {
       title: page.title,
-      description: page.description
+      description: page.description,
+      alternates: {
+        canonical: `/${page.slug}`
+      },
+      openGraph: {
+        title: page.title,
+        description: page.description,
+        url: `https://filesmaller.space/${page.slug}`
+      },
+      twitter: {
+        title: page.title,
+        description: page.description
+      }
     };
   });
 }

@@ -6,9 +6,25 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
   const relatedPages = page.relatedSlugs
     .map((slug) => toolPageMap.get(slug))
     .filter((item): item is ToolPageConfig => Boolean(item));
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: page.faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer
+      }
+    }))
+  };
 
   return (
     <main className="container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <section className="tool-page__headline">
         <span className="eyebrow">{page.targetLabel}</span>
         <h1>{page.h1}</h1>
