@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { toolPages } from "@/content/tool-pages";
+import { splitToolPages } from "@/content/split-pages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -17,7 +18,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3
     },
+    {
+      url: "https://filesmaller.space/compress-pdf",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
+    {
+      url: "https://filesmaller.space/merge-pdf",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
+    {
+      url: "https://filesmaller.space/split-pdf",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
     ...toolPages.map((page) => ({
+      url: `https://filesmaller.space/${page.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8
+    })),
+    ...splitToolPages.map((page) => ({
       url: `https://filesmaller.space/${page.slug}`,
       lastModified: now,
       changeFrequency: "weekly" as const,

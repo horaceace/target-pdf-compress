@@ -43,6 +43,11 @@ export const homepage = {
         "Upload your PDF and run the strongest available compression mode. The final result depends on the content of the file, especially images and scanned pages."
     },
     {
+      question: "What tools are available on the site right now?",
+      answer:
+        "The current core tools are Compress PDF, Merge PDF, and Split PDF. Compression handles size reduction, Merge PDF combines multiple files into one document, and Split PDF extracts smaller page groups from one file."
+    },
+    {
       question: "Will this always reach the smallest possible PDF size?",
       answer:
         "Not always. Some PDFs can shrink a lot, while image-heavy or scanned files may stay relatively large even after processing."
@@ -56,6 +61,16 @@ export const homepage = {
       question: "Will compression affect quality?",
       answer:
         "It can. Maximum compression usually trades file size against image quality, so scanned documents and image-based PDFs may lose more detail than text-heavy files."
+    },
+    {
+      question: "Can I merge PDF files here too?",
+      answer:
+        "Yes. The site now includes a Merge PDF tool so you can combine multiple PDF files into one merged document in the browser."
+    },
+    {
+      question: "Can I split PDF files here too?",
+      answer:
+        "Yes. The site now includes a Split PDF tool so you can extract selected page ranges into smaller PDF files in the browser."
     }
   ]
 };

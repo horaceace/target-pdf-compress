@@ -6,13 +6,17 @@ import { Analytics } from "@/components/analytics";
 export const metadata: Metadata = {
   metadataBase: new URL("https://filesmaller.space"),
   title: {
-    default: "Compress PDF to the Smallest Size Online",
+    default: "FileSmaller | Free PDF Tools Online",
     template: "%s | FileSmaller"
   },
   description:
-    "Compress PDF to the smallest practical size for uploads, forms, resumes, and email attachments."
-  ,
+    "Free browser-first PDF tools for compressing, merging, and splitting documents online.",
   applicationName: "FileSmaller",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg"
+  },
   alternates: {
     canonical: "/"
   },
@@ -20,15 +24,15 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://filesmaller.space",
     siteName: "FileSmaller",
-    title: "Compress PDF to the Smallest Size Online",
+    title: "FileSmaller | Free PDF Tools Online",
     description:
-      "Compress PDF to the smallest practical size for uploads, forms, resumes, and email attachments."
+      "Free browser-first PDF tools for compressing, merging, and splitting documents online."
   },
   twitter: {
     card: "summary_large_image",
-    title: "Compress PDF to the Smallest Size Online",
+    title: "FileSmaller | Free PDF Tools Online",
     description:
-      "Compress PDF to the smallest practical size for uploads, forms, resumes, and email attachments."
+      "Free browser-first PDF tools for compressing, merging, and splitting documents online."
   }
 };
 
