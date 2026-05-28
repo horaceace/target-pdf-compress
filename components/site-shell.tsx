@@ -15,7 +15,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <header className="site-header">
         <div className="container site-header__row">
           <Link className="site-brand" href="/">
-            Max PDF Compress
+            FileSmaller
           </Link>
           <nav className="site-nav" aria-label="Main navigation">
             {navItems.map((item) => (
@@ -31,7 +31,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <div className="container site-footer__row">
           <div className="site-brand">Max PDF Compress</div>
           <div className="site-footer__copy">
-            Built for maximum PDF size reduction before upload and sharing.
+            Free browser-first PDF compression for uploads, forms, attachments, and document sharing.
           </div>
         </div>
       </footer>

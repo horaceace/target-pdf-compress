@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Read the privacy policy for this PDF compression tool, including how files may be processed and what information is collected."
+    "Read the privacy policy for FileSmaller, including analytics, browser-side PDF handling, and future processing disclosures."
 };
 
 export default function PrivacyPage() {
@@ -13,31 +13,61 @@ export default function PrivacyPage() {
         <div className="privacy-card panel">
           <h1>Privacy Policy</h1>
           <p>
-            This first version is a product shell. Before launch, the file handling
-            language here must be updated to match the final compression workflow.
+            FileSmaller is a browser-first PDF compression website. This page
+            explains what information may be collected, how uploaded files are
+            handled in the current version, and what will change if the product
+            later adds server-side processing.
           </p>
         </div>
         <div className="privacy-card panel">
-          <h2>What data is collected</h2>
+          <h2>Analytics and usage data</h2>
           <p>
-            We may collect basic analytics information such as page views, device
-            type, and interaction events to understand how visitors use the site.
+            We may collect basic website analytics such as page views, referrers,
+            device type, country-level location, and high-level interaction data
+            to understand how visitors use the site and which pages perform best.
           </p>
         </div>
         <div className="privacy-card panel">
-          <h2>How uploaded files are handled</h2>
+          <h2>How PDF files are handled</h2>
           <p>
-            Uploaded file handling depends on the final compression implementation.
-            If compression runs locally in the browser, files may never leave the
-            device. If server-side compression is used, this section must be updated
-            before public launch.
+            In the current version, compression is designed to run in the browser
+            whenever possible. That means uploaded PDF files are processed on the
+            device instead of being sent to our server for long-term storage. If a
+            later version introduces server-side compression, this policy must be
+            updated before that workflow is used in production.
+          </p>
+        </div>
+        <div className="privacy-card panel">
+          <h2>What we do not claim</h2>
+          <p>
+            We do not currently claim that every file is processed entirely
+            offline, that files are never transmitted under any future workflow,
+            or that the service is suitable for regulated or highly sensitive
+            document handling without additional review.
+          </p>
+        </div>
+        <div className="privacy-card panel">
+          <h2>Cookies and third-party services</h2>
+          <p>
+            Analytics providers may use cookies or similar identifiers to measure
+            site usage. Cloudflare and other infrastructure providers may also
+            process request metadata needed to deliver the website securely and
+            reliably.
+          </p>
+        </div>
+        <div className="privacy-card panel">
+          <h2>Policy updates</h2>
+          <p>
+            This policy may be updated as the product changes. If file handling,
+            storage, login systems, payments, or server-side document processing
+            are added, the policy should be revised before those features go live.
           </p>
         </div>
         <div className="privacy-card panel">
           <h2>Contact</h2>
           <p>
-            Add your production contact email here before deployment so users have a
-            way to request privacy or data-related information.
+            Add a production contact email before public promotion so users have a
+            clear way to ask privacy or data-related questions.
           </p>
         </div>
       </section>

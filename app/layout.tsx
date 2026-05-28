@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteShell } from "@/components/site-shell";
+import { Analytics } from "@/components/analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://filesmaller.space"),
@@ -39,6 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Analytics />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

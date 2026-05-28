@@ -35,6 +35,10 @@ Required GitHub repository secrets:
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 
+Recommended runtime environment variables:
+
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` for Google Analytics 4, for example `G-XXXXXXXXXX`
+
 Relevant scripts:
 
 ```bash
