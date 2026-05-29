@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { HomeToolSwitcher } from "@/components/home-tool-switcher";
 import { homepage, toolPageMap } from "@/content/tool-pages";
 
 export const metadata: Metadata = {
-  title: "FileSmaller | Free PDF Tools Online",
+  title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
   description: homepage.description,
   alternates: {
     canonical: "/"
   },
   openGraph: {
-    title: "FileSmaller | Free PDF Tools Online",
+    title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
     description: homepage.description,
     url: "https://filesmaller.space"
   },
   twitter: {
-    title: "FileSmaller | Free PDF Tools Online",
+    title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
     description: homepage.description
   }
 };
@@ -24,36 +25,56 @@ export default function HomePage() {
   const quickLinks = homepage.quickLinks
     .map((slug) => toolPageMap.get(slug))
     .filter((item) => Boolean(item));
+  const pdfToJpgPages = [
+    "pdf-to-jpg-online",
+    "convert-pdf-pages-to-jpg",
+    "pdf-page-to-jpg-for-preview",
+    "extract-images-from-pdf-pages"
+  ]
+    .map((slug) => toolPageMap.get(slug))
+    .filter((item) => Boolean(item));
+  const jpgToPdfPages = [
+    "jpg-to-pdf-online",
+    "convert-images-to-pdf",
+    "combine-jpg-into-one-pdf",
+    "images-to-pdf-for-upload"
+  ]
+    .map((slug) => toolPageMap.get(slug))
+    .filter((item) => Boolean(item));
+  const searchEntryPages = [...quickLinks, ...pdfToJpgPages, ...jpgToPdfPages].filter(
+    (item, index, pages) => item && pages.findIndex((page) => page?.slug === item.slug) === index
+  );
+
   const coreTools = [
     {
       href: "/compress-pdf",
       title: "Compress PDF",
-      copy: "Reduce PDF size with modes for readability, uploads, tight limits, and scanned image-heavy files."
+      copy: "Reduce PDF size with stronger modes for uploads, file limits, and scan-heavy documents."
     },
     {
       href: "/merge-pdf",
       title: "Merge PDF",
-      copy: "Combine multiple PDF files into one document, reorder them, and download a single merged output."
+      copy: "Combine multiple PDF files into one document and export a single merged output."
     },
     {
       href: "/split-pdf",
       title: "Split PDF",
-      copy: "Extract page ranges from one PDF, create separate files, and download smaller document parts."
+      copy: "Extract page ranges into smaller PDF parts for uploads, sharing, and follow-up compression."
+    },
+    {
+      href: "/pdf-to-jpg",
+      title: "PDF to JPG",
+      copy: "Turn PDF pages into JPG images for previews, uploads, and quick reuse."
+    },
+    {
+      href: "/jpg-to-pdf",
+      title: "JPG to PDF",
+      copy: "Combine JPG or PNG images into one PDF for screenshots, receipts, and scanned bundles."
     }
   ];
 
-  const searchPaths = [
-    "compress-pdf-online",
-    "reduce-pdf-size-online",
-    "free-pdf-compressor",
-    "compress-pdf-for-upload",
-    "compress-pdf-for-email",
-    "compress-scanned-pdf",
-    "compress-pdf-without-losing-quality",
-    "reduce-pdf-size-for-job-application"
-  ]
-    .map((slug) => toolPageMap.get(slug))
-    .filter((item) => Boolean(item));
+  const featuredTool = coreTools[0];
+  const secondaryTools = coreTools.slice(1);
 
   const toolPaths = [
     {
@@ -86,19 +107,15 @@ export default function HomePage() {
     {
       title: "Split before sending",
       copy: "Extract only the pages you need before emailing, uploading, or compressing a smaller document."
+    },
+    {
+      title: "Export pages as images",
+      copy: "Convert PDF pages to JPG files when a CMS, design flow, or preview system needs images instead of another PDF."
+    },
+    {
+      title: "Build PDFs from screenshots",
+      copy: "Turn JPG or PNG files into one PDF for receipts, scans, forms, and mobile document bundles."
     }
-  ];
-
-  const mergeUseCases = [
-    "For combining resumes and certificates",
-    "For sending one PDF instead of many",
-    "For building a final upload-ready document"
-  ];
-
-  const splitUseCases = [
-    "For extracting only the needed pages",
-    "For separating forms, signatures, or certificates",
-    "For breaking one large PDF into smaller upload-ready files"
   ];
 
   const mergePaths = [
@@ -173,8 +190,28 @@ export default function HomePage() {
     }))
   };
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "FileSmaller",
+    url: "https://filesmaller.space",
+    description: homepage.description
+  };
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: coreTools.map((tool, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `https://filesmaller.space${tool.href}`,
+      name: tool.title,
+      description: tool.copy
+    }))
+  };
+
   const heroStats = [
-    { value: "3", label: "core PDF tools" },
+    { value: "5", label: "core tools live" },
     { value: "30+", label: "scenario pages live" },
     { value: "Browser-first", label: "no install workflow" }
   ];
@@ -183,7 +220,14 @@ export default function HomePage() {
     {
       title: "Compression tracks",
       intro: "Start here when the main problem is upload limits, email attachments, or scanned files that need to shrink.",
-      links: toolPaths.map((item) => ({ title: item.title, copy: item.copy }))
+      links: [
+        ...toolPaths.map((item) => ({ title: item.title, copy: item.copy })),
+        {
+          title: "More compression pages",
+          copy: "See long-tail pages for uploads, resumes, scanned PDFs, and attachment limits.",
+          href: "/compress-pdf-online"
+        }
+      ]
     },
     {
       title: "Merge workflows",
@@ -194,6 +238,32 @@ export default function HomePage() {
       title: "Split workflows",
       intro: "Use split when the easiest way forward is exporting only the pages that actually matter.",
       links: splitPaths.map((item) => ({ title: item.title, copy: item.copy, href: item.href }))
+    },
+    {
+      title: "Conversion workflows",
+      intro: "Use conversion when you need JPG images from PDF pages or one PDF from multiple screenshots or scans.",
+      links: [
+        {
+          title: "PDF to JPG online",
+          copy: "Export one JPG per PDF page for previews and quick reuse.",
+          href: "/pdf-to-jpg-online"
+        },
+        {
+          title: "JPG to PDF online",
+          copy: "Combine screenshots, receipts, or scans into one PDF.",
+          href: "/jpg-to-pdf-online"
+        },
+        {
+          title: "Convert PDF pages to JPG",
+          copy: "Useful when a page image is needed instead of another PDF.",
+          href: "/convert-pdf-pages-to-jpg"
+        },
+        {
+          title: "Images to PDF for upload",
+          copy: "Build one upload-ready PDF from multiple image files.",
+          href: "/images-to-pdf-for-upload"
+        }
+      ]
     }
   ];
 
@@ -203,16 +273,20 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy">
             <span className="eyebrow">Browser-first PDF tools</span>
-            <h1>Compress, merge, and split PDF files in one workflow</h1>
-            <p className="hero__lede">
-              Start with PDF compression for uploads and file limits, merge multiple PDFs
-              into one clean document, or split one PDF into smaller parts before sending,
-              submitting, or compressing again.
-            </p>
+            <h1>{homepage.h1}</h1>
+            <p className="hero__lede">{homepage.subheading}</p>
             <div className="stat-strip">
               {heroStats.map((item) => (
                 <div className="stat-chip" key={item.label}>
@@ -221,14 +295,20 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="hero-directory">
-              {coreTools.map((tool) => (
-                <Link className="directory-link" href={tool.href} key={tool.href}>
-                  <span className="directory-link__kicker">Tool</span>
-                  <strong>{tool.title}</strong>
-                  <span>{tool.copy}</span>
-                </Link>
-              ))}
+            <div className="hero-toolset">
+              <Link className="hero-feature-tool" href={featuredTool.href}>
+                <span className="directory-link__kicker">Start here</span>
+                <strong>{featuredTool.title}</strong>
+                <span>{featuredTool.copy}</span>
+              </Link>
+              <div className="hero-tool-list">
+                {secondaryTools.map((tool) => (
+                  <Link className="hero-tool-pill" href={tool.href} key={tool.href}>
+                    <strong>{tool.title}</strong>
+                    <span>{tool.copy}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
             <div className="hero-visual">
               <div className="mock-browser">
@@ -240,29 +320,15 @@ export default function HomePage() {
                 <div className="mock-browser__body">
                   <div className="mock-file-card">
                     <div className="mock-file-card__label">Tool routing</div>
-                    <div className="mock-file-card__name">Choose compress, merge, or split based on the document task.</div>
+                    <div className="mock-file-card__name">Choose compress, merge, split, or conversion based on the document task.</div>
                     <div className="mock-file-card__size">Start from workflow instead of guessing one tool.</div>
                   </div>
                   <div className="mock-arrow">→</div>
                   <div className="mock-file-card mock-file-card--result">
                     <div className="mock-file-card__label">Output paths</div>
-                    <div className="mock-file-card__name">Smaller PDFs, merged bundles, or extracted page-range files.</div>
+                    <div className="mock-file-card__name">Smaller PDFs, merged bundles, extracted page ranges, or converted image files.</div>
                     <div className="mock-file-card__size">Built for uploads, attachments, and faster document prep.</div>
                   </div>
-                </div>
-              </div>
-              <div className="hero-mini-grid">
-                <div className="hero-mini-card">
-                  <strong>Compress</strong>
-                  <span>Modes for uploads, scans, and readable office PDFs</span>
-                </div>
-                <div className="hero-mini-card">
-                  <strong>Merge</strong>
-                  <span>Reorder files and export one merged document</span>
-                </div>
-                <div className="hero-mini-card">
-                  <strong>Split</strong>
-                  <span>Break one large PDF into smaller page-range files</span>
                 </div>
               </div>
             </div>
@@ -279,7 +345,7 @@ export default function HomePage() {
               <h2 className="section-title">Choose the tool path, not just a single upload box</h2>
             </div>
             <p className="section-copy">
-              The site is structured around the three document actions people actually need: make one PDF smaller, combine many PDFs, or pull out only the pages worth keeping.
+              The site is structured around the core document actions people actually need: make one PDF smaller, combine many PDFs, split out needed pages, or move between PDF and JPG formats.
             </p>
           </div>
           <div className="card-grid card-grid--wide">
@@ -299,7 +365,7 @@ export default function HomePage() {
               <h2 className="section-title">Built around common overseas document tasks</h2>
             </div>
             <p className="section-copy">
-              Instead of treating every visit like the same PDF compression job, the homepage breaks workflows into clearer tracks that match uploads, applications, attachments, and partial exports.
+              Search intent is fragmented. Some users want to compress a PDF for upload, some need to merge files, some need to split out only a few pages, and some need to convert between PDF and JPG. The homepage now works as the main hub across those search paths.
             </p>
           </div>
           <div className="workflow-columns">
@@ -331,10 +397,10 @@ export default function HomePage() {
           <div className="section-heading">
             <div>
               <span className="section-kicker">Popular scenarios</span>
-              <h2 className="section-title">The highest-intent pages are grouped for speed</h2>
+              <h2 className="section-title">Popular search pages for compression and conversion</h2>
             </div>
             <p className="section-copy">
-              These are the pages most likely to match search intent when someone just wants a direct route for email limits, uploads, resumes, or scanned files.
+              These are the pages most likely to match the way people actually search: compress PDF online, convert PDF to JPG, convert JPG to PDF, and fix file-size problems for uploads or email.
             </p>
           </div>
           <div className="editorial-grid">
@@ -352,16 +418,38 @@ export default function HomePage() {
               </div>
             </div>
             <div className="editorial-card">
-              <strong>Use-case language</strong>
-              <div className="pill-list">
-                {homepage.useCases.map((item) => (
-                  <div className="pill" key={item}>
-                    <strong>{item}</strong>
-                    <span>Made for shrinking PDFs before upload, email, and document sharing.</span>
-                  </div>
-                ))}
+              <strong>Conversion scenarios</strong>
+              <div className="quick-links">
+                {[...pdfToJpgPages, ...jpgToPdfPages].map((page) =>
+                  page ? (
+                    <Link className="quick-link" href={`/${page.slug}`} key={page.slug}>
+                      <strong>{page.h1}</strong>
+                      <span>{page.subheading}</span>
+                    </Link>
+                  ) : null
+                )}
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="panel section">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">Use Cases</span>
+              <h2 className="section-title">Questions people search before choosing a tool</h2>
+            </div>
+            <p className="section-copy">
+              The same document problem can show up as an upload issue, a Gmail attachment limit, a preview image request, or a need to combine screenshots into one PDF.
+            </p>
+          </div>
+          <div className="pill-list">
+            {homepage.useCases.map((item) => (
+              <div className="pill" key={item}>
+                <strong>{item}</strong>
+                <span>Choose the route that matches the job instead of forcing every visit into one generic PDF compression flow.</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -388,15 +476,15 @@ export default function HomePage() {
               </div>
             </div>
             <div className="editorial-card">
-              <strong>Compression search paths</strong>
+              <strong>Search-style entry pages</strong>
               <div className="search-grid">
-                {searchPaths.map((item) => (
+                {searchEntryPages.map((item) =>
                   item ? (
                     <Link className="search-chip" href={`/${item.slug}`} key={item.slug}>
                       {item.h1}
                     </Link>
                   ) : null
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -407,35 +495,28 @@ export default function HomePage() {
           <div className="step-list">
             <div className="step-card">
               <b>1</b>
-              <div>Choose a core tool: compress one PDF, merge multiple PDFs, or split one PDF into smaller files.</div>
+              <div>Choose the exact task first: compress PDF, merge PDF, split PDF, convert PDF to JPG, or convert JPG to PDF.</div>
             </div>
             <div className="step-card">
               <b>2</b>
-              <div>Upload files, choose the right mode, page ranges, or file order, and run the action.</div>
+              <div>Upload the file, choose the mode or route that matches the use case, and run the browser-side action.</div>
             </div>
             <div className="step-card">
               <b>3</b>
-              <div>Download the result, then reuse another tool if you need to compress, merge, or split again.</div>
+              <div>Download the result, then move to the next tool if you still need compression, splitting, merging, or conversion.</div>
             </div>
           </div>
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">Frequently asked questions</h2>
-          <div className="faq-grid">
-            {homepage.faq.map((item) => (
-              <article className="faq-item" key={item.question}>
-                <h3>{item.question}</h3>
-                <p>{item.answer}</p>
-              </article>
-            ))}
-          </div>
+          <h2 className="section-title">Frequently asked questions people search</h2>
+          <FaqAccordion items={homepage.faq} />
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">More compression pages</h2>
+          <h2 className="section-title">More long-tail pages</h2>
           <div className="search-grid">
-            {nextBatch.map((item) => (
+            {[...nextBatch, ...pdfToJpgPages, ...jpgToPdfPages].map((item) =>
               item ? (
                 <Link
                   className="search-chip search-chip--muted"
@@ -445,7 +526,7 @@ export default function HomePage() {
                   {item.h1}
                 </Link>
               ) : null
-            ))}
+            )}
           </div>
         </div>
       </section>

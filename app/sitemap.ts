@@ -36,6 +36,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9
     },
+    {
+      url: "https://filesmaller.space/pdf-to-jpg",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85
+    },
+    {
+      url: "https://filesmaller.space/jpg-to-pdf",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85
+    },
     ...toolPages.map((page) => ({
       url: `https://filesmaller.space/${page.slug}`,
       lastModified: now,

@@ -2,22 +2,22 @@ import type { Metadata } from "next";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 
 export const metadata: Metadata = {
-  title: "Split PDF Files Online",
+  title: "Split PDF Files Online Free",
   description:
-    "Split PDF files online in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
+    "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
   alternates: {
     canonical: "/split-pdf"
   },
   openGraph: {
-    title: "Split PDF Files Online",
+    title: "Split PDF Files Online Free",
     description:
-      "Split PDF files online in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
+      "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
     url: "https://filesmaller.space/split-pdf"
   },
   twitter: {
-    title: "Split PDF Files Online",
+    title: "Split PDF Files Online Free",
     description:
-      "Split PDF files online in your browser. Extract page ranges, create separate PDF files, and download them instantly."
+      "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly."
   }
 };
 

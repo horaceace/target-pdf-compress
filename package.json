@@ -12,8 +12,10 @@
     "cf:deploy": "opennextjs-cloudflare deploy"
   },
   "dependencies": {
+    "jszip": "^3.10.1",
     "next": "^15.5.18",
     "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.7.284",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaqAccordion } from "@/components/faq-accordion";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { SplitPageConfig, splitToolPageMap } from "@/content/split-pages";
 
@@ -18,12 +19,53 @@ export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
       }
     }))
   };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://filesmaller.space"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: page.h1,
+        item: `https://filesmaller.space/${page.slug}`
+      }
+    ]
+  };
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: page.title,
+    url: `https://filesmaller.space/${page.slug}`,
+    description: page.description,
+    breadcrumb: {
+      "@id": `https://filesmaller.space/${page.slug}#breadcrumb`
+    }
+  };
 
   return (
     <main className="container">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            ...breadcrumbSchema,
+            "@id": `https://filesmaller.space/${page.slug}#breadcrumb`
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
       <section className="tool-page__headline">
         <span className="eyebrow">{page.targetLabel}</span>
@@ -71,14 +113,7 @@ export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
 
         <div className="panel section">
           <h2 className="section-title">Common questions</h2>
-          <div className="faq-grid">
-            {page.faq.map((item) => (
-              <article className="faq-item" key={item.question}>
-                <h3>{item.question}</h3>
-                <p>{item.answer}</p>
-              </article>
-            ))}
-          </div>
+          <FaqAccordion items={page.faq} />
         </div>
 
         <div className="panel section">

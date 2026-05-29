@@ -20,6 +20,9 @@ export type CompressionResult = {
   mode: CompressionMode;
   pageCount: number;
   likelyImageHeavy: boolean;
+  documentProfile: "clean-office" | "mixed" | "image-heavy" | "scanned-heavy";
+  profileLabel: string;
+  bytesPerPage: number;
   originalBytes: number;
   compressedBytes: number;
   savedBytes: number;
@@ -104,15 +107,74 @@ const modePassPlan: Record<
   }
 };
 
+type RenderedImagePage = {
+  imageBytes: Uint8Array;
+  width: number;
+  height: number;
+};
+
+function shouldUseRenderedScannedPath(
+  profile: CompressionResult["documentProfile"]
+) {
+  return profile === "image-heavy" || profile === "scanned-heavy";
+}
+
+function fallbackModeForScanned(
+  profile: CompressionResult["documentProfile"]
+): CompressionMode {
+  if (profile === "clean-office") {
+    return "strong";
+  }
+
+  return "extreme";
+}
+
+function classifyDocumentProfile(bytesPerPage: number, pageCount: number) {
+  if (bytesPerPage >= 900_000 || (pageCount <= 6 && bytesPerPage >= 750_000)) {
+    return {
+      id: "scanned-heavy" as const,
+      label: "Likely scanned PDF"
+    };
+  }
+
+  if (bytesPerPage >= 450_000) {
+    return {
+      id: "image-heavy" as const,
+      label: "Image-heavy PDF"
+    };
+  }
+
+  if (bytesPerPage <= 160_000) {
+    return {
+      id: "clean-office" as const,
+      label: "Clean office PDF"
+    };
+  }
+
+  return {
+    id: "mixed" as const,
+    label: "Mixed-content PDF"
+  };
+}
+
 function outputName(name: string) {
   return name.toLowerCase().endsWith(".pdf")
     ? name.replace(/\.pdf$/i, "-compressed.pdf")
     : `${name}-compressed.pdf`;
 }
 
-function buildWarning(mode: CompressionMode, originalBytes: number, compressedBytes: number) {
+function buildWarning(
+  mode: CompressionMode,
+  originalBytes: number,
+  compressedBytes: number,
+  documentProfile: CompressionResult["documentProfile"]
+) {
   if (compressedBytes >= originalBytes) {
     return "This PDF did not shrink much in the browser. Image-heavy files may need a stronger server-side compressor.";
+  }
+
+  if (documentProfile === "scanned-heavy" && mode !== "scanned") {
+    return "This file looks closer to a scan than a text PDF. Standard modes may not shrink it enough.";
   }
 
   if (mode === "extreme" || mode === "scanned") {
@@ -127,16 +189,29 @@ function buildRecommendation(
   originalBytes: number,
   compressedBytes: number,
   pageCount: number,
-  likelyImageHeavy: boolean
+  likelyImageHeavy: boolean,
+  documentProfile: CompressionResult["documentProfile"]
 ) {
   const reduction = originalBytes > 0 ? (originalBytes - compressedBytes) / originalBytes : 0;
 
-  if (reduction < 0.12 && likelyImageHeavy && mode !== "scanned") {
+  if (
+    reduction < 0.12 &&
+    (documentProfile === "image-heavy" || documentProfile === "scanned-heavy") &&
+    mode !== "scanned"
+  ) {
     return "This PDF looks image-heavy. Try Scanned PDF mode for a stronger browser-side reduction path.";
   }
 
   if (reduction < 0.08 && (mode === "extreme" || mode === "scanned")) {
     return "This file is resisting browser-side compression. A server-side compressor may be needed for a much smaller result.";
+  }
+
+  if (documentProfile === "clean-office" && reduction < 0.1 && mode === "light") {
+    return "This PDF already looks structurally light. Try Balanced or Strong mode only if upload limits still block you.";
+  }
+
+  if (pageCount > 30 && reduction < 0.18 && likelyImageHeavy && mode === "strong") {
+    return "Long image-heavy PDFs often need Extreme or Scanned PDF mode to get under stricter upload caps.";
   }
 
   if (reduction > 0.55 && mode === "light") {
@@ -185,6 +260,102 @@ async function multiPass(bytes: Uint8Array) {
     updateFieldAppearances: false,
     addDefaultPage: false,
     objectsPerTick: 5
+  });
+}
+
+async function renderPdfPagesToJpeg(
+  sourceBytes: Uint8Array,
+  quality: number,
+  scale: number
+): Promise<RenderedImagePage[]> {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    throw new Error("The stronger scanned PDF path is only available in the browser.");
+  }
+
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/legacy/build/pdf.worker.mjs",
+      import.meta.url
+    ).toString();
+  }
+  const loadingTask = pdfjs.getDocument({
+    data: sourceBytes,
+    useSystemFonts: true,
+    isEvalSupported: false
+  } as Parameters<typeof pdfjs.getDocument>[0]);
+  const pdf = await loadingTask.promise;
+  const pages: RenderedImagePage[] = [];
+
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    const page = await pdf.getPage(pageNumber);
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d", { alpha: false });
+
+    if (!context) {
+      throw new Error("Canvas rendering is not available in this browser.");
+    }
+
+    canvas.width = Math.max(1, Math.floor(viewport.width));
+    canvas.height = Math.max(1, Math.floor(viewport.height));
+
+    await page.render({
+      canvas,
+      canvasContext: context,
+      viewport
+    }).promise;
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", quality);
+    });
+
+    if (!blob) {
+      throw new Error("The browser could not export the scanned PDF pages as images.");
+    }
+
+    const imageBytes = new Uint8Array(await blob.arrayBuffer());
+    pages.push({
+      imageBytes,
+      width: viewport.width,
+      height: viewport.height
+    });
+
+    canvas.width = 0;
+    canvas.height = 0;
+    page.cleanup();
+  }
+
+  await loadingTask.destroy();
+  return pages;
+}
+
+async function rebuildFromRenderedPages(sourceBytes: Uint8Array, mode: CompressionMode) {
+  const renderScale = mode === "scanned" ? 1.05 : 1.15;
+  const imageQuality = mode === "scanned" ? 0.58 : 0.68;
+  const renderedPages = await renderPdfPagesToJpeg(sourceBytes, imageQuality, renderScale);
+  const rebuilt = await PDFDocument.create();
+
+  for (const renderedPage of renderedPages) {
+    const image = await rebuilt.embedJpg(renderedPage.imageBytes);
+    const page = rebuilt.addPage([renderedPage.width, renderedPage.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: renderedPage.width,
+      height: renderedPage.height
+    });
+  }
+
+  rebuilt.setProducer("FileSmaller");
+  rebuilt.setCreator("FileSmaller");
+  rebuilt.setTitle("scanned-pdf-compressed");
+
+  return rebuilt.save({
+    useObjectStreams: true,
+    updateFieldAppearances: false,
+    addDefaultPage: false,
+    objectsPerTick: 10
   });
 }
 
@@ -247,8 +418,52 @@ export async function compressPdfFile(
   });
   const pageCount = source.getPageCount();
   const bytesPerPage = pageCount > 0 ? file.size / pageCount : file.size;
+  const profile = classifyDocumentProfile(bytesPerPage, pageCount);
   const likelyImageHeavy = bytesPerPage > 450_000;
-  const plan = modePassPlan[mode];
+
+  const requestedScannedMode = mode === "scanned";
+  const shouldRunRenderedScannedPath =
+    requestedScannedMode && shouldUseRenderedScannedPath(profile.id);
+  const effectiveMode = shouldRunRenderedScannedPath
+    ? "scanned"
+    : requestedScannedMode
+      ? fallbackModeForScanned(profile.id)
+      : mode;
+
+  if (shouldRunRenderedScannedPath) {
+    const rebuiltFromImages = await rebuildFromRenderedPages(sourceBytes, mode);
+    const compressedBytes = rebuiltFromImages.byteLength;
+    const originalBytes = file.size;
+    const savedBytes = Math.max(0, originalBytes - compressedBytes);
+    const reductionRatio =
+      originalBytes > 0 ? Number((savedBytes / originalBytes).toFixed(4)) : 0;
+
+    return {
+      blob: new Blob([rebuiltFromImages], { type: "application/pdf" }),
+      fileName: outputName(file.name),
+      mode: effectiveMode,
+      pageCount,
+      likelyImageHeavy,
+      documentProfile: profile.id,
+      profileLabel: profile.label,
+      bytesPerPage,
+      originalBytes,
+      compressedBytes,
+      savedBytes,
+      reductionRatio,
+      warning: buildWarning(effectiveMode, originalBytes, compressedBytes, profile.id),
+      recommendation: buildRecommendation(
+        effectiveMode,
+        originalBytes,
+        compressedBytes,
+        pageCount,
+        likelyImageHeavy,
+        profile.id
+      )
+    };
+  }
+
+  const plan = modePassPlan[effectiveMode];
   const candidates: Uint8Array[] = [];
 
   candidates.push(...(await runOptimizedPasses(source, plan.optimizedPasses)));
@@ -270,24 +485,33 @@ export async function compressPdfFile(
   const savedBytes = Math.max(0, originalBytes - compressedBytes);
   const reductionRatio =
     originalBytes > 0 ? Number((savedBytes / originalBytes).toFixed(4)) : 0;
+  const skippedScannedPath = requestedScannedMode && !shouldRunRenderedScannedPath;
+  const warning =
+    skippedScannedPath
+      ? `Scanned PDF mode was skipped because this file looks more like a ${profile.label.toLowerCase()}. FileSmaller used ${getCompressionMode(effectiveMode).label} instead.`
+      : buildWarning(effectiveMode, originalBytes, compressedBytes, profile.id);
 
   return {
     blob: new Blob([best], { type: "application/pdf" }),
     fileName: outputName(file.name),
-    mode,
+    mode: effectiveMode,
     pageCount,
     likelyImageHeavy,
+    documentProfile: profile.id,
+    profileLabel: profile.label,
+    bytesPerPage,
     originalBytes,
     compressedBytes,
     savedBytes,
     reductionRatio,
-    warning: buildWarning(mode, originalBytes, compressedBytes),
+    warning,
     recommendation: buildRecommendation(
-      mode,
+      effectiveMode,
       originalBytes,
       compressedBytes,
       pageCount,
-      likelyImageHeavy
+      likelyImageHeavy,
+      profile.id
     )
   };
 }

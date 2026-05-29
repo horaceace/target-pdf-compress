@@ -5,6 +5,8 @@ export type MergeResult = {
   fileName: string;
   totalFiles: number;
   totalBytes: number;
+  mergedBytes: number;
+  totalPages: number;
 };
 
 export async function mergePdfFiles(files: File[]): Promise<MergeResult> {
@@ -14,6 +16,7 @@ export async function mergePdfFiles(files: File[]): Promise<MergeResult> {
 
   const merged = await PDFDocument.create();
   let totalBytes = 0;
+  let totalPages = 0;
 
   for (const file of files) {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
@@ -27,6 +30,7 @@ export async function mergePdfFiles(files: File[]): Promise<MergeResult> {
       updateMetadata: false,
       ignoreEncryption: true
     });
+    totalPages += source.getPageCount();
 
     const copiedPages = await merged.copyPages(source, source.getPageIndices());
     copiedPages.forEach((page) => merged.addPage(page));
@@ -46,6 +50,8 @@ export async function mergePdfFiles(files: File[]): Promise<MergeResult> {
     blob: new Blob([output], { type: "application/pdf" }),
     fileName: "merged-pdf.pdf",
     totalFiles: files.length,
-    totalBytes
+    totalBytes,
+    mergedBytes: output.byteLength,
+    totalPages
   };
 }

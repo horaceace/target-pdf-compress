@@ -1,4 +1,5 @@
 export type ToolPageConfig = {
+  tool: "compress-pdf" | "merge-pdf" | "pdf-to-jpg" | "jpg-to-pdf";
   slug: string;
   title: string;
   description: string;
@@ -12,16 +13,20 @@ export type ToolPageConfig = {
 };
 
 export const homepage = {
-  title: "Compress PDF to the Smallest Size Online",
+  title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
   description:
-    "Compress PDF online with maximum size reduction for uploads, forms, and email attachments. Reduce PDF files as much as possible in your browser.",
-  h1: "Compress PDF to the Smallest Size",
+    "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in your browser.",
+  h1: "Compress PDF Online Free and Convert Document Files Fast",
   subheading:
-    "Reduce PDF files as much as possible for uploads, email attachments, resumes, and document portals.",
+    "Use free browser-first tools to compress PDF, merge PDF, split PDF, convert PDF to JPG, and convert JPG to PDF for uploads, forms, and sharing.",
   quickLinks: [
     "compress-pdf-online",
     "reduce-pdf-size-online",
     "free-pdf-compressor",
+    "compress-pdf-to-500kb",
+    "compress-pdf-to-200kb",
+    "compress-pdf-to-1mb",
+    "compress-pdf-to-2mb",
     "compress-pdf-for-upload",
     "compress-resume-pdf",
     "compress-pdf-for-email",
@@ -29,23 +34,39 @@ export const homepage = {
     "compress-pdf-without-losing-readability",
     "compress-pdf-without-losing-quality",
     "reduce-pdf-size-for-job-application",
-    "compress-large-pdf"
+    "compress-large-pdf",
+    "pdf-to-jpg-online",
+    "convert-pdf-pages-to-jpg",
+    "jpg-to-pdf-online",
+    "images-to-pdf-for-upload"
   ],
   useCases: [
     "For form uploads",
     "For resumes and job applications",
-    "For email attachments"
+    "For email attachments",
+    "For turning PDF pages into images",
+    "For turning screenshots into one PDF"
   ],
   faq: [
     {
-      question: "How do I compress a PDF to the smallest size?",
+      question: "How do I compress a PDF online for free?",
       answer:
-        "Upload your PDF and run the strongest available compression mode. The final result depends on the content of the file, especially images and scanned pages."
+        "Upload your PDF, choose the compression mode that fits the file, and download the smaller result in your browser."
     },
     {
-      question: "What tools are available on the site right now?",
+      question: "Can I merge, split, or convert PDFs here too?",
       answer:
-        "The current core tools are Compress PDF, Merge PDF, and Split PDF. Compression handles size reduction, Merge PDF combines multiple files into one document, and Split PDF extracts smaller page groups from one file."
+        "Yes. FileSmaller includes Compress PDF, Merge PDF, Split PDF, PDF to JPG, and JPG to PDF in one browser-first workflow."
+    },
+    {
+      question: "Can I convert PDF to JPG online for free?",
+      answer:
+        "Yes. Upload one PDF, render each page in the browser, and download JPG page images individually or as a ZIP file."
+    },
+    {
+      question: "Can I convert JPG to PDF online for free?",
+      answer:
+        "Yes. Upload JPG or PNG files, reorder them if needed, and export one PDF in the browser."
     },
     {
       question: "Will this always reach the smallest possible PDF size?",
@@ -53,30 +74,21 @@ export const homepage = {
         "Not always. Some PDFs can shrink a lot, while image-heavy or scanned files may stay relatively large even after processing."
     },
     {
-      question: "Why is maximum compression more useful than a target size?",
+      question: "Do I need to install software to use these tools?",
       answer:
-        "Most users do not care about hitting an exact number. They want the file to become small enough to upload or share successfully."
+        "No. The current workflow is browser-first, so the main tools run directly in the browser without a separate desktop install."
     },
     {
-      question: "Will compression affect quality?",
+      question: "Will compression affect PDF quality?",
       answer:
         "It can. Maximum compression usually trades file size against image quality, so scanned documents and image-based PDFs may lose more detail than text-heavy files."
-    },
-    {
-      question: "Can I merge PDF files here too?",
-      answer:
-        "Yes. The site now includes a Merge PDF tool so you can combine multiple PDF files into one merged document in the browser."
-    },
-    {
-      question: "Can I split PDF files here too?",
-      answer:
-        "Yes. The site now includes a Split PDF tool so you can extract selected page ranges into smaller PDF files in the browser."
     }
   ]
 };
 
 export const toolPages: ToolPageConfig[] = [
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-online",
     title: "Compress PDF Online Free",
     description:
@@ -122,6 +134,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-online",
     title: "Reduce PDF Size Online Fast",
     description:
@@ -167,6 +180,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "free-pdf-compressor",
     title: "Free PDF Compressor Online",
     description:
@@ -212,6 +226,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-for-attachment",
     title: "Reduce PDF Size for Attachment",
     description:
@@ -257,6 +272,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-for-whatsapp",
     title: "Reduce PDF Size for WhatsApp",
     description:
@@ -302,6 +318,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-for-gmail",
     title: "Reduce PDF Size for Gmail",
     description:
@@ -347,6 +364,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-for-job-application",
     title: "Reduce PDF Size for Job Application",
     description:
@@ -392,6 +410,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-to-send-by-email",
     title: "Compress PDF to Send by Email",
     description:
@@ -437,6 +456,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-large-pdf",
     title: "Compress Large PDF Online",
     description:
@@ -482,6 +502,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-under-upload-limit",
     title: "Compress PDF Under Upload Limit",
     description:
@@ -527,6 +548,559 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
+    slug: "compress-pdf-to-500kb",
+    title: "Compress PDF to 500KB",
+    description:
+      "Compress PDF to 500KB online for forms, uploads, applications, and attachment limits in your browser.",
+    h1: "Compress PDF to 500KB",
+    subheading:
+      "Reduce a PDF toward 500KB when a form, portal, or attachment workflow needs a much smaller file.",
+    targetLabel: "Compression goal: around 500KB",
+    intro:
+      "Use this page when you need to compress a PDF toward 500KB for uploads, job applications, school forms, or smaller attachment limits.",
+    steps: [
+      "Upload the PDF you need to shrink",
+      "Run a stronger compression path for a smaller result",
+      "Download the reduced PDF and check whether it is close enough for the limit"
+    ],
+    faq: [
+      {
+        question: "Can I always compress a PDF to 500KB?",
+        answer:
+          "Not always. Text-heavy PDFs often get closer than scanned or image-heavy files, which are harder to shrink that far."
+      },
+      {
+        question: "What if the PDF is still larger than 500KB?",
+        answer:
+          "Try a stronger compression path, split the PDF first, or reduce image-heavy content if possible."
+      },
+      {
+        question: "Is 500KB a common upload target?",
+        answer:
+          "Yes. Many forms and application systems use limits around this range."
+      },
+      {
+        question: "Will compression toward 500KB affect quality?",
+        answer:
+          "It can. Stronger size reduction usually affects image-heavy pages more than text-based PDFs."
+      }
+    ],
+    relatedSlugs: [
+      "compress-pdf-to-200kb",
+      "compress-pdf-to-1mb",
+      "compress-pdf-under-upload-limit",
+      "compress-pdf-for-upload"
+    ]
+  },
+  {
+    tool: "compress-pdf",
+    slug: "compress-pdf-to-200kb",
+    title: "Compress PDF to 200KB",
+    description:
+      "Compress PDF to 200KB online for strict upload limits, application forms, and lightweight attachments.",
+    h1: "Compress PDF to 200KB",
+    subheading:
+      "Reduce PDFs toward 200KB when you are dealing with very strict file size limits on forms and portals.",
+    targetLabel: "Compression goal: around 200KB",
+    intro:
+      "This page is for cases where a portal or form has a very small file size allowance and you need to push the PDF much lower than a normal upload-ready size.",
+    steps: [
+      "Upload the PDF that needs a stricter size cut",
+      "Run aggressive compression in the browser",
+      "Download the result and test it against the upload limit"
+    ],
+    faq: [
+      {
+        question: "Can every PDF be compressed to 200KB?",
+        answer:
+          "No. That is a very strict target, and many scanned or image-heavy PDFs will struggle to reach it in a browser-only flow."
+      },
+      {
+        question: "What works best for a 200KB target?",
+        answer:
+          "Shorter text-heavy PDFs usually have a better chance than long scans or PDFs full of images."
+      },
+      {
+        question: "Should I split the PDF before trying 200KB?",
+        answer:
+          "Yes if you only need part of the document. Splitting first can make a very small target more realistic."
+      },
+      {
+        question: "Will quality drop more at 200KB?",
+        answer:
+          "Usually yes. Very small targets often require more aggressive trade-offs, especially on scanned pages."
+      }
+    ],
+    relatedSlugs: [
+      "compress-pdf-to-500kb",
+      "compress-pdf-under-upload-limit",
+      "make-scanned-pdf-smaller",
+      "compress-large-pdf"
+    ]
+  },
+  {
+    tool: "compress-pdf",
+    slug: "compress-pdf-to-1mb",
+    title: "Compress PDF to 1MB",
+    description:
+      "Compress PDF to 1MB online for attachments, portal uploads, resumes, and everyday document sharing.",
+    h1: "Compress PDF to 1MB",
+    subheading:
+      "Reduce PDF size toward 1MB for upload-ready files, recruiter emails, and general sharing.",
+    targetLabel: "Compression goal: around 1MB",
+    intro:
+      "Use this page when your PDF only needs a moderate size reduction and a target around 1MB is enough for the upload, email, or sharing task.",
+    steps: [
+      "Upload the PDF you want near 1MB",
+      "Run compression with the right balance of size and readability",
+      "Download the smaller PDF and send or upload it"
+    ],
+    faq: [
+      {
+        question: "Is 1MB a realistic target for many PDFs?",
+        answer:
+          "Yes. Many normal office PDFs, resumes, forms, and reports can often get closer to 1MB than to much smaller targets like 200KB."
+      },
+      {
+        question: "Why aim for 1MB?",
+        answer:
+          "Because it is a practical size for many uploads, email attachments, and document sharing tasks."
+      },
+      {
+        question: "Will a PDF compressed toward 1MB stay readable?",
+        answer:
+          "Usually yes for text-heavy files. Image-heavy PDFs may still show some quality trade-offs."
+      },
+      {
+        question: "What if the file is already under 1MB?",
+        answer:
+          "Then you may not need stronger compression unless you want an even smaller file for a stricter limit."
+      }
+    ],
+    relatedSlugs: [
+      "compress-pdf-to-2mb",
+      "compress-pdf-to-500kb",
+      "reduce-pdf-size-for-attachment",
+      "compress-pdf-for-email"
+    ]
+  },
+  {
+    tool: "compress-pdf",
+    slug: "compress-pdf-to-2mb",
+    title: "Compress PDF to 2MB",
+    description:
+      "Compress PDF to 2MB online for attachments, applications, and upload systems that allow moderate file sizes.",
+    h1: "Compress PDF to 2MB",
+    subheading:
+      "Make a PDF smaller toward 2MB when you need a simpler upload or attachment size target.",
+    targetLabel: "Compression goal: around 2MB",
+    intro:
+      "This page is useful when you only need a moderate reduction and a size around 2MB is enough for the website, form, or document system you are using.",
+    steps: [
+      "Upload the PDF you need to shrink",
+      "Run compression for a more manageable size",
+      "Download the reduced file and continue with the upload or attachment"
+    ],
+    faq: [
+      {
+        question: "Is 2MB easier to reach than 500KB or 200KB?",
+        answer:
+          "Yes. A 2MB target is usually more realistic for many office PDFs and lighter scanned documents."
+      },
+      {
+        question: "When is a 2MB target useful?",
+        answer:
+          "It is useful when an upload system allows a moderate file size but your current PDF is still too large."
+      },
+      {
+        question: "Can I keep better readability at 2MB?",
+        answer:
+          "Often yes. A less aggressive target like 2MB usually preserves readability better than a very small target."
+      },
+      {
+        question: "Should I still compress if the file is only slightly above 2MB?",
+        answer:
+          "Yes. A lighter or balanced pass may be enough when the PDF is already close to the target."
+      }
+    ],
+    relatedSlugs: [
+      "compress-pdf-to-1mb",
+      "compress-large-pdf",
+      "compress-pdf-for-upload",
+      "reduce-pdf-size-online"
+    ]
+  },
+  {
+    tool: "pdf-to-jpg",
+    slug: "pdf-to-jpg-online",
+    title: "PDF to JPG Online Free",
+    description:
+      "Convert PDF to JPG online free in your browser. Export one JPG image per PDF page for previews, uploads, and sharing.",
+    h1: "PDF to JPG Online",
+    subheading:
+      "Turn PDF pages into JPG images online for previews, uploads, sharing, and simple page extraction.",
+    targetLabel: "Conversion workflow: PDF pages to JPG images",
+    intro:
+      "Use this page when you need to convert a PDF into JPG images online and download one image per page without installing desktop software.",
+    steps: [
+      "Upload one PDF file",
+      "Choose the JPG output quality that fits your use case",
+      "Download each PDF page as a JPG image or a ZIP file"
+    ],
+    faq: [
+      {
+        question: "Can I convert PDF to JPG online for free?",
+        answer:
+          "Yes. Upload a PDF, render its pages in the browser, and download JPG files without a paid plan."
+      },
+      {
+        question: "Does each PDF page become its own JPG file?",
+        answer:
+          "Yes. Each page is exported as a separate JPG image so you can reuse or upload the exact pages you need."
+      },
+      {
+        question: "What is PDF to JPG best for?",
+        answer:
+          "It is best for previews, CMS uploads, image sharing, and workflows where a page image is more useful than another PDF."
+      },
+      {
+        question: "Can I download all JPG pages at once?",
+        answer:
+          "Yes. Multi-page results can be downloaded together as a ZIP file."
+      }
+    ],
+    relatedSlugs: [
+      "convert-pdf-pages-to-jpg",
+      "extract-images-from-pdf-pages",
+      "pdf-page-to-jpg-for-preview",
+      "jpg-to-pdf-online"
+    ]
+  },
+  {
+    tool: "pdf-to-jpg",
+    slug: "convert-pdf-pages-to-jpg",
+    title: "Convert PDF Pages to JPG",
+    description:
+      "Convert PDF pages to JPG images online and export each page as a separate image file for preview and reuse.",
+    h1: "Convert PDF Pages to JPG",
+    subheading:
+      "Export each PDF page as a JPG image when you need page-by-page images instead of another PDF file.",
+    targetLabel: "Conversion workflow: page-by-page JPG export",
+    intro:
+      "This page is for users who want to convert PDF pages into JPG images one page at a time for sharing, design review, or upload workflows.",
+    steps: [
+      "Upload the PDF whose pages you want as images",
+      "Run the PDF to JPG conversion in the browser",
+      "Download each converted page image"
+    ],
+    faq: [
+      {
+        question: "Why convert PDF pages to JPG?",
+        answer:
+          "It is useful when a site, app, or teammate needs image files instead of a PDF document."
+      },
+      {
+        question: "Can I use this for page previews?",
+        answer:
+          "Yes. Page previews are one of the main reasons to export PDF pages as JPG images."
+      },
+      {
+        question: "Will this work for multi-page PDFs?",
+        answer:
+          "Yes. Each page is exported separately, even when the source PDF has many pages."
+      },
+      {
+        question: "Do I need a separate PDF editor?",
+        answer:
+          "No. The current conversion flow works directly in the browser."
+      }
+    ],
+    relatedSlugs: [
+      "pdf-to-jpg-online",
+      "pdf-page-to-jpg-for-preview",
+      "extract-images-from-pdf-pages",
+      "jpg-to-pdf-online"
+    ]
+  },
+  {
+    tool: "pdf-to-jpg",
+    slug: "pdf-page-to-jpg-for-preview",
+    title: "PDF Page to JPG for Preview",
+    description:
+      "Convert PDF pages to JPG for preview images before uploading, sharing, or embedding them elsewhere.",
+    h1: "PDF Page to JPG for Preview",
+    subheading:
+      "Make PDF preview images fast by turning each page into a separate JPG file in the browser.",
+    targetLabel: "Conversion workflow: preview-ready JPG pages",
+    intro:
+      "Use this page when you need JPG preview images from a PDF for CMS uploads, asset handoff, approvals, or quick visual review.",
+    steps: [
+      "Upload the PDF you want to preview",
+      "Convert the pages into JPG images",
+      "Download the preview-ready images"
+    ],
+    faq: [
+      {
+        question: "Is this good for CMS preview images?",
+        answer:
+          "Yes. It works well when a CMS or content workflow needs page images instead of the original PDF."
+      },
+      {
+        question: "Can I use lower JPG quality for smaller previews?",
+        answer:
+          "Yes. Lower JPG output modes are useful when the goal is a lighter preview image."
+      },
+      {
+        question: "Does this help with document review?",
+        answer:
+          "Yes. JPG previews are easier to drop into chats, boards, or review documents than a full PDF."
+      },
+      {
+        question: "Can I still keep the original PDF?",
+        answer:
+          "Yes. The source PDF stays separate while you download JPG preview copies."
+      }
+    ],
+    relatedSlugs: [
+      "pdf-to-jpg-online",
+      "convert-pdf-pages-to-jpg",
+      "extract-images-from-pdf-pages",
+      "images-to-pdf-for-upload"
+    ]
+  },
+  {
+    tool: "pdf-to-jpg",
+    slug: "extract-images-from-pdf-pages",
+    title: "Extract Images From PDF Pages",
+    description:
+      "Extract images from PDF pages by converting each page into a JPG file online in your browser.",
+    h1: "Extract Images From PDF Pages",
+    subheading:
+      "Turn PDF pages into JPG files when you need reusable images from a document workflow.",
+    targetLabel: "Conversion workflow: image extraction from page renders",
+    intro:
+      "This page is for users who want reusable page images from a PDF for previews, uploads, documentation, or simple visual extraction.",
+    steps: [
+      "Upload the PDF document",
+      "Render the pages as JPG images",
+      "Download the exported page images"
+    ],
+    faq: [
+      {
+        question: "Does this extract embedded images only?",
+        answer:
+          "No. The current flow exports full page renders as JPG images, which is often the practical result users need."
+      },
+      {
+        question: "Can I use this for scanned PDFs too?",
+        answer:
+          "Yes. Scanned PDFs can also be rendered as JPG page images."
+      },
+      {
+        question: "Why export full page images?",
+        answer:
+          "Because many sharing and preview workflows need a page snapshot rather than the original PDF structure."
+      },
+      {
+        question: "Can I redownload all image pages together?",
+        answer:
+          "Yes. Multi-page JPG exports can be downloaded in one ZIP file."
+      }
+    ],
+    relatedSlugs: [
+      "pdf-to-jpg-online",
+      "convert-pdf-pages-to-jpg",
+      "pdf-page-to-jpg-for-preview",
+      "jpg-to-pdf-online"
+    ]
+  },
+  {
+    tool: "jpg-to-pdf",
+    slug: "jpg-to-pdf-online",
+    title: "JPG to PDF Online Free",
+    description:
+      "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG images into one PDF document fast.",
+    h1: "JPG to PDF Online",
+    subheading:
+      "Turn JPG and PNG images into one PDF online for uploads, screenshots, scans, and document sharing.",
+    targetLabel: "Conversion workflow: images into one PDF",
+    intro:
+      "Use this page when you need to convert JPG to PDF online and combine several images into one PDF without installing extra software.",
+    steps: [
+      "Upload JPG or PNG images",
+      "Set the image order and page mode you want",
+      "Download one combined PDF document"
+    ],
+    faq: [
+      {
+        question: "Can I convert JPG to PDF online for free?",
+        answer:
+          "Yes. Upload image files in the browser and export one PDF without a paid account."
+      },
+      {
+        question: "Can I combine multiple JPG files into one PDF?",
+        answer:
+          "Yes. Each image becomes a PDF page in the final output."
+      },
+      {
+        question: "Does this also support PNG files?",
+        answer:
+          "Yes. The current flow accepts both JPG and PNG images."
+      },
+      {
+        question: "What is JPG to PDF best for?",
+        answer:
+          "It is useful for screenshots, receipt photos, scanned pages, and image bundles that need to become one PDF."
+      }
+    ],
+    relatedSlugs: [
+      "convert-images-to-pdf",
+      "images-to-pdf-for-upload",
+      "combine-jpg-into-one-pdf",
+      "pdf-to-jpg-online"
+    ]
+  },
+  {
+    tool: "jpg-to-pdf",
+    slug: "convert-images-to-pdf",
+    title: "Convert Images to PDF Online",
+    description:
+      "Convert images to PDF online by combining JPG and PNG files into one PDF document in your browser.",
+    h1: "Convert Images to PDF",
+    subheading:
+      "Make one PDF from multiple image files for uploads, archiving, and document workflows.",
+    targetLabel: "Conversion workflow: image files to PDF document",
+    intro:
+      "This page is for users who want to convert image files into a PDF, especially when several screenshots or scans need to become one shareable document.",
+    steps: [
+      "Upload the images you want in the PDF",
+      "Arrange them in the right order",
+      "Export one combined PDF file"
+    ],
+    faq: [
+      {
+        question: "Why convert images to PDF?",
+        answer:
+          "A PDF is easier to upload, send, archive, and keep in one file than a loose image set."
+      },
+      {
+        question: "Can I use screenshots and phone photos?",
+        answer:
+          "Yes. That is a common use case for image-to-PDF conversion."
+      },
+      {
+        question: "Can I control the order of pages?",
+        answer:
+          "Yes. You can reorder the uploaded images before exporting the PDF."
+      },
+      {
+        question: "Is this different from JPG to PDF?",
+        answer:
+          "It uses the same core conversion path, but this page targets broader image-to-PDF search intent."
+      }
+    ],
+    relatedSlugs: [
+      "jpg-to-pdf-online",
+      "combine-jpg-into-one-pdf",
+      "images-to-pdf-for-upload",
+      "pdf-to-jpg-online"
+    ]
+  },
+  {
+    tool: "jpg-to-pdf",
+    slug: "combine-jpg-into-one-pdf",
+    title: "Combine JPG Into One PDF",
+    description:
+      "Combine JPG into one PDF online. Merge multiple JPG files into a single PDF document in your browser.",
+    h1: "Combine JPG Into One PDF",
+    subheading:
+      "Merge multiple JPG images into one PDF file for sharing, upload forms, and document handoff.",
+    targetLabel: "Conversion workflow: combine JPG files into one PDF",
+    intro:
+      "Use this page when you have several JPG files and need one PDF instead of sending or uploading separate images one by one.",
+    steps: [
+      "Upload the JPG files you want to combine",
+      "Set the order of the images",
+      "Download the final PDF"
+    ],
+    faq: [
+      {
+        question: "Can I combine several JPG files into one PDF?",
+        answer:
+          "Yes. Multiple JPG files can be merged into one PDF, with one image per page."
+      },
+      {
+        question: "Is this useful for scanned pages?",
+        answer:
+          "Yes. It is useful when each scanned page exists as a separate JPG file."
+      },
+      {
+        question: "Can I use this for client handoff or forms?",
+        answer:
+          "Yes. A single PDF is often easier to submit or share than many image files."
+      },
+      {
+        question: "Will PNG images work too?",
+        answer:
+          "Yes. PNG is also supported in the current browser flow."
+      }
+    ],
+    relatedSlugs: [
+      "jpg-to-pdf-online",
+      "convert-images-to-pdf",
+      "images-to-pdf-for-upload",
+      "pdf-page-to-jpg-for-preview"
+    ]
+  },
+  {
+    tool: "jpg-to-pdf",
+    slug: "images-to-pdf-for-upload",
+    title: "Images to PDF for Upload",
+    description:
+      "Convert images to PDF for upload by combining JPG or PNG files into one upload-ready PDF document.",
+    h1: "Images to PDF for Upload",
+    subheading:
+      "Make one upload-ready PDF from screenshots, receipts, scans, and other image files.",
+    targetLabel: "Conversion workflow: upload-ready image bundle to PDF",
+    intro:
+      "Use this page when a portal, form, or document system wants one PDF file and your source material is still spread across several image files.",
+    steps: [
+      "Upload the images required for the submission",
+      "Arrange them into the correct order",
+      "Export one upload-ready PDF"
+    ],
+    faq: [
+      {
+        question: "Why convert images to PDF before upload?",
+        answer:
+          "Many systems accept one PDF more easily than several separate images."
+      },
+      {
+        question: "Is this good for receipts and screenshots?",
+        answer:
+          "Yes. Receipts, screenshots, scans, and mobile photos are strong image-to-PDF use cases."
+      },
+      {
+        question: "Can I compress the PDF afterward?",
+        answer:
+          "Yes. If the resulting PDF is still too large, you can run Compress PDF next."
+      },
+      {
+        question: "Can I build one PDF from a phone photo set?",
+        answer:
+          "Yes. That is one of the main reasons to convert images into one PDF."
+      }
+    ],
+    relatedSlugs: [
+      "jpg-to-pdf-online",
+      "convert-images-to-pdf",
+      "combine-jpg-into-one-pdf",
+      "compress-pdf-for-upload"
+    ]
+  },
+  {
+    tool: "compress-pdf",
     slug: "make-scanned-pdf-smaller",
     title: "Make Scanned PDF Smaller",
     description:
@@ -572,6 +1146,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "best-pdf-compressor-online",
     title: "Best PDF Compressor Online",
     description:
@@ -617,6 +1192,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-for-visa-application",
     title: "Reduce PDF Size for Visa Application",
     description:
@@ -662,6 +1238,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "make-pdf-smaller-for-email-attachment",
     title: "Make PDF Smaller for Email Attachment",
     description:
@@ -707,6 +1284,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-for-mobile-upload",
     title: "Compress PDF for Mobile Upload",
     description:
@@ -752,6 +1330,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "reduce-pdf-size-for-college-form",
     title: "Reduce PDF Size for College Form",
     description:
@@ -797,6 +1376,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-for-portal-upload",
     title: "Compress PDF for Portal Upload",
     description:
@@ -842,6 +1422,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-attachment-too-large",
     title: "Compress PDF Attachment Too Large",
     description:
@@ -887,6 +1468,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "make-pdf-smaller-for-application",
     title: "Make PDF Smaller for Application",
     description:
@@ -932,6 +1514,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-for-immigration-form",
     title: "Compress PDF for Immigration Form",
     description:
@@ -977,6 +1560,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-for-upload",
     title: "Compress PDF for Upload Online",
     description:
@@ -1022,6 +1606,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-resume-pdf",
     title: "Compress Resume PDF Online",
     description:
@@ -1067,6 +1652,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-for-email",
     title: "Compress PDF for Email Online",
     description:
@@ -1112,6 +1698,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-scanned-pdf",
     title: "Compress Scanned PDF Online",
     description:
@@ -1157,6 +1744,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-without-losing-quality",
     title: "Compress PDF Without Losing Quality",
     description:
@@ -1202,6 +1790,7 @@ export const toolPages: ToolPageConfig[] = [
     ]
   },
   {
+    tool: "compress-pdf",
     slug: "compress-pdf-without-losing-readability",
     title: "Compress PDF Without Losing Readability",
     description:

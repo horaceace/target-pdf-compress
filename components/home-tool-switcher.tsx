@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
 import { MergePdfCard } from "@/components/merge-pdf-card";
+import { PdfToJpgCard } from "@/components/pdf-to-jpg-card";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { UploadCard } from "@/components/upload-card";
 
-type ToolKey = "compress" | "merge" | "split";
+type ToolKey = "compress" | "merge" | "split" | "pdf-to-jpg" | "jpg-to-pdf";
 
 const toolTabs: Array<{
   key: ToolKey;
@@ -30,6 +32,18 @@ const toolTabs: Array<{
     label: "Split",
     title: "Split PDF",
     copy: "Extract page ranges from one PDF and export smaller files for uploads or follow-up compression."
+  },
+  {
+    key: "pdf-to-jpg",
+    label: "PDF to JPG",
+    title: "PDF to JPG",
+    copy: "Export one JPG per PDF page for previews, sharing, uploads, and visual extraction."
+  },
+  {
+    key: "jpg-to-pdf",
+    label: "JPG to PDF",
+    title: "JPG to PDF",
+    copy: "Combine screenshots, scans, and image files into one PDF document in the browser."
   }
 ];
 
@@ -63,6 +77,8 @@ export function HomeToolSwitcher() {
       {activeTool === "compress" ? <UploadCard /> : null}
       {activeTool === "merge" ? <MergePdfCard /> : null}
       {activeTool === "split" ? <SplitPdfCard /> : null}
+      {activeTool === "pdf-to-jpg" ? <PdfToJpgCard /> : null}
+      {activeTool === "jpg-to-pdf" ? <JpgToPdfCard /> : null}
     </div>
   );
 }

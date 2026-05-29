@@ -2,6 +2,7 @@
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
 import { formatBytes } from "@/lib/pdf/compress";
+import { downloadFilesAsZip } from "@/lib/download/download-zip";
 import {
   PageRange,
   SplitResultItem,
@@ -15,6 +16,12 @@ const MAX_FILE_BYTES = 50 * 1024 * 1024;
 type SelectedPdf = {
   file: File;
   pageCount: number;
+};
+
+type SplitCardError = {
+  title: string;
+  message: string;
+  hint?: string;
 };
 
 function downloadBlob(blob: Blob, fileName: string) {
@@ -32,7 +39,7 @@ export function SplitPdfCard() {
   const [rangeInput, setRangeInput] = useState("1");
   const [parsedRanges, setParsedRanges] = useState<PageRange[]>([]);
   const [results, setResults] = useState<SplitResultItem[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<SplitCardError | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -42,6 +49,56 @@ export function SplitPdfCard() {
     setError(null);
   }
 
+  function normalizeSplitError(splitError: unknown): SplitCardError {
+    if (!(splitError instanceof Error)) {
+      return {
+        title: "Split failed",
+        message: "The PDF could not be split in the current browser flow.",
+        hint: "Check the file and the page ranges, then try again."
+      };
+    }
+
+    const lowered = splitError.message.toLowerCase();
+
+    if (lowered.includes("not a pdf")) {
+      return {
+        title: "Unsupported file",
+        message: splitError.message,
+        hint: "Upload a valid .pdf document before splitting."
+      };
+    }
+
+    if (lowered.includes("empty")) {
+      return {
+        title: "Empty PDF",
+        message: splitError.message,
+        hint: "Use a PDF that contains actual document pages."
+      };
+    }
+
+    if (lowered.includes("page range") || lowered.includes("page ") || lowered.includes("range")) {
+      return {
+        title: "Invalid page ranges",
+        message: splitError.message,
+        hint: "Use formats like 1-3, 5, 7-9 and stay within the total page count."
+      };
+    }
+
+    if (lowered.includes("encrypted") || lowered.includes("password")) {
+      return {
+        title: "Protected PDF",
+        message: "This PDF appears to be password-protected or restricted.",
+        hint: "Unlock the file first, then upload it again for splitting."
+      };
+    }
+
+    return {
+      title: "Split failed",
+      message: splitError.message,
+      hint: "Try a cleaner PDF copy or a simpler range first."
+    };
+  }
+
   function triggerPicker() {
     inputRef.current?.click();
   }
@@ -49,21 +106,31 @@ export function SplitPdfCard() {
   async function loadFile(file: File) {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setSelected(null);
-      setError(`${file.name} is not a supported PDF file. Upload a .pdf document and try again.`);
+      setError({
+        title: "Unsupported file",
+        message: `${file.name} is not a supported PDF file. Upload a .pdf document and try again.`,
+        hint: "Only PDF files can be split in this flow."
+      });
       return;
     }
 
     if (file.size === 0) {
       setSelected(null);
-      setError(`${file.name} is empty. Upload a PDF with actual document pages and try again.`);
+      setError({
+        title: "Empty PDF",
+        message: `${file.name} is empty. Upload a PDF with actual document pages and try again.`,
+        hint: "Use a PDF that contains actual pages before splitting."
+      });
       return;
     }
 
     if (file.size > MAX_FILE_BYTES) {
       setSelected(null);
-      setError(
-        `${file.name} is larger than 50 MB. Try a smaller PDF or compress it before splitting in the browser.`
-      );
+      setError({
+        title: "File too large",
+        message: `${file.name} is larger than 50 MB. Try a smaller PDF or compress it before splitting in the browser.`,
+        hint: "Compress the file first or use a smaller PDF in the current browser flow."
+      });
       return;
     }
 
@@ -77,11 +144,7 @@ export function SplitPdfCard() {
       resetResults();
     } catch (loadError) {
       setSelected(null);
-      setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "This PDF could not be read. Try another file."
-      );
+      setError(normalizeSplitError(loadError));
     }
   }
 
@@ -103,7 +166,11 @@ export function SplitPdfCard() {
 
   function splitCurrentPdf() {
     if (!selected) {
-      setError("Choose a PDF before splitting pages.");
+      setError({
+        title: "No PDF selected",
+        message: "Choose a PDF before splitting pages.",
+        hint: "Upload one PDF first, then define the page ranges."
+      });
       return;
     }
 
@@ -117,20 +184,30 @@ export function SplitPdfCard() {
       } catch (splitError) {
         setResults([]);
         setParsedRanges([]);
-        setError(
-          splitError instanceof Error
-            ? splitError.message
-            : "Split failed. Check the page ranges and try again."
-        );
+        setError(normalizeSplitError(splitError));
       }
     });
   }
 
   function downloadAll() {
-    results.forEach((item) => downloadBlob(item.blob, item.fileName));
+    if (!selected || !results.length) {
+      return;
+    }
+
+    void downloadFilesAsZip(
+      `${selected.file.name.replace(/\.pdf$/i, "") || "split-pdf"}-split-files.zip`,
+      results.map((item) => ({
+        fileName: item.fileName,
+        blob: item.blob
+      }))
+    );
   }
 
   const totalOutputBytes = results.reduce((sum, item) => sum + item.blob.size, 0);
+  const totalOutputPages = results.reduce(
+    (sum, item) => sum + (item.pageEnd - item.pageStart + 1),
+    0
+  );
 
   return (
     <aside className="panel upload-card">
@@ -238,7 +315,7 @@ export function SplitPdfCard() {
               disabled={!results.length}
               onClick={downloadAll}
             >
-              Download all
+              Download ZIP
             </button>
           </div>
         </div>
@@ -283,6 +360,10 @@ export function SplitPdfCard() {
           <div>
             <strong>{formatBytes(totalOutputBytes)}</strong>
             <span>combined output size</span>
+          </div>
+          <div>
+            <strong>{totalOutputPages}</strong>
+            <span>exported pages</span>
           </div>
           <div>
             <strong>{parsedRanges.map((range) => range.start === range.end ? `${range.start}` : `${range.start}-${range.end}`).join(", ")}</strong>
@@ -333,7 +414,27 @@ export function SplitPdfCard() {
         </div>
       ) : null}
 
-      {error ? <p className="upload-job__error">{error}</p> : null}
+      {results.length ? (
+        <div className="upload-job__next-step">
+          <strong>Recommended next step</strong>
+          <span>Download the extracted files now, or open Compress PDF next if one of the split outputs still needs to fit a stricter upload limit.</span>
+        </div>
+      ) : null}
+
+      {selected ? (
+        <div className="upload-job__hint upload-job__hint--neutral">
+          <strong>{selected.pageCount} total pages loaded</strong>
+          <span>Split works best when you define the smallest page ranges you actually need, then compress only those outputs if size still matters.</span>
+        </div>
+      ) : null}
+
+      {error ? (
+        <div className="upload-job__error">
+          <strong>{error.title}</strong>
+          <span>{error.message}</span>
+          {error.hint ? <small>{error.hint}</small> : null}
+        </div>
+      ) : null}
     </aside>
   );
 }

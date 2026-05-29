@@ -2,22 +2,22 @@ import type { Metadata } from "next";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 
 export const metadata: Metadata = {
-  title: "Merge PDF Files Online",
+  title: "Merge PDF Files Online Free",
   description:
-    "Merge PDF files online in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
+    "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
   alternates: {
     canonical: "/merge-pdf"
   },
   openGraph: {
-    title: "Merge PDF Files Online",
+    title: "Merge PDF Files Online Free",
     description:
-      "Merge PDF files online in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
+      "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
     url: "https://filesmaller.space/merge-pdf"
   },
   twitter: {
-    title: "Merge PDF Files Online",
+    title: "Merge PDF Files Online Free",
     description:
-      "Merge PDF files online in your browser. Combine multiple PDF documents into one merged file and download it instantly."
+      "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly."
   }
 };
 

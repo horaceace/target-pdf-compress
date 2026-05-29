@@ -2,22 +2,22 @@ import type { Metadata } from "next";
 import { UploadCard } from "@/components/upload-card";
 
 export const metadata: Metadata = {
-  title: "Compress PDF",
+  title: "Compress PDF Online Free",
   description:
-    "Compress PDF files in your browser with multiple modes for readability, uploads, scanned documents, and tighter size limits.",
+    "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits.",
   alternates: {
     canonical: "/compress-pdf"
   },
   openGraph: {
-    title: "Compress PDF",
+    title: "Compress PDF Online Free",
     description:
-      "Compress PDF files in your browser with multiple modes for readability, uploads, scanned documents, and tighter size limits.",
+      "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits.",
     url: "https://filesmaller.space/compress-pdf"
   },
   twitter: {
-    title: "Compress PDF",
+    title: "Compress PDF Online Free",
     description:
-      "Compress PDF files in your browser with multiple modes for readability, uploads, scanned documents, and tighter size limits."
+      "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits."
   }
 };
 

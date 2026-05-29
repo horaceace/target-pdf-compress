@@ -6,11 +6,11 @@ import { Analytics } from "@/components/analytics";
 export const metadata: Metadata = {
   metadataBase: new URL("https://filesmaller.space"),
   title: {
-    default: "FileSmaller | Free PDF Tools Online",
+    default: "Compress PDF Online Free | FileSmaller",
     template: "%s | FileSmaller"
   },
   description:
-    "Free browser-first PDF tools for compressing, merging, and splitting documents online.",
+    "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
   applicationName: "FileSmaller",
   icons: {
     icon: "/favicon.svg",
@@ -24,15 +24,15 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://filesmaller.space",
     siteName: "FileSmaller",
-    title: "FileSmaller | Free PDF Tools Online",
+    title: "Compress PDF Online Free | FileSmaller",
     description:
-      "Free browser-first PDF tools for compressing, merging, and splitting documents online."
+      "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
   },
   twitter: {
     card: "summary_large_image",
-    title: "FileSmaller | Free PDF Tools Online",
+    title: "Compress PDF Online Free | FileSmaller",
     description:
-      "Free browser-first PDF tools for compressing, merging, and splitting documents online."
+      "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
   }
 };
 

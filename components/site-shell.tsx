@@ -6,6 +6,8 @@ const navItems = [
   { href: "/compress-pdf", label: "Compress PDF" },
   { href: "/merge-pdf", label: "Merge PDF" },
   { href: "/split-pdf", label: "Split PDF" },
+  { href: "/pdf-to-jpg", label: "PDF to JPG" },
+  { href: "/jpg-to-pdf", label: "JPG to PDF" },
   { href: "/privacy", label: "Privacy" }
 ];
 
@@ -15,7 +17,9 @@ const footerGroups = [
     links: [
       { href: "/compress-pdf", label: "Compress PDF" },
       { href: "/merge-pdf", label: "Merge PDF" },
-      { href: "/split-pdf", label: "Split PDF" }
+      { href: "/split-pdf", label: "Split PDF" },
+      { href: "/pdf-to-jpg", label: "PDF to JPG" },
+      { href: "/jpg-to-pdf", label: "JPG to PDF" }
     ]
   },
   {
@@ -38,7 +42,9 @@ const footerGroups = [
 const footerHighlights = [
   "Compress for uploads and attachments",
   "Merge multiple PDFs into one file",
-  "Split page ranges before sending"
+  "Split page ranges before sending",
+  "Convert PDF pages to JPG",
+  "Turn JPG images into one PDF"
 ];
 
 export function SiteShell({ children }: { children: ReactNode }) {
@@ -72,7 +78,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <span>FileSmaller</span>
             </div>
             <div className="site-footer__copy">
-              Browser-first PDF tools for compressing, merging, and splitting documents before upload, sharing, and submission.
+              Browser-first PDF and image tools for compressing, merging, splitting, and converting documents before upload, sharing, and submission.
             </div>
             <div className="site-footer__meta">No login. No install. Built for fast document tasks.</div>
             <div className="site-footer__badges">
@@ -99,7 +105,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         </div>
         <div className="container site-footer__bottom">
           <span>© 2026 FileSmaller. All Rights Reserved.</span>
-          <span>Precision browser-first PDF tools for compression, merge, and split workflows.</span>
+          <span>Precision browser-first document tools for compression, merge, split, and conversion workflows.</span>
         </div>
       </footer>
     </div>

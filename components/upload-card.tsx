@@ -10,6 +10,7 @@ import {
   useState,
   useTransition
 } from "react";
+import { downloadFilesAsZip } from "@/lib/download/download-zip";
 import {
   CompressionMode,
   CompressionResult,
@@ -36,6 +37,14 @@ type UploadJob = {
   mode: CompressionMode;
   result?: CompressionResult;
   error?: string;
+  errorTitle?: string;
+  errorHint?: string;
+};
+
+type SuggestedAction = {
+  mode: CompressionMode;
+  label: string;
+  reason: string;
 };
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024;
@@ -58,6 +67,60 @@ function createFileTooLargeError(fileName: string) {
   return `${fileName} is larger than 50 MB. Try a smaller PDF or split the document before compressing it in the browser.`;
 }
 
+function normalizeCompressionError(error: unknown, file: File, mode: CompressionMode) {
+  const fallback = {
+    title: "Compression failed",
+    message: "This PDF could not be processed in the current browser flow.",
+    hint: "Try another compression mode, a smaller file, or split the document before compressing."
+  };
+
+  if (!(error instanceof Error)) {
+    return fallback;
+  }
+
+  const message = error.message || "";
+  const lowered = message.toLowerCase();
+
+  if (lowered.includes("encrypted") || lowered.includes("password")) {
+    return {
+      title: "Protected PDF",
+      message: `${file.name} appears to be password-protected or restricted.`,
+      hint: "Unlock the PDF first, then upload it again for browser-side compression."
+    };
+  }
+
+  if (lowered.includes("empty")) {
+    return {
+      title: "Empty PDF",
+      message,
+      hint: "Use a PDF with actual document pages before trying compression."
+    };
+  }
+
+  if (lowered.includes("invalid") || lowered.includes("failed to parse") || lowered.includes("read")) {
+    return {
+      title: "Unreadable PDF",
+      message: `${file.name} could not be read as a valid PDF.`,
+      hint: "Try opening and re-exporting the file first, or upload a cleaner PDF copy."
+    };
+  }
+
+  if (file.size > 25 * 1024 * 1024 && (mode === "extreme" || mode === "scanned")) {
+    return {
+      title: "Browser limit reached",
+      message: `${file.name} is large for an aggressive browser-side compression pass.`,
+      hint: "Split the PDF first, or try Strong mode before running a deeper pass."
+    };
+  }
+
+  return {
+    title: "Compression failed",
+    message,
+    hint:
+      "Try a different mode first. If the file is scan-heavy or image-heavy, Scanned PDF mode usually gives the strongest browser-side path."
+  };
+}
+
 function chooseStrongerMode(current: CompressionMode) {
   return getNextCompressionMode(current);
 }
@@ -72,6 +135,66 @@ function chooseSuggestedMode(job: UploadJob) {
   }
 
   return chooseStrongerMode(job.mode);
+}
+
+function getSuggestedAction(job: UploadJob): SuggestedAction | null {
+  if (!job.result) {
+    return null;
+  }
+
+  const { result, mode } = job;
+  const reductionPercent = Math.round(result.reductionRatio * 100);
+
+  if (result.documentProfile === "scanned-heavy" && mode !== "scanned") {
+    return {
+      mode: "scanned",
+      label: `Try ${getCompressionMode("scanned").label}`,
+      reason: "This file behaves more like a scan. Scanned PDF mode is the best next step for image-heavy pages."
+    };
+  }
+
+  if (result.documentProfile === "image-heavy" && reductionPercent < 18 && mode === "strong") {
+    return {
+      mode: "scanned",
+      label: `Try ${getCompressionMode("scanned").label}`,
+      reason: "Strong mode helped, but image-heavy files usually need the scanned path for a more aggressive browser-side pass."
+    };
+  }
+
+  if (reductionPercent < 10 && mode === "light") {
+    return {
+      mode: "balanced",
+      label: `Try ${getCompressionMode("balanced").label}`,
+      reason: "Light mode preserved readability, but the file barely moved. Balanced mode is the safest stronger retry."
+    };
+  }
+
+  if (reductionPercent < 16 && mode === "balanced") {
+    return {
+      mode: "strong",
+      label: `Try ${getCompressionMode("strong").label}`,
+      reason: "Balanced mode did not reduce enough for tighter upload limits. Strong mode is the next practical step."
+    };
+  }
+
+  if (reductionPercent < 22 && mode === "strong") {
+    return {
+      mode: "extreme",
+      label: `Try ${getCompressionMode("extreme").label}`,
+      reason: "This result may still miss stricter upload caps. Extreme mode pushes harder toward the smallest browser-side result."
+    };
+  }
+
+  const strongerMode = chooseStrongerMode(mode);
+  if (!strongerMode) {
+    return null;
+  }
+
+  return {
+    mode: strongerMode,
+    label: `Try ${getCompressionMode(strongerMode).label}`,
+    reason: `If you still need a smaller file, ${getCompressionMode(strongerMode).label} is the next stronger mode in this compression path.`
+  };
 }
 
 function resultSummary(mode: CompressionMode, reductionRatio: number) {
@@ -106,6 +229,10 @@ function resultSummary(mode: CompressionMode, reductionRatio: number) {
     : "Scanned PDF mode is tuned for image-heavy files that resist lighter compression.";
 }
 
+function formatPagesLabel(pageCount: number) {
+  return pageCount === 1 ? "1 page" : `${pageCount} pages`;
+}
+
 export function UploadCard({
   copy = "Batch-ready PDF compression",
   heading = "Compress PDF files",
@@ -136,10 +263,14 @@ export function UploadCard({
       acc.original += job.result.originalBytes;
       acc.compressed += job.result.compressedBytes;
       acc.saved += job.result.savedBytes;
+      acc.pages += job.result.pageCount;
       return acc;
     },
-    { original: 0, compressed: 0, saved: 0 }
+    { original: 0, compressed: 0, saved: 0, pages: 0 }
   );
+
+  const totalReduction =
+    totals.original > 0 ? Math.round((totals.saved / totals.original) * 100) : 0;
 
   function updateJob(id: string, updater: (job: UploadJob) => UploadJob) {
     setJobs((current) => current.map((job) => (job.id === id ? updater(job) : job)));
@@ -153,7 +284,9 @@ export function UploadCard({
           file,
           mode,
           status: "error" as const,
-          error: createPdfError(file.name)
+          error: createPdfError(file.name),
+          errorTitle: "Unsupported file",
+          errorHint: "Upload a real .pdf file before starting compression."
         };
       }
 
@@ -163,7 +296,9 @@ export function UploadCard({
           file,
           mode,
           status: "error" as const,
-          error: createEmptyFileError(file.name)
+          error: createEmptyFileError(file.name),
+          errorTitle: "Empty PDF",
+          errorHint: "Use a PDF that contains actual document pages."
         };
       }
 
@@ -173,7 +308,9 @@ export function UploadCard({
           file,
           mode,
           status: "error" as const,
-          error: createFileTooLargeError(file.name)
+          error: createFileTooLargeError(file.name),
+          errorTitle: "File too large",
+          errorHint: "Split the file first or try a smaller PDF in the browser flow."
         };
       }
 
@@ -195,8 +332,10 @@ export function UploadCard({
           file: new File([], "unsupported-browser.pdf", { type: "application/pdf" }),
           mode,
           status: "error",
+          errorTitle: "Browser not supported",
           error:
-            "This browser does not support the current PDF compression flow. Try a modern Chrome, Edge, Safari, or Firefox build."
+            "This browser does not support the current PDF compression flow. Try a modern Chrome, Edge, Safari, or Firefox build.",
+          errorHint: "Switch to a modern browser with FileReader and current PDF APIs enabled."
         }
       ]);
       return;
@@ -247,7 +386,9 @@ export function UploadCard({
       ...job,
       status: "processing",
       mode: selectedMode,
-      error: undefined
+      error: undefined,
+      errorTitle: undefined,
+      errorHint: undefined
     }));
 
     try {
@@ -260,22 +401,23 @@ export function UploadCard({
         error: undefined
       }));
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "This PDF could not be processed. Try another mode or a smaller file.";
+      const normalized = normalizeCompressionError(error, file, selectedMode);
 
       updateJob(id, (job) => ({
         ...job,
         status: "error",
         mode: selectedMode,
-        error: message
+        error: normalized.message,
+        errorTitle: normalized.title,
+        errorHint: normalized.hint
       }));
     }
   }
 
   function processAll() {
-    const queuedIds = jobs.filter((job) => job.status === "queued").map((job) => job.id);
+    const queuedIds = jobs
+      .filter((job) => job.status === "queued" || (job.status === "success" && job.mode !== mode))
+      .map((job) => job.id);
 
     startTransition(async () => {
       for (const id of queuedIds) {
@@ -309,7 +451,15 @@ export function UploadCard({
   }
 
   function downloadAll() {
-    successJobs.forEach((job) => downloadJob(job));
+    void downloadFilesAsZip(
+      "compressed-pdf-files.zip",
+      successJobs
+        .filter((job) => job.result)
+        .map((job) => ({
+          fileName: job.result!.fileName,
+          blob: job.result!.blob
+        }))
+    );
   }
 
   return (
@@ -401,7 +551,7 @@ export function UploadCard({
               disabled={!successJobs.length}
               onClick={downloadAll}
             >
-              Download all
+              Download ZIP
             </button>
           </div>
         </div>
@@ -442,6 +592,14 @@ export function UploadCard({
             <strong>{formatBytes(totals.compressed)}</strong>
             <span>current total size</span>
           </div>
+          <div>
+            <strong>{totalReduction}%</strong>
+            <span>average reduction</span>
+          </div>
+          <div>
+            <strong>{totals.pages}</strong>
+            <span>processed pages</span>
+          </div>
         </div>
       ) : null}
 
@@ -450,6 +608,7 @@ export function UploadCard({
           {jobs.map((job) => {
             const strongerMode = chooseStrongerMode(job.mode);
             const suggestedMode = chooseSuggestedMode(job);
+            const suggestedAction = getSuggestedAction(job);
             return (
               <article className="upload-job" key={job.id}>
                 <div className="upload-job__head">
@@ -491,10 +650,22 @@ export function UploadCard({
                         <span>Pages</span>
                         <strong>{job.result.pageCount}</strong>
                       </div>
+                      <div>
+                        <span>Profile</span>
+                        <strong>{job.result.profileLabel}</strong>
+                      </div>
                     </div>
                     <p className="upload-job__summary">
                       {resultSummary(job.result.mode, job.result.reductionRatio)}
                     </p>
+                    <div className="upload-job__hint upload-job__hint--neutral">
+                      <strong>
+                        {formatPagesLabel(job.result.pageCount)} · {formatBytes(job.result.bytesPerPage)} per page
+                      </strong>
+                      <span>
+                        FileSmaller is using page count and bytes-per-page signals to decide whether this PDF behaves more like a clean office file, a mixed document, or a scan.
+                      </span>
+                    </div>
                     {job.result.likelyImageHeavy ? (
                       <div className="upload-job__hint">
                         <strong>Looks like a scanned or image-heavy PDF</strong>
@@ -507,6 +678,12 @@ export function UploadCard({
                     {job.result.recommendation ? (
                       <p className="upload-job__recommendation">{job.result.recommendation}</p>
                     ) : null}
+                    {suggestedAction ? (
+                      <div className="upload-job__next-step">
+                        <strong>Recommended next step</strong>
+                        <span>{suggestedAction.reason}</span>
+                      </div>
+                    ) : null}
                     <div className="upload-job__actions">
                       <button
                         type="button"
@@ -518,20 +695,18 @@ export function UploadCard({
                       <button
                         type="button"
                         className="button button--secondary"
-                        disabled={!suggestedMode || processing}
+                        disabled={!suggestedAction || processing}
                         onClick={() => {
-                          if (!suggestedMode) {
+                          if (!suggestedAction) {
                             return;
                           }
 
                           startTransition(async () => {
-                            await processJob(job.id, suggestedMode);
+                            await processJob(job.id, suggestedAction.mode);
                           });
                         }}
                       >
-                        {suggestedMode
-                          ? `Try ${getCompressionMode(suggestedMode).label}`
-                          : "Strongest used"}
+                        {suggestedAction ? suggestedAction.label : "Strongest used"}
                       </button>
                       {strongerMode && suggestedMode !== strongerMode ? (
                         <button
@@ -547,7 +722,13 @@ export function UploadCard({
                   </div>
                 ) : null}
 
-                {job.status === "error" ? <p className="upload-job__error">{job.error}</p> : null}
+                {job.status === "error" ? (
+                  <div className="upload-job__error">
+                    <strong>{job.errorTitle ?? "Compression failed"}</strong>
+                    <span>{job.error}</span>
+                    {job.errorHint ? <small>{job.errorHint}</small> : null}
+                  </div>
+                ) : null}
                 {job.status === "error" ? (
                   <div className="upload-job__actions">
                     <button

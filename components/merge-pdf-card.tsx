@@ -9,6 +9,12 @@ type MergeItem = {
   file: File;
 };
 
+type MergeCardError = {
+  title: string;
+  message: string;
+  hint?: string;
+};
+
 function fileId(file: File) {
   return `${file.name}-${file.size}-${file.lastModified}-${Math.random()
     .toString(36)
@@ -18,10 +24,52 @@ function fileId(file: File) {
 export function MergePdfCard() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [items, setItems] = useState<MergeItem[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<MergeCardError | null>(null);
   const [result, setResult] = useState<MergeResult | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  function normalizeMergeError(mergeError: unknown): MergeCardError {
+    if (!(mergeError instanceof Error)) {
+      return {
+        title: "Merge failed",
+        message: "The selected files could not be merged in the current browser flow.",
+        hint: "Check the files and try again with valid PDFs."
+      };
+    }
+
+    const lowered = mergeError.message.toLowerCase();
+
+    if (lowered.includes("at least two")) {
+      return {
+        title: "Need more files",
+        message: mergeError.message,
+        hint: "Add at least two PDF files before starting the merge."
+      };
+    }
+
+    if (lowered.includes("not a pdf")) {
+      return {
+        title: "Unsupported file",
+        message: mergeError.message,
+        hint: "Remove non-PDF files from the list and keep only .pdf documents."
+      };
+    }
+
+    if (lowered.includes("encrypted") || lowered.includes("password")) {
+      return {
+        title: "Protected PDF",
+        message: "One of these files appears to be password-protected or restricted.",
+        hint: "Unlock the file first, then upload it again for merging."
+      };
+    }
+
+    return {
+      title: "Merge failed",
+      message: mergeError.message,
+      hint: "Try fewer files first, or re-export the PDFs if one of them looks broken."
+    };
+  }
 
   function triggerPicker() {
     inputRef.current?.click();
@@ -80,14 +128,15 @@ export function MergePdfCard() {
         setResult(result);
         download(result.blob, result.fileName);
       } catch (mergeError) {
-        setError(
-          mergeError instanceof Error
-            ? mergeError.message
-            : "Merge failed. Try again with valid PDF files."
-        );
+        setError(normalizeMergeError(mergeError));
       }
     });
   }
+
+  const totalPagesHint =
+    items.length > 1
+      ? "Merge the files in your chosen order, then compress the merged output if you still need a smaller upload."
+      : "Add more PDF files to build one final merged document.";
 
   return (
     <aside className="panel upload-card">
@@ -232,8 +281,16 @@ export function MergePdfCard() {
             <span>total input size</span>
           </div>
           <div>
+            <strong>{formatBytes(result.mergedBytes)}</strong>
+            <span>merged output size</span>
+          </div>
+          <div>
+            <strong>{result.totalPages}</strong>
+            <span>merged pages</span>
+          </div>
+          <div>
             <strong>{result.fileName}</strong>
-            <span>merged output</span>
+            <span>output file</span>
           </div>
         </div>
       ) : null}
@@ -253,8 +310,27 @@ export function MergePdfCard() {
         </div>
       ) : null}
 
-      {result ? <p className="upload-job__recommendation">Merged file ready: {result.fileName}</p> : null}
-      {error ? <p className="upload-job__error">{error}</p> : null}
+      {result ? (
+        <div className="upload-job__next-step">
+          <strong>Recommended next step</strong>
+          <span>Download the merged file now, or open Compress PDF next if the final document still feels too large for upload limits.</span>
+        </div>
+      ) : null}
+
+      {items.length ? (
+        <div className="upload-job__hint upload-job__hint--neutral">
+          <strong>{items.length} files in merge order</strong>
+          <span>{totalPagesHint}</span>
+        </div>
+      ) : null}
+
+      {error ? (
+        <div className="upload-job__error">
+          <strong>{error.title}</strong>
+          <span>{error.message}</span>
+          {error.hint ? <small>{error.hint}</small> : null}
+        </div>
+      ) : null}
     </aside>
   );
 }
