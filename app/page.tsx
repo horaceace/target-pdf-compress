@@ -25,6 +25,18 @@ export default function HomePage() {
   const quickLinks = homepage.quickLinks
     .map((slug) => toolPageMap.get(slug))
     .filter((item) => Boolean(item));
+  const popularCompressionPages = [
+    "compress-pdf-online",
+    "compress-pdf-to-1mb",
+    "compress-pdf-for-upload",
+    "compress-pdf-for-email",
+    "compress-scanned-pdf",
+    "compress-pdf-without-losing-quality",
+    "reduce-pdf-size-for-job-application",
+    "compress-large-pdf"
+  ]
+    .map((slug) => toolPageMap.get(slug))
+    .filter((item) => Boolean(item));
   const pdfToJpgPages = [
     "pdf-to-jpg-online",
     "convert-pdf-pages-to-jpg",
@@ -263,8 +275,8 @@ export default function HomePage() {
   };
 
   const heroStats = [
-    { value: "5", label: "core tools live" },
-    { value: "30+", label: "scenario pages live" },
+    { value: String(coreTools.length), label: "core tools live" },
+    { value: "50+", label: "scenario pages live" },
     { value: "Browser-first", label: "no install workflow" }
   ];
 
@@ -455,41 +467,38 @@ export default function HomePage() {
               These are the pages most likely to match the way people actually search: compress PDF online, convert PDF to JPG, convert JPG to PDF, and fix file-size problems for uploads or email.
             </p>
           </div>
-          <div className="editorial-grid">
-            <div className="editorial-card">
-              <strong>Compression scenarios</strong>
-              <div className="quick-links">
-                {quickLinks.map((page) =>
+          <div className="scenario-rail">
+            <div className="scenario-group">
+              <strong>Compression</strong>
+              <div className="scenario-list">
+                {popularCompressionPages.map((page) =>
                   page ? (
-                    <Link className="quick-link" href={`/${page.slug}`} key={page.slug}>
-                      <strong>{page.h1}</strong>
-                      <span>{page.subheading}</span>
+                    <Link className="scenario-link" href={`/${page.slug}`} key={page.slug}>
+                      {page.h1}
                     </Link>
                   ) : null
                 )}
               </div>
             </div>
-            <div className="editorial-card">
-              <strong>Conversion scenarios</strong>
-              <div className="quick-links">
+            <div className="scenario-group">
+              <strong>Conversion</strong>
+              <div className="scenario-list">
                 {[...pdfToJpgPages, ...jpgToPdfPages].map((page) =>
                   page ? (
-                    <Link className="quick-link" href={`/${page.slug}`} key={page.slug}>
-                      <strong>{page.h1}</strong>
-                      <span>{page.subheading}</span>
+                    <Link className="scenario-link" href={`/${page.slug}`} key={page.slug}>
+                      {page.h1}
                     </Link>
                   ) : null
                 )}
               </div>
             </div>
-            <div className="editorial-card">
-              <strong>PDF editing scenarios</strong>
-              <div className="quick-links">
+            <div className="scenario-group">
+              <strong>PDF editing</strong>
+              <div className="scenario-list">
                 {editPages.map((page) =>
                   page ? (
-                    <Link className="quick-link" href={`/${page.slug}`} key={page.slug}>
-                      <strong>{page.h1}</strong>
-                      <span>{page.subheading}</span>
+                    <Link className="scenario-link" href={`/${page.slug}`} key={page.slug}>
+                      {page.h1}
                     </Link>
                   ) : null
                 )}
