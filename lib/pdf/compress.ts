@@ -331,8 +331,8 @@ async function renderPdfPagesToJpeg(
 }
 
 async function rebuildFromRenderedPages(sourceBytes: Uint8Array, mode: CompressionMode) {
-  const renderScale = mode === "scanned" ? 1.05 : 1.15;
-  const imageQuality = mode === "scanned" ? 0.58 : 0.68;
+  const renderScale = mode === "scanned" ? 1.35 : 1.15;
+  const imageQuality = mode === "scanned" ? 0.72 : 0.68;
   const renderedPages = await renderPdfPagesToJpeg(sourceBytes, imageQuality, renderScale);
   const rebuilt = await PDFDocument.create();
 

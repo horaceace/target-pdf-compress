@@ -6,11 +6,11 @@ import { Analytics } from "@/components/analytics";
 export const metadata: Metadata = {
   metadataBase: new URL("https://filesmaller.space"),
   title: {
-    default: "Compress PDF Online Free | FileSmaller",
+    default: "Free PDF Tools Online | FileSmaller",
     template: "%s | FileSmaller"
   },
   description:
-    "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
+    "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
   applicationName: "FileSmaller",
   icons: {
     icon: "/favicon.svg",
@@ -24,15 +24,15 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://filesmaller.space",
     siteName: "FileSmaller",
-    title: "Compress PDF Online Free | FileSmaller",
+    title: "Free PDF Tools Online | FileSmaller",
     description:
-      "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
+      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
   },
   twitter: {
     card: "summary_large_image",
-    title: "Compress PDF Online Free | FileSmaller",
+    title: "Free PDF Tools Online | FileSmaller",
     description:
-      "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
+      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
   }
 };
 

@@ -4,10 +4,21 @@ import { useState } from "react";
 import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 import { PdfToJpgCard } from "@/components/pdf-to-jpg-card";
+import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
+import { ReorderPdfCard } from "@/components/reorder-pdf-card";
+import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { UploadCard } from "@/components/upload-card";
 
-type ToolKey = "compress" | "merge" | "split" | "pdf-to-jpg" | "jpg-to-pdf";
+type ToolKey =
+  | "compress"
+  | "merge"
+  | "split"
+  | "rotate"
+  | "remove"
+  | "reorder"
+  | "pdf-to-jpg"
+  | "jpg-to-pdf";
 
 const toolTabs: Array<{
   key: ToolKey;
@@ -32,6 +43,24 @@ const toolTabs: Array<{
     label: "Split",
     title: "Split PDF",
     copy: "Extract page ranges from one PDF and export smaller files for uploads or follow-up compression."
+  },
+  {
+    key: "rotate",
+    label: "Rotate",
+    title: "Rotate PDF",
+    copy: "Turn sideways or upside-down pages upright before submitting or merging."
+  },
+  {
+    key: "remove",
+    label: "Remove",
+    title: "Remove PDF pages",
+    copy: "Delete blank, duplicate, or unnecessary pages before uploading a cleaner PDF."
+  },
+  {
+    key: "reorder",
+    label: "Reorder",
+    title: "Reorder PDF pages",
+    copy: "Move pages into the right sequence before export, merge, or compression."
   },
   {
     key: "pdf-to-jpg",
@@ -77,6 +106,9 @@ export function HomeToolSwitcher() {
       {activeTool === "compress" ? <UploadCard /> : null}
       {activeTool === "merge" ? <MergePdfCard /> : null}
       {activeTool === "split" ? <SplitPdfCard /> : null}
+      {activeTool === "rotate" ? <RotatePdfCard /> : null}
+      {activeTool === "remove" ? <RemovePdfPagesCard /> : null}
+      {activeTool === "reorder" ? <ReorderPdfCard /> : null}
       {activeTool === "pdf-to-jpg" ? <PdfToJpgCard /> : null}
       {activeTool === "jpg-to-pdf" ? <JpgToPdfCard /> : null}
     </div>

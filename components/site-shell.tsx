@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 
-const navItems = [
-  { href: "/", label: "Home" },
+const toolNavItems = [
   { href: "/compress-pdf", label: "Compress PDF" },
   { href: "/merge-pdf", label: "Merge PDF" },
   { href: "/split-pdf", label: "Split PDF" },
+  { href: "/rotate-pdf", label: "Rotate PDF" },
+  { href: "/remove-pdf-pages", label: "Remove Pages" },
+  { href: "/reorder-pdf-pages", label: "Reorder Pages" },
   { href: "/pdf-to-jpg", label: "PDF to JPG" },
-  { href: "/jpg-to-pdf", label: "JPG to PDF" },
-  { href: "/privacy", label: "Privacy" }
+  { href: "/jpg-to-pdf", label: "JPG to PDF" }
 ];
 
 const footerGroups = [
@@ -18,6 +19,9 @@ const footerGroups = [
       { href: "/compress-pdf", label: "Compress PDF" },
       { href: "/merge-pdf", label: "Merge PDF" },
       { href: "/split-pdf", label: "Split PDF" },
+      { href: "/rotate-pdf", label: "Rotate PDF" },
+      { href: "/remove-pdf-pages", label: "Remove PDF Pages" },
+      { href: "/reorder-pdf-pages", label: "Reorder PDF Pages" },
       { href: "/pdf-to-jpg", label: "PDF to JPG" },
       { href: "/jpg-to-pdf", label: "JPG to PDF" }
     ]
@@ -43,6 +47,9 @@ const footerHighlights = [
   "Compress for uploads and attachments",
   "Merge multiple PDFs into one file",
   "Split page ranges before sending",
+  "Rotate sideways PDF pages",
+  "Remove unwanted PDF pages",
+  "Reorder pages before export",
   "Convert PDF pages to JPG",
   "Turn JPG images into one PDF"
 ];
@@ -59,11 +66,20 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <span>FileSmaller</span>
           </Link>
           <nav className="site-nav" aria-label="Main navigation">
-            {navItems.map((item) => (
-              <Link key={item.href} href={item.href}>
-                {item.label}
-              </Link>
-            ))}
+            <Link href="/">Home</Link>
+            <div className="site-nav__menu">
+              <button className="site-nav__menu-trigger" type="button">
+                Tools
+              </button>
+              <div className="site-nav__dropdown">
+                {toolNavItems.map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <Link href="/privacy">Privacy</Link>
           </nav>
         </div>
       </header>

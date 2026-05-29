@@ -1,5 +1,12 @@
 export type ToolPageConfig = {
-  tool: "compress-pdf" | "merge-pdf" | "pdf-to-jpg" | "jpg-to-pdf";
+  tool:
+    | "compress-pdf"
+    | "merge-pdf"
+    | "pdf-to-jpg"
+    | "jpg-to-pdf"
+    | "rotate-pdf"
+    | "remove-pdf-pages"
+    | "reorder-pdf-pages";
   slug: string;
   title: string;
   description: string;
@@ -13,12 +20,12 @@ export type ToolPageConfig = {
 };
 
 export const homepage = {
-  title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
+  title: "Free PDF Tools Online: Compress, Merge, Split, Rotate, Convert",
   description:
-    "Compress PDF online free, merge PDF files, split PDF pages, convert PDF to JPG, and turn JPG to PDF in your browser.",
+    "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in your browser.",
   h1: "Compress PDF Online Free and Convert Document Files Fast",
   subheading:
-    "Use free browser-first tools to compress PDF, merge PDF, split PDF, convert PDF to JPG, and convert JPG to PDF for uploads, forms, and sharing.",
+    "Use free browser-first tools to compress PDF, merge PDF, split PDF, rotate, remove, or reorder PDF pages, convert PDF to JPG, and convert JPG to PDF for uploads, forms, and sharing.",
   quickLinks: [
     "compress-pdf-online",
     "reduce-pdf-size-online",
@@ -35,6 +42,15 @@ export const homepage = {
     "compress-pdf-without-losing-quality",
     "reduce-pdf-size-for-job-application",
     "compress-large-pdf",
+    "rotate-pdf-online",
+    "rotate-pdf-pages",
+    "rotate-scanned-pdf",
+    "remove-pages-from-pdf",
+    "delete-pdf-pages",
+    "remove-blank-pages-from-pdf",
+    "reorder-pdf-pages-online",
+    "rearrange-pdf-pages",
+    "organize-pdf-pages",
     "pdf-to-jpg-online",
     "convert-pdf-pages-to-jpg",
     "jpg-to-pdf-online",
@@ -56,7 +72,7 @@ export const homepage = {
     {
       question: "Can I merge, split, or convert PDFs here too?",
       answer:
-        "Yes. FileSmaller includes Compress PDF, Merge PDF, Split PDF, PDF to JPG, and JPG to PDF in one browser-first workflow."
+        "Yes. FileSmaller includes Compress PDF, Merge PDF, Split PDF, Rotate PDF, Remove PDF Pages, Reorder PDF Pages, PDF to JPG, and JPG to PDF in one browser-first workflow."
     },
     {
       question: "Can I convert PDF to JPG online for free?",
@@ -1835,6 +1851,330 @@ export const toolPages: ToolPageConfig[] = [
       "compress-pdf-for-email",
       "compress-scanned-pdf"
     ]
+  },
+  {
+    tool: "rotate-pdf",
+    slug: "rotate-pdf-online",
+    title: "Rotate PDF Online Free",
+    description:
+      "Rotate PDF online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF.",
+    h1: "Rotate PDF Online",
+    subheading:
+      "Fix sideways or upside-down PDF pages online before uploading, sending, or compressing.",
+    targetLabel: "PDF workflow: rotate pages online",
+    intro:
+      "Use this page when a PDF opens sideways or upside down and you need a quick browser-first way to rotate pages before sending the file.",
+    steps: [
+      "Upload the PDF with pages that need rotation",
+      "Choose 90, 180, or 270 degrees and optional page ranges",
+      "Download the corrected PDF"
+    ],
+    faq: [
+      {
+        question: "Can I rotate a PDF online for free?",
+        answer:
+          "Yes. Upload one PDF, choose a rotation angle, and download the corrected file in the browser."
+      },
+      {
+        question: "Can I rotate only selected pages?",
+        answer:
+          "Yes. Leave the page range blank for all pages, or enter ranges like 1, 3-5 for selected pages."
+      },
+      {
+        question: "Does rotating pages compress the PDF?",
+        answer:
+          "No. Rotation changes page orientation. You can run compression afterward if file size still matters."
+      }
+    ],
+    relatedSlugs: ["rotate-pdf-pages", "rotate-scanned-pdf", "remove-pages-from-pdf"]
+  },
+  {
+    tool: "rotate-pdf",
+    slug: "rotate-pdf-pages",
+    title: "Rotate PDF Pages Online",
+    description:
+      "Rotate PDF pages online by page range. Fix specific sideways pages without changing the rest of the PDF.",
+    h1: "Rotate PDF Pages",
+    subheading:
+      "Turn selected PDF pages upright while leaving the rest of the document unchanged.",
+    targetLabel: "PDF workflow: selected page rotation",
+    intro:
+      "This page is for PDFs where only a few scanned pages or inserted pages have the wrong orientation.",
+    steps: [
+      "Upload the PDF",
+      "Enter the pages that need rotation",
+      "Choose the angle and download the fixed PDF"
+    ],
+    faq: [
+      {
+        question: "Can I rotate one page in a PDF?",
+        answer:
+          "Yes. Enter a single page number such as 3 to rotate only that page."
+      },
+      {
+        question: "Can I rotate multiple ranges?",
+        answer:
+          "Yes. Use formats like 1, 3-5, 8 to target several pages or ranges."
+      },
+      {
+        question: "Will other pages stay the same?",
+        answer:
+          "Yes. Pages outside the selected range keep their original orientation."
+      }
+    ],
+    relatedSlugs: ["rotate-pdf-online", "rotate-scanned-pdf", "reorder-pdf-pages-online"]
+  },
+  {
+    tool: "rotate-pdf",
+    slug: "rotate-scanned-pdf",
+    title: "Rotate Scanned PDF Online",
+    description:
+      "Rotate scanned PDF pages online before sending, uploading, or compressing scan-heavy documents.",
+    h1: "Rotate Scanned PDF",
+    subheading:
+      "Fix sideways scanned pages before you submit or compress the final PDF.",
+    targetLabel: "PDF workflow: rotate scanned pages",
+    intro:
+      "Scanned PDFs often include sideways pages from a phone or office scanner. This page helps turn those pages upright before the next document step.",
+    steps: [
+      "Upload the scanned PDF",
+      "Rotate all pages or only the sideways page range",
+      "Download the corrected scan"
+    ],
+    faq: [
+      {
+        question: "Can I rotate scanned PDF pages?",
+        answer:
+          "Yes. The rotation tool works on scanned PDFs as long as the browser can open the file."
+      },
+      {
+        question: "Should I rotate before compressing?",
+        answer:
+          "Usually yes. Fix orientation first, then compress the final scan if file size is still too large."
+      },
+      {
+        question: "Does this use OCR?",
+        answer:
+          "No. It rotates pages only. OCR is a separate advanced workflow."
+      }
+    ],
+    relatedSlugs: ["rotate-pdf-online", "compress-scanned-pdf", "remove-blank-pages-from-pdf"]
+  },
+  {
+    tool: "remove-pdf-pages",
+    slug: "remove-pages-from-pdf",
+    title: "Remove Pages from PDF Online",
+    description:
+      "Remove pages from a PDF online free. Delete unwanted pages, blank sheets, or duplicate pages and download a cleaned PDF.",
+    h1: "Remove Pages from PDF",
+    subheading:
+      "Delete unnecessary PDF pages before uploading, sending, or compressing a cleaner document.",
+    targetLabel: "PDF workflow: remove unwanted pages",
+    intro:
+      "Use this page when a PDF includes blank pages, duplicate pages, cover sheets, or instructions that should not be included in the final file.",
+    steps: [
+      "Upload the PDF",
+      "Enter the pages or ranges to remove",
+      "Download the cleaned PDF"
+    ],
+    faq: [
+      {
+        question: "How do I remove pages from a PDF?",
+        answer:
+          "Upload the PDF, enter page numbers or ranges such as 2, 4-6, and download the version with those pages removed."
+      },
+      {
+        question: "Can I remove multiple pages at once?",
+        answer:
+          "Yes. Use commas to separate individual pages and ranges."
+      },
+      {
+        question: "Can I remove every page?",
+        answer:
+          "No. The output PDF must keep at least one page."
+      }
+    ],
+    relatedSlugs: ["delete-pdf-pages", "remove-blank-pages-from-pdf", "reorder-pdf-pages-online"]
+  },
+  {
+    tool: "remove-pdf-pages",
+    slug: "delete-pdf-pages",
+    title: "Delete PDF Pages Online",
+    description:
+      "Delete PDF pages online in your browser. Remove extra pages from a PDF and download the updated file.",
+    h1: "Delete PDF Pages",
+    subheading:
+      "Delete extra or unwanted pages from a PDF without installing desktop software.",
+    targetLabel: "PDF workflow: delete selected pages",
+    intro:
+      "This page targets users who need a fast way to delete pages from a PDF before submitting a document package.",
+    steps: [
+      "Upload the PDF file",
+      "Type the pages you want to delete",
+      "Download the updated PDF"
+    ],
+    faq: [
+      {
+        question: "Is deleting PDF pages different from splitting a PDF?",
+        answer:
+          "Yes. Deleting pages keeps the remaining document as one PDF, while splitting exports selected pages into separate files."
+      },
+      {
+        question: "Can I delete page ranges?",
+        answer:
+          "Yes. Use ranges like 4-6 or combine them with individual pages."
+      },
+      {
+        question: "Can I compress after deleting pages?",
+        answer:
+          "Yes. Removing pages first can make the next compression step smaller and faster."
+      }
+    ],
+    relatedSlugs: ["remove-pages-from-pdf", "remove-blank-pages-from-pdf", "split-pdf-online"]
+  },
+  {
+    tool: "remove-pdf-pages",
+    slug: "remove-blank-pages-from-pdf",
+    title: "Remove Blank Pages from PDF",
+    description:
+      "Remove blank pages from a PDF online. Delete empty scanned pages or extra blank sheets before sending the final document.",
+    h1: "Remove Blank Pages from PDF",
+    subheading:
+      "Clean up scanned PDFs by deleting blank pages before upload or compression.",
+    targetLabel: "PDF workflow: remove blank pages",
+    intro:
+      "Scanned documents often include blank separators or accidental empty pages. Use this page to remove them before compressing or submitting the PDF.",
+    steps: [
+      "Upload the PDF with blank pages",
+      "Enter the blank page numbers",
+      "Download the cleaned PDF"
+    ],
+    faq: [
+      {
+        question: "Can this detect blank pages automatically?",
+        answer:
+          "Not in the current version. Enter the blank page numbers manually, then download the cleaned PDF."
+      },
+      {
+        question: "Should I remove blank pages before compression?",
+        answer:
+          "Yes. Removing unnecessary pages first can reduce file size and make compression more useful."
+      },
+      {
+        question: "Does this work on scanned PDFs?",
+        answer:
+          "Yes, as long as the PDF can be opened in the browser."
+      }
+    ],
+    relatedSlugs: ["remove-pages-from-pdf", "compress-scanned-pdf", "rotate-scanned-pdf"]
+  },
+  {
+    tool: "reorder-pdf-pages",
+    slug: "reorder-pdf-pages-online",
+    title: "Reorder PDF Pages Online",
+    description:
+      "Reorder PDF pages online free. Type a new page order, rearrange pages, and download the corrected PDF.",
+    h1: "Reorder PDF Pages Online",
+    subheading:
+      "Move PDF pages into the right sequence before sending, uploading, or merging.",
+    targetLabel: "PDF workflow: reorder pages online",
+    intro:
+      "Use this page when a PDF has pages in the wrong order and you need a quick way to rearrange them before export.",
+    steps: [
+      "Upload the PDF",
+      "Enter the new page order",
+      "Download the reordered PDF"
+    ],
+    faq: [
+      {
+        question: "How do I reorder PDF pages online?",
+        answer:
+          "Upload the file, enter a page order like 3,1,2,4-6, and download the reordered PDF."
+      },
+      {
+        question: "Can I reorder page ranges?",
+        answer:
+          "Yes. Ranges expand forward, so 4-6 means pages 4, 5, and 6 in that position."
+      },
+      {
+        question: "Can I include the same page twice?",
+        answer:
+          "No. The current version expects each output page once."
+      }
+    ],
+    relatedSlugs: ["rearrange-pdf-pages", "organize-pdf-pages", "remove-pages-from-pdf"]
+  },
+  {
+    tool: "reorder-pdf-pages",
+    slug: "rearrange-pdf-pages",
+    title: "Rearrange PDF Pages Online",
+    description:
+      "Rearrange PDF pages online in your browser. Fix page sequence problems before submitting or sharing a PDF.",
+    h1: "Rearrange PDF Pages",
+    subheading:
+      "Fix page sequence problems in a PDF before export, upload, or compression.",
+    targetLabel: "PDF workflow: rearrange page sequence",
+    intro:
+      "This page is for PDFs where pages were scanned, merged, or exported in the wrong order.",
+    steps: [
+      "Upload the PDF",
+      "Type the desired page sequence",
+      "Download the rearranged PDF"
+    ],
+    faq: [
+      {
+        question: "Can I rearrange a scanned PDF?",
+        answer:
+          "Yes. If the scanned PDF opens in the browser, the page order can be rearranged."
+      },
+      {
+        question: "Should I rearrange before merging?",
+        answer:
+          "Yes. Fixing the order first makes the final merged document easier to review."
+      },
+      {
+        question: "Can I remove pages while rearranging?",
+        answer:
+          "Yes. If you leave a page out of the order, it will not be included in the output PDF."
+      }
+    ],
+    relatedSlugs: ["reorder-pdf-pages-online", "organize-pdf-pages", "delete-pdf-pages"]
+  },
+  {
+    tool: "reorder-pdf-pages",
+    slug: "organize-pdf-pages",
+    title: "Organize PDF Pages Online",
+    description:
+      "Organize PDF pages online by reordering, removing extras, and preparing a cleaner document workflow.",
+    h1: "Organize PDF Pages",
+    subheading:
+      "Put PDF pages into a cleaner order before upload, sharing, or compression.",
+    targetLabel: "PDF workflow: organize page order",
+    intro:
+      "Use this page when a PDF package needs page order cleanup before it is sent to a portal, client, school, or employer.",
+    steps: [
+      "Upload the PDF",
+      "Enter the organized output order",
+      "Download the cleaned page sequence"
+    ],
+    faq: [
+      {
+        question: "What does organizing PDF pages mean?",
+        answer:
+          "It means putting pages into the correct sequence and optionally leaving out pages that should not be in the final file."
+      },
+      {
+        question: "Is this a drag-and-drop editor?",
+        answer:
+          "Not yet. The current version uses a text page order for a lighter browser-first workflow."
+      },
+      {
+        question: "Can I compress after organizing pages?",
+        answer:
+          "Yes. Organize first, then compress the final PDF if it is still too large."
+      }
+    ],
+    relatedSlugs: ["reorder-pdf-pages-online", "rearrange-pdf-pages", "compress-pdf-for-upload"]
   }
 ];
 

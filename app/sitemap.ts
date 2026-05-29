@@ -37,6 +37,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9
     },
     {
+      url: "https://filesmaller.space/rotate-pdf",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85
+    },
+    {
+      url: "https://filesmaller.space/remove-pdf-pages",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85
+    },
+    {
+      url: "https://filesmaller.space/reorder-pdf-pages",
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85
+    },
+    {
       url: "https://filesmaller.space/pdf-to-jpg",
       lastModified: now,
       changeFrequency: "weekly",

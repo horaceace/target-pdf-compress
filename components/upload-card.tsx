@@ -35,6 +35,7 @@ type UploadJob = {
   file: File;
   status: UploadJobStatus;
   mode: CompressionMode;
+  targetBytes?: number;
   result?: CompressionResult;
   error?: string;
   errorTitle?: string;
@@ -48,6 +49,14 @@ type SuggestedAction = {
 };
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024;
+
+const targetSizeOptions = [
+  { label: "No target", value: 0 },
+  { label: "Under 500 KB", value: 500 * 1024 },
+  { label: "Under 1 MB", value: 1024 * 1024 },
+  { label: "Under 2 MB", value: 2 * 1024 * 1024 },
+  { label: "Under 5 MB", value: 5 * 1024 * 1024 }
+];
 
 function jobId(file: File) {
   return `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${Math.random()
@@ -144,6 +153,12 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
 
   const { result, mode } = job;
   const reductionPercent = Math.round(result.reductionRatio * 100);
+  const targetMissed = job.targetBytes ? result.compressedBytes > job.targetBytes : false;
+  const targetMet = job.targetBytes ? result.compressedBytes <= job.targetBytes : false;
+
+  if (targetMet) {
+    return null;
+  }
 
   if (result.documentProfile === "scanned-heavy" && mode !== "scanned") {
     return {
@@ -159,6 +174,18 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
       label: `Try ${getCompressionMode("scanned").label}`,
       reason: "Strong mode helped, but image-heavy files usually need the scanned path for a more aggressive browser-side pass."
     };
+  }
+
+  if (targetMissed && mode !== "scanned") {
+    const nextMode = result.likelyImageHeavy ? "scanned" : chooseStrongerMode(mode);
+
+    if (nextMode) {
+      return {
+        mode: nextMode,
+        label: `Try ${getCompressionMode(nextMode).label}`,
+        reason: `This result is still above the ${formatBytes(job.targetBytes!)} target. ${getCompressionMode(nextMode).label} is the next practical retry.`
+      };
+    }
   }
 
   if (reductionPercent < 10 && mode === "light") {
@@ -233,6 +260,28 @@ function formatPagesLabel(pageCount: number) {
   return pageCount === 1 ? "1 page" : `${pageCount} pages`;
 }
 
+function formatTargetStatus(job: UploadJob) {
+  if (!job.targetBytes || !job.result) {
+    return null;
+  }
+
+  const difference = job.result.compressedBytes - job.targetBytes;
+
+  if (difference <= 0) {
+    return {
+      met: true,
+      title: `Under ${formatBytes(job.targetBytes)} target`,
+      copy: `This result is ${formatBytes(Math.abs(difference))} below your selected upload limit.`
+    };
+  }
+
+  return {
+    met: false,
+    title: `${formatBytes(difference)} over ${formatBytes(job.targetBytes)}`,
+    copy: "Try a stronger mode, split the PDF, or use a smaller target only when the destination portal requires it."
+  };
+}
+
 export function UploadCard({
   copy = "Batch-ready PDF compression",
   heading = "Compress PDF files",
@@ -241,6 +290,7 @@ export function UploadCard({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const jobsRef = useRef<UploadJob[]>([]);
   const [mode, setMode] = useState<CompressionMode>(inferCompressionMode(initialTarget || copy));
+  const [targetBytes, setTargetBytes] = useState(0);
   const [jobs, setJobs] = useState<UploadJob[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -283,6 +333,7 @@ export function UploadCard({
           id: jobId(file),
           file,
           mode,
+          targetBytes,
           status: "error" as const,
           error: createPdfError(file.name),
           errorTitle: "Unsupported file",
@@ -295,6 +346,7 @@ export function UploadCard({
           id: jobId(file),
           file,
           mode,
+          targetBytes,
           status: "error" as const,
           error: createEmptyFileError(file.name),
           errorTitle: "Empty PDF",
@@ -307,6 +359,7 @@ export function UploadCard({
           id: jobId(file),
           file,
           mode,
+          targetBytes,
           status: "error" as const,
           error: createFileTooLargeError(file.name),
           errorTitle: "File too large",
@@ -318,6 +371,7 @@ export function UploadCard({
         id: jobId(file),
         file,
         mode,
+        targetBytes,
         status: "queued" as const
       };
     });
@@ -331,6 +385,7 @@ export function UploadCard({
           id: `browser-support-${Date.now()}`,
           file: new File([], "unsupported-browser.pdf", { type: "application/pdf" }),
           mode,
+          targetBytes,
           status: "error",
           errorTitle: "Browser not supported",
           error:
@@ -374,7 +429,12 @@ export function UploadCard({
     return jobsRef.current.find((job) => job.id === id);
   }
 
-  async function processJob(id: string, selectedMode: CompressionMode, sourceFile?: File) {
+  async function processJob(
+    id: string,
+    selectedMode: CompressionMode,
+    sourceFile?: File,
+    selectedTargetBytes = targetBytes
+  ) {
     const currentJob = getJobSnapshot(id);
     const file = currentJob?.file ?? sourceFile;
 
@@ -386,6 +446,7 @@ export function UploadCard({
       ...job,
       status: "processing",
       mode: selectedMode,
+      targetBytes: selectedTargetBytes,
       error: undefined,
       errorTitle: undefined,
       errorHint: undefined
@@ -397,6 +458,7 @@ export function UploadCard({
         ...job,
         status: "success",
         mode: selectedMode,
+        targetBytes: selectedTargetBytes,
         result,
         error: undefined
       }));
@@ -407,6 +469,7 @@ export function UploadCard({
         ...job,
         status: "error",
         mode: selectedMode,
+        targetBytes: selectedTargetBytes,
         error: normalized.message,
         errorTitle: normalized.title,
         errorHint: normalized.hint
@@ -421,7 +484,7 @@ export function UploadCard({
 
     startTransition(async () => {
       for (const id of queuedIds) {
-        await processJob(id, mode);
+        await processJob(id, mode, undefined, targetBytes);
       }
     });
   }
@@ -433,7 +496,7 @@ export function UploadCard({
     }
 
     startTransition(async () => {
-      await processJob(job.id, strongerMode);
+      await processJob(job.id, strongerMode, undefined, job.targetBytes ?? targetBytes);
     });
   }
 
@@ -527,6 +590,31 @@ export function UploadCard({
           </div>
         </div>
 
+        <div className="upload-mode">
+          <div className="upload-mode__row">
+            <label htmlFor="target-size">Target size</label>
+            <select
+              id="target-size"
+              value={targetBytes}
+              onChange={(event) => setTargetBytes(Number(event.target.value))}
+            >
+              {targetSizeOptions.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="upload-mode__meta">
+            <strong>{targetBytes ? `Aim for ${formatBytes(targetBytes)}` : "Maximum practical reduction"}</strong>
+            <span>
+              {targetBytes
+                ? "The browser will show whether the result fits your selected upload limit and suggest the next stronger retry when needed."
+                : "Use this when you only need the smallest practical browser-side result, not a fixed portal limit."}
+            </span>
+          </div>
+        </div>
+
         <div className="upload-actions">
           <button
             type="button"
@@ -609,6 +697,7 @@ export function UploadCard({
             const strongerMode = chooseStrongerMode(job.mode);
             const suggestedMode = chooseSuggestedMode(job);
             const suggestedAction = getSuggestedAction(job);
+            const targetStatus = formatTargetStatus(job);
             return (
               <article className="upload-job" key={job.id}>
                 <div className="upload-job__head">
@@ -654,10 +743,26 @@ export function UploadCard({
                         <span>Profile</span>
                         <strong>{job.result.profileLabel}</strong>
                       </div>
+                      {job.targetBytes ? (
+                        <div>
+                          <span>Target</span>
+                          <strong>{formatBytes(job.targetBytes)}</strong>
+                        </div>
+                      ) : null}
                     </div>
                     <p className="upload-job__summary">
                       {resultSummary(job.result.mode, job.result.reductionRatio)}
                     </p>
+                    {targetStatus ? (
+                      <div
+                        className={`upload-job__hint ${
+                          targetStatus.met ? "upload-job__hint--success" : "upload-job__hint--target"
+                        }`}
+                      >
+                        <strong>{targetStatus.title}</strong>
+                        <span>{targetStatus.copy}</span>
+                      </div>
+                    ) : null}
                     <div className="upload-job__hint upload-job__hint--neutral">
                       <strong>
                         {formatPagesLabel(job.result.pageCount)} · {formatBytes(job.result.bytesPerPage)} per page
@@ -702,7 +807,12 @@ export function UploadCard({
                           }
 
                           startTransition(async () => {
-                            await processJob(job.id, suggestedAction.mode);
+                            await processJob(
+                              job.id,
+                              suggestedAction.mode,
+                              undefined,
+                              job.targetBytes ?? targetBytes
+                            );
                           });
                         }}
                       >
@@ -737,7 +847,7 @@ export function UploadCard({
                       disabled={processing}
                       onClick={() => {
                         startTransition(async () => {
-                          await processJob(job.id, job.mode);
+                          await processJob(job.id, job.mode, undefined, job.targetBytes ?? targetBytes);
                         });
                       }}
                     >

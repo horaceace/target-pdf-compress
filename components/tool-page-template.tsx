@@ -4,6 +4,9 @@ import { ToolPageConfig, toolPageMap } from "@/content/tool-pages";
 import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 import { PdfToJpgCard } from "@/components/pdf-to-jpg-card";
+import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
+import { ReorderPdfCard } from "@/components/reorder-pdf-card";
+import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { UploadCard } from "@/components/upload-card";
 
 export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
@@ -54,13 +57,19 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
     "compress-pdf": "Scenario-driven compression",
     "merge-pdf": "Scenario-driven PDF merge",
     "pdf-to-jpg": "Scenario-driven PDF to JPG conversion",
-    "jpg-to-pdf": "Scenario-driven JPG to PDF conversion"
+    "jpg-to-pdf": "Scenario-driven JPG to PDF conversion",
+    "rotate-pdf": "Scenario-driven PDF rotation",
+    "remove-pdf-pages": "Scenario-driven page removal",
+    "reorder-pdf-pages": "Scenario-driven page reordering"
   };
   const relatedTitleMap: Record<ToolPageConfig["tool"], string> = {
     "compress-pdf": "Related compression pages",
     "merge-pdf": "Related merge pages",
     "pdf-to-jpg": "Related PDF to JPG pages",
-    "jpg-to-pdf": "Related JPG to PDF pages"
+    "jpg-to-pdf": "Related JPG to PDF pages",
+    "rotate-pdf": "Related rotate PDF pages",
+    "remove-pdf-pages": "Related remove pages tools",
+    "reorder-pdf-pages": "Related reorder pages tools"
   };
 
   function renderToolCard() {
@@ -83,6 +92,18 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
 
     if (page.tool === "pdf-to-jpg") {
       return <PdfToJpgCard />;
+    }
+
+    if (page.tool === "rotate-pdf") {
+      return <RotatePdfCard />;
+    }
+
+    if (page.tool === "remove-pdf-pages") {
+      return <RemovePdfPagesCard />;
+    }
+
+    if (page.tool === "reorder-pdf-pages") {
+      return <ReorderPdfCard />;
     }
 
     return <JpgToPdfCard />;

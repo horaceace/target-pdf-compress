@@ -5,18 +5,18 @@ import { HomeToolSwitcher } from "@/components/home-tool-switcher";
 import { homepage, toolPageMap } from "@/content/tool-pages";
 
 export const metadata: Metadata = {
-  title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
+  title: homepage.title,
   description: homepage.description,
   alternates: {
     canonical: "/"
   },
   openGraph: {
-    title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
+    title: homepage.title,
     description: homepage.description,
     url: "https://filesmaller.space"
   },
   twitter: {
-    title: "Compress PDF Online Free, Merge, Split, JPG to PDF",
+    title: homepage.title,
     description: homepage.description
   }
 };
@@ -41,7 +41,17 @@ export default function HomePage() {
   ]
     .map((slug) => toolPageMap.get(slug))
     .filter((item) => Boolean(item));
-  const searchEntryPages = [...quickLinks, ...pdfToJpgPages, ...jpgToPdfPages].filter(
+  const editPages = [
+    "rotate-pdf-online",
+    "rotate-pdf-pages",
+    "remove-pages-from-pdf",
+    "delete-pdf-pages",
+    "reorder-pdf-pages-online",
+    "rearrange-pdf-pages"
+  ]
+    .map((slug) => toolPageMap.get(slug))
+    .filter((item) => Boolean(item));
+  const searchEntryPages = [...quickLinks, ...pdfToJpgPages, ...jpgToPdfPages, ...editPages].filter(
     (item, index, pages) => item && pages.findIndex((page) => page?.slug === item.slug) === index
   );
 
@@ -60,6 +70,21 @@ export default function HomePage() {
       href: "/split-pdf",
       title: "Split PDF",
       copy: "Extract page ranges into smaller PDF parts for uploads, sharing, and follow-up compression."
+    },
+    {
+      href: "/rotate-pdf",
+      title: "Rotate PDF",
+      copy: "Fix sideways or upside-down PDF pages before uploading, sending, or merging."
+    },
+    {
+      href: "/remove-pdf-pages",
+      title: "Remove PDF pages",
+      copy: "Delete blank, duplicate, or unnecessary pages before uploading or sharing a PDF."
+    },
+    {
+      href: "/reorder-pdf-pages",
+      title: "Reorder PDF pages",
+      copy: "Move pages into the correct sequence before sending, merging, or compressing."
     },
     {
       href: "/pdf-to-jpg",
@@ -107,6 +132,18 @@ export default function HomePage() {
     {
       title: "Split before sending",
       copy: "Extract only the pages you need before emailing, uploading, or compressing a smaller document."
+    },
+    {
+      title: "Fix sideways scans",
+      copy: "Rotate all pages or selected page ranges before submitting scanned PDFs."
+    },
+    {
+      title: "Remove unwanted pages",
+      copy: "Delete blank pages, duplicate covers, or extra instructions before uploading a cleaner PDF."
+    },
+    {
+      title: "Reorder application packets",
+      copy: "Move forms, resumes, certificates, or receipts into the right sequence before export."
     },
     {
       title: "Export pages as images",
@@ -161,6 +198,21 @@ export default function HomePage() {
       href: "/split-pdf-for-upload",
       title: "Split PDFs for form uploads",
       copy: "Break one multi-page file into smaller upload-ready documents for portals and systems."
+    },
+    {
+      href: "/rotate-pdf",
+      title: "Rotate PDF pages",
+      copy: "Fix sideways pages before removing, reordering, merging, or compressing the final PDF."
+    },
+    {
+      href: "/remove-pdf-pages",
+      title: "Remove pages before upload",
+      copy: "Delete unnecessary pages first, then compress or submit a cleaner PDF."
+    },
+    {
+      href: "/reorder-pdf-pages",
+      title: "Reorder pages before export",
+      copy: "Fix page sequence before sharing, merging, or compressing the final PDF."
     }
   ];
 
@@ -421,6 +473,19 @@ export default function HomePage() {
               <strong>Conversion scenarios</strong>
               <div className="quick-links">
                 {[...pdfToJpgPages, ...jpgToPdfPages].map((page) =>
+                  page ? (
+                    <Link className="quick-link" href={`/${page.slug}`} key={page.slug}>
+                      <strong>{page.h1}</strong>
+                      <span>{page.subheading}</span>
+                    </Link>
+                  ) : null
+                )}
+              </div>
+            </div>
+            <div className="editorial-card">
+              <strong>PDF editing scenarios</strong>
+              <div className="quick-links">
+                {editPages.map((page) =>
                   page ? (
                     <Link className="quick-link" href={`/${page.slug}`} key={page.slug}>
                       <strong>{page.h1}</strong>
