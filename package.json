@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "fixtures:compression": "node scripts/create-compression-fixtures.mjs",
+    "benchmark:compression": "node scripts/benchmark-compression.mjs",
     "cf:build": "opennextjs-cloudflare build",
     "cf:preview": "wrangler dev",
     "cf:deploy": "opennextjs-cloudflare deploy"

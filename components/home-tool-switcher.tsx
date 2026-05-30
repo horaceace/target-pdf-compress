@@ -9,6 +9,7 @@ import { ReorderPdfCard } from "@/components/reorder-pdf-card";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { UploadCard } from "@/components/upload-card";
+import { trackEvent } from "@/lib/analytics/events";
 
 type ToolKey =
   | "compress"
@@ -90,7 +91,14 @@ export function HomeToolSwitcher() {
             role="tab"
             aria-selected={activeTool === item.key}
             className={`home-tool-tab${activeTool === item.key ? " home-tool-tab--active" : ""}`}
-            onClick={() => setActiveTool(item.key)}
+            onClick={() => {
+              trackEvent("tool_switch_clicked", {
+                source: "home_tool_switcher_tab",
+                tool: item.key,
+                label: item.title
+              });
+              setActiveTool(item.key);
+            }}
           >
             <strong>{item.label}</strong>
             <span>{item.title}</span>

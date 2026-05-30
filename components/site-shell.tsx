@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { TrackedLink } from "@/components/tracked-link";
 
 const toolNavItems = [
   { href: "/compress-pdf", label: "Compress PDF" },
@@ -73,9 +74,17 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </button>
               <div className="site-nav__dropdown">
                 {toolNavItems.map((item) => (
-                  <Link key={item.href} href={item.href}>
+                  <TrackedLink
+                    eventParams={{
+                      source: "header_tools_dropdown",
+                      tool: item.href.replace("/", ""),
+                      label: item.label
+                    }}
+                    key={item.href}
+                    href={item.href}
+                  >
                     {item.label}
-                  </Link>
+                  </TrackedLink>
                 ))}
               </div>
             </div>
@@ -110,9 +119,18 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 <strong>{group.title}</strong>
                 <div className="site-footer__links">
                   {group.links.map((link) => (
-                    <Link key={link.href} href={link.href}>
+                    <TrackedLink
+                      eventName={group.title === "Tools" ? "tool_switch_clicked" : "site_link_clicked"}
+                      eventParams={{
+                        source: `footer_${group.title.toLowerCase().replaceAll(" ", "_")}`,
+                        tool: link.href.replace("/", "") || "home",
+                        label: link.label
+                      }}
+                      key={link.href}
+                      href={link.href}
+                    >
                       {link.label}
-                    </Link>
+                    </TrackedLink>
                   ))}
                 </div>
               </div>

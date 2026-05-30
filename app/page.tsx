@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { HomeToolSwitcher } from "@/components/home-tool-switcher";
+import { TrackedLink } from "@/components/tracked-link";
 import { homepage, toolPageMap } from "@/content/tool-pages";
 
 export const metadata: Metadata = {
@@ -360,17 +360,34 @@ export default function HomePage() {
               ))}
             </div>
             <div className="hero-toolset">
-              <Link className="hero-feature-tool" href={featuredTool.href}>
+              <TrackedLink
+                className="hero-feature-tool"
+                eventParams={{
+                  source: "home_hero_feature",
+                  tool: featuredTool.href.replace("/", ""),
+                  label: featuredTool.title
+                }}
+                href={featuredTool.href}
+              >
                 <span className="directory-link__kicker">Start here</span>
                 <strong>{featuredTool.title}</strong>
                 <span>{featuredTool.copy}</span>
-              </Link>
+              </TrackedLink>
               <div className="hero-tool-list">
                 {secondaryTools.map((tool) => (
-                  <Link className="hero-tool-pill" href={tool.href} key={tool.href}>
+                  <TrackedLink
+                    className="hero-tool-pill"
+                    eventParams={{
+                      source: "home_hero_tool_list",
+                      tool: tool.href.replace("/", ""),
+                      label: tool.title
+                    }}
+                    href={tool.href}
+                    key={tool.href}
+                  >
                     <strong>{tool.title}</strong>
                     <span>{tool.copy}</span>
-                  </Link>
+                  </TrackedLink>
                 ))}
               </div>
             </div>
@@ -414,10 +431,19 @@ export default function HomePage() {
           </div>
           <div className="card-grid card-grid--wide">
             {coreTools.map((tool) => (
-              <Link className="quick-link quick-link--feature" href={tool.href} key={tool.href}>
+              <TrackedLink
+                className="quick-link quick-link--feature"
+                eventParams={{
+                  source: "home_core_tools",
+                  tool: tool.href.replace("/", ""),
+                  label: tool.title
+                }}
+                href={tool.href}
+                key={tool.href}
+              >
                 <strong>{tool.title}</strong>
                 <span>{tool.copy}</span>
-              </Link>
+              </TrackedLink>
             ))}
           </div>
         </div>
@@ -440,10 +466,19 @@ export default function HomePage() {
                 <div className="link-list">
                   {column.links.map((item) =>
                     "href" in item && item.href ? (
-                      <Link className="link-list__item" href={item.href} key={item.title}>
+                      <TrackedLink
+                        className="link-list__item"
+                        eventParams={{
+                          source: "home_workflow_columns",
+                          tool: item.href.replace("/", ""),
+                          label: item.title
+                        }}
+                        href={item.href}
+                        key={item.title}
+                      >
                         <span>{item.title}</span>
                         <small>{item.copy}</small>
-                      </Link>
+                      </TrackedLink>
                     ) : (
                       <div className="link-list__item" key={item.title}>
                         <span>{item.title}</span>
@@ -473,9 +508,19 @@ export default function HomePage() {
               <div className="scenario-list">
                 {popularCompressionPages.map((page) =>
                   page ? (
-                    <Link className="scenario-link" href={`/${page.slug}`} key={page.slug}>
+                    <TrackedLink
+                      className="scenario-link"
+                      eventName="site_link_clicked"
+                      eventParams={{
+                        source: "home_popular_compression",
+                        tool: page.tool,
+                        label: page.h1
+                      }}
+                      href={`/${page.slug}`}
+                      key={page.slug}
+                    >
                       {page.h1}
-                    </Link>
+                    </TrackedLink>
                   ) : null
                 )}
               </div>
@@ -485,9 +530,19 @@ export default function HomePage() {
               <div className="scenario-list">
                 {[...pdfToJpgPages, ...jpgToPdfPages].map((page) =>
                   page ? (
-                    <Link className="scenario-link" href={`/${page.slug}`} key={page.slug}>
+                    <TrackedLink
+                      className="scenario-link"
+                      eventName="site_link_clicked"
+                      eventParams={{
+                        source: "home_popular_conversion",
+                        tool: page.tool,
+                        label: page.h1
+                      }}
+                      href={`/${page.slug}`}
+                      key={page.slug}
+                    >
                       {page.h1}
-                    </Link>
+                    </TrackedLink>
                   ) : null
                 )}
               </div>
@@ -497,9 +552,19 @@ export default function HomePage() {
               <div className="scenario-list">
                 {editPages.map((page) =>
                   page ? (
-                    <Link className="scenario-link" href={`/${page.slug}`} key={page.slug}>
+                    <TrackedLink
+                      className="scenario-link"
+                      eventName="site_link_clicked"
+                      eventParams={{
+                        source: "home_popular_editing",
+                        tool: page.tool,
+                        label: page.h1
+                      }}
+                      href={`/${page.slug}`}
+                      key={page.slug}
+                    >
                       {page.h1}
-                    </Link>
+                    </TrackedLink>
                   ) : null
                 )}
               </div>
@@ -554,9 +619,19 @@ export default function HomePage() {
               <div className="search-grid">
                 {searchEntryPages.map((item) =>
                   item ? (
-                    <Link className="search-chip" href={`/${item.slug}`} key={item.slug}>
+                    <TrackedLink
+                      className="search-chip"
+                      eventName="site_link_clicked"
+                      eventParams={{
+                        source: "home_search_entry_pages",
+                        tool: item.tool,
+                        label: item.h1
+                      }}
+                      href={`/${item.slug}`}
+                      key={item.slug}
+                    >
                       {item.h1}
-                    </Link>
+                    </TrackedLink>
                   ) : null
                 )}
               </div>
@@ -592,13 +667,19 @@ export default function HomePage() {
           <div className="search-grid">
             {[...nextBatch, ...pdfToJpgPages, ...jpgToPdfPages].map((item) =>
               item ? (
-                <Link
+                <TrackedLink
                   className="search-chip search-chip--muted"
+                  eventName="site_link_clicked"
+                  eventParams={{
+                    source: "home_more_long_tail",
+                    tool: item.tool,
+                    label: item.h1
+                  }}
                   href={`/${item.slug}`}
                   key={item.slug}
                 >
                   {item.h1}
-                </Link>
+                </TrackedLink>
               ) : null
             )}
           </div>

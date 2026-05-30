@@ -4,3 +4,6 @@ node_modules
 npm-debug.log*
 .DS_Store
 .vercel
+test-fixtures/pdf-compression/*.pdf
+test-fixtures/pdf-compression/results/*
+!test-fixtures/pdf-compression/results/.gitkeep

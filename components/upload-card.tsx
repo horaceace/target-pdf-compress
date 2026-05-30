@@ -21,6 +21,7 @@ import {
   getNextCompressionMode,
   inferCompressionMode
 } from "@/lib/pdf/compress";
+import { trackEvent } from "@/lib/analytics/events";
 
 type UploadCardProps = {
   copy?: string;
@@ -29,6 +30,7 @@ type UploadCardProps = {
 };
 
 type UploadJobStatus = "queued" | "processing" | "success" | "error";
+type QueueFilter = "all" | "needs-action" | "done" | "issues";
 
 type UploadJob = {
   id: string;
@@ -37,6 +39,10 @@ type UploadJob = {
   mode: CompressionMode;
   targetBytes?: number;
   result?: CompressionResult;
+  previewStatus?: "idle" | "rendering" | "ready" | "error";
+  originalPreviewUrl?: string;
+  compressedPreviewUrl?: string;
+  previewError?: string;
   error?: string;
   errorTitle?: string;
   errorHint?: string;
@@ -256,6 +262,48 @@ function resultSummary(mode: CompressionMode, reductionRatio: number) {
     : "Scanned PDF mode is tuned for image-heavy files that resist lighter compression.";
 }
 
+function qualityHint(job: UploadJob) {
+  const details = job.result?.compressionDetails?.toLowerCase();
+
+  if (!job.result || job.result.mode !== "scanned" || !details) {
+    return null;
+  }
+
+  if (details.includes("portal limit")) {
+    return {
+      tone: "target",
+      title: "Smallest upload-first result",
+      copy:
+        "This path is tuned for strict size limits and may visibly reduce scan or image detail. Open the PDF once before submitting it."
+    };
+  }
+
+  if (details.includes("smallest scan")) {
+    return {
+      tone: "neutral",
+      title: "Balanced scan reduction",
+      copy:
+        "This default scanned path keeps more detail than the portal-limit path while still shrinking image-heavy pages strongly."
+    };
+  }
+
+  if (details.includes("smaller scan")) {
+    return {
+      tone: "neutral",
+      title: "Moderate scan reduction",
+      copy:
+        "This path reduces image-heavy pages while keeping a safer readability margin for scans and forms."
+    };
+  }
+
+  return {
+    tone: "neutral",
+    title: "Quality-aware scan path",
+    copy:
+      "This scanned path is selected from multiple browser render settings based on the smallest practical result."
+  };
+}
+
 function formatPagesLabel(pageCount: number) {
   return pageCount === 1 ? "1 page" : `${pageCount} pages`;
 }
@@ -282,6 +330,70 @@ function formatTargetStatus(job: UploadJob) {
   };
 }
 
+function needsAction(job: UploadJob) {
+  if (job.status !== "success" || !job.result) {
+    return false;
+  }
+
+  return Boolean(getSuggestedAction(job));
+}
+
+function analyticsModeParams(mode: CompressionMode, targetBytes?: number) {
+  return {
+    mode,
+    target_size: targetBytes ? formatBytes(targetBytes) : "none",
+    has_target: Boolean(targetBytes)
+  };
+}
+
+async function renderFirstPagePreview(source: Blob | File) {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    throw new Error("Preview rendering is only available in the browser.");
+  }
+
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/legacy/build/pdf.worker.mjs",
+      import.meta.url
+    ).toString();
+  }
+
+  const bytes = new Uint8Array(await source.arrayBuffer());
+  const loadingTask = pdfjs.getDocument({
+    data: bytes.slice(),
+    useSystemFonts: true,
+    isEvalSupported: false
+  } as Parameters<typeof pdfjs.getDocument>[0]);
+  const pdf = await loadingTask.promise;
+  const page = await pdf.getPage(1);
+  const viewport = page.getViewport({ scale: 0.42 });
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d", { alpha: false });
+
+  if (!context) {
+    throw new Error("Canvas rendering is not available in this browser.");
+  }
+
+  canvas.width = Math.max(1, Math.floor(viewport.width));
+  canvas.height = Math.max(1, Math.floor(viewport.height));
+
+  await page.render({
+    canvas,
+    canvasContext: context,
+    viewport
+  }).promise;
+
+  const previewUrl = canvas.toDataURL("image/jpeg", 0.82);
+
+  canvas.width = 0;
+  canvas.height = 0;
+  page.cleanup();
+  await loadingTask.destroy();
+
+  return previewUrl;
+}
+
 export function UploadCard({
   copy = "Batch-ready PDF compression",
   heading = "Compress PDF files",
@@ -292,6 +404,8 @@ export function UploadCard({
   const [mode, setMode] = useState<CompressionMode>(inferCompressionMode(initialTarget || copy));
   const [targetBytes, setTargetBytes] = useState(0);
   const [jobs, setJobs] = useState<UploadJob[]>([]);
+  const [queueFilter, setQueueFilter] = useState<QueueFilter>("all");
+  const [queueNotice, setQueueNotice] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -299,6 +413,24 @@ export function UploadCard({
   const hasJobs = jobs.length > 0;
   const processing = jobs.some((job) => job.status === "processing") || isPending;
   const successJobs = jobs.filter((job) => job.status === "success" && job.result);
+  const queuedJobs = jobs.filter((job) => job.status === "queued");
+  const errorJobs = jobs.filter((job) => job.status === "error");
+  const actionJobs = jobs.filter(needsAction);
+  const visibleJobs = jobs.filter((job) => {
+    if (queueFilter === "needs-action") {
+      return needsAction(job);
+    }
+
+    if (queueFilter === "done") {
+      return job.status === "success";
+    }
+
+    if (queueFilter === "issues") {
+      return job.status === "error";
+    }
+
+    return true;
+  });
 
   useEffect(() => {
     jobsRef.current = jobs;
@@ -402,11 +534,18 @@ export function UploadCard({
       return;
     }
 
+    setQueueFilter("all");
+    setQueueNotice(`${items.length} file${items.length === 1 ? "" : "s"} added to the queue.`);
     setJobs((current) => [...current, ...items]);
   }
 
   function onInputChange(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files?.length) {
+      trackEvent("file_selected", {
+        file_count: event.target.files.length,
+        source: "file_picker",
+        ...analyticsModeParams(mode, targetBytes)
+      });
       queueFiles(event.target.files);
       event.target.value = "";
     }
@@ -417,6 +556,11 @@ export function UploadCard({
     setIsDragging(false);
 
     if (event.dataTransfer.files?.length) {
+      trackEvent("file_selected", {
+        file_count: event.dataTransfer.files.length,
+        source: "dropzone",
+        ...analyticsModeParams(mode, targetBytes)
+      });
       queueFiles(event.dataTransfer.files);
     }
   }
@@ -452,8 +596,16 @@ export function UploadCard({
       errorHint: undefined
     }));
 
+    trackEvent("compression_started", {
+      file_size: file.size,
+      ...analyticsModeParams(selectedMode, selectedTargetBytes)
+    });
+
     try {
-      const result = await compressPdfFile(file, selectedMode);
+      const result = await compressPdfFile(file, selectedMode, {
+        targetBytes: selectedTargetBytes || undefined
+      });
+      const targetMet = selectedTargetBytes ? result.compressedBytes <= selectedTargetBytes : false;
       updateJob(id, (job) => ({
         ...job,
         status: "success",
@@ -462,6 +614,26 @@ export function UploadCard({
         result,
         error: undefined
       }));
+      trackEvent("compression_success", {
+        file_size: file.size,
+        original_bytes: result.originalBytes,
+        compressed_bytes: result.compressedBytes,
+        saved_bytes: result.savedBytes,
+        reduction_percent: Math.round(result.reductionRatio * 100),
+        page_count: result.pageCount,
+        document_profile: result.documentProfile,
+        target_met: targetMet,
+        compression_path: result.compressionDetails ?? "pdf-lib",
+        ...analyticsModeParams(selectedMode, selectedTargetBytes)
+      });
+
+      if (targetMet) {
+        trackEvent("target_size_met", {
+          compressed_bytes: result.compressedBytes,
+          target_bytes: selectedTargetBytes,
+          ...analyticsModeParams(selectedMode, selectedTargetBytes)
+        });
+      }
     } catch (error) {
       const normalized = normalizeCompressionError(error, file, selectedMode);
 
@@ -474,6 +646,11 @@ export function UploadCard({
         errorTitle: normalized.title,
         errorHint: normalized.hint
       }));
+      trackEvent("compression_failed", {
+        file_size: file.size,
+        error_title: normalized.title,
+        ...analyticsModeParams(selectedMode, selectedTargetBytes)
+      });
     }
   }
 
@@ -482,10 +659,17 @@ export function UploadCard({
       .filter((job) => job.status === "queued" || (job.status === "success" && job.mode !== mode))
       .map((job) => job.id);
 
+    if (!queuedIds.length) {
+      return;
+    }
+
+    setQueueNotice(`Compressing ${queuedIds.length} file${queuedIds.length === 1 ? "" : "s"} with ${getCompressionMode(mode).label}.`);
+
     startTransition(async () => {
       for (const id of queuedIds) {
         await processJob(id, mode, undefined, targetBytes);
       }
+      setQueueNotice(`${queuedIds.length} file${queuedIds.length === 1 ? "" : "s"} processed with ${getCompressionMode(mode).label}.`);
     });
   }
 
@@ -495,8 +679,72 @@ export function UploadCard({
       return;
     }
 
+    trackEvent("try_stronger_clicked", {
+      from_mode: job.mode,
+      to_mode: strongerMode,
+      file_size: job.file.size,
+      compressed_bytes: job.result?.compressedBytes,
+      ...analyticsModeParams(strongerMode, job.targetBytes ?? targetBytes)
+    });
+
     startTransition(async () => {
       await processJob(job.id, strongerMode, undefined, job.targetBytes ?? targetBytes);
+    });
+  }
+
+  function tryStrongerForActionJobs() {
+    const retryPlan = jobs
+      .filter((job) => job.status === "success" && job.result)
+      .map((job) => ({
+        job,
+        action: getSuggestedAction(job)
+      }))
+      .filter((item): item is { job: UploadJob; action: SuggestedAction } => Boolean(item.action));
+
+    if (!retryPlan.length) {
+      return;
+    }
+
+    trackEvent("bulk_try_stronger_clicked", {
+      file_count: retryPlan.length
+    });
+
+    const modeLabels = Array.from(
+      new Set(retryPlan.map((item) => getCompressionMode(item.action.mode).label))
+    ).join(", ");
+    setQueueNotice(`Retrying ${retryPlan.length} file${retryPlan.length === 1 ? "" : "s"} with ${modeLabels}.`);
+
+    startTransition(async () => {
+      for (const item of retryPlan) {
+        await processJob(
+          item.job.id,
+          item.action.mode,
+          undefined,
+          item.job.targetBytes ?? targetBytes
+        );
+      }
+      setQueueNotice(`${retryPlan.length} file${retryPlan.length === 1 ? "" : "s"} retried with ${modeLabels}.`);
+    });
+  }
+
+  function retryIssueJobs() {
+    const retryJobs = jobs.filter((job) => job.status === "error");
+
+    if (!retryJobs.length) {
+      return;
+    }
+
+    trackEvent("bulk_retry_issues_clicked", {
+      file_count: retryJobs.length
+    });
+
+    setQueueNotice(`Retrying ${retryJobs.length} issue${retryJobs.length === 1 ? "" : "s"}.`);
+
+    startTransition(async () => {
+      for (const job of retryJobs) {
+        await processJob(job.id, job.mode, undefined, job.targetBytes ?? targetBytes);
+      }
+      setQueueNotice(`${retryJobs.length} issue${retryJobs.length === 1 ? "" : "s"} retried.`);
     });
   }
 
@@ -511,9 +759,20 @@ export function UploadCard({
     anchor.download = job.result.fileName;
     anchor.click();
     URL.revokeObjectURL(url);
+    trackEvent("download_clicked", {
+      file_size: job.file.size,
+      compressed_bytes: job.result.compressedBytes,
+      reduction_percent: Math.round(job.result.reductionRatio * 100),
+      ...analyticsModeParams(job.result.mode, job.targetBytes)
+    });
   }
 
   function downloadAll() {
+    trackEvent("download_zip_clicked", {
+      file_count: successJobs.length,
+      total_saved_bytes: totals.saved,
+      total_compressed_bytes: totals.compressed
+    });
     void downloadFilesAsZip(
       "compressed-pdf-files.zip",
       successJobs
@@ -523,6 +782,53 @@ export function UploadCard({
           blob: job.result!.blob
         }))
     );
+  }
+
+  async function previewJob(job: UploadJob) {
+    if (!job.result || job.previewStatus === "rendering") {
+      return;
+    }
+
+    updateJob(job.id, (current) => ({
+      ...current,
+      previewStatus: "rendering",
+      previewError: undefined
+    }));
+    trackEvent("preview_clicked", {
+      file_size: job.file.size,
+      compressed_bytes: job.result.compressedBytes,
+      ...analyticsModeParams(job.result.mode, job.targetBytes)
+    });
+
+    try {
+      const [originalPreviewUrl, compressedPreviewUrl] = await Promise.all([
+        renderFirstPagePreview(job.file),
+        renderFirstPagePreview(job.result.blob)
+      ]);
+      updateJob(job.id, (current) => ({
+        ...current,
+        previewStatus: "ready",
+        originalPreviewUrl,
+        compressedPreviewUrl,
+        previewError: undefined
+      }));
+      trackEvent("preview_success", {
+        file_size: job.file.size,
+        compressed_bytes: job.result.compressedBytes,
+        ...analyticsModeParams(job.result.mode, job.targetBytes)
+      });
+    } catch (error) {
+      updateJob(job.id, (current) => ({
+        ...current,
+        previewStatus: "error",
+        previewError: error instanceof Error ? error.message : "Preview could not be rendered."
+      }));
+      trackEvent("preview_failed", {
+        file_size: job.file.size,
+        error_message: error instanceof Error ? error.message : "Preview could not be rendered.",
+        ...analyticsModeParams(job.result.mode, job.targetBytes)
+      });
+    }
   }
 
   return (
@@ -571,18 +877,33 @@ export function UploadCard({
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="compression-mode">Compression mode</label>
-            <select
-              id="compression-mode"
-              value={mode}
-              onChange={(event) => setMode(event.target.value as CompressionMode)}
-            >
-              {compressionModes.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
+            <span className="upload-mode__label">Compression mode</span>
+          </div>
+          <div className="compression-mode-grid" role="radiogroup" aria-label="Compression mode">
+            {compressionModes.map((item) => (
+              <button
+                aria-checked={mode === item.id}
+                className={`compression-mode-pill${
+                  mode === item.id ? " compression-mode-pill--active" : ""
+                }`}
+                key={item.id}
+                onClick={() => {
+                  if (item.id !== mode) {
+                    trackEvent("compression_mode_changed", {
+                      from_mode: mode,
+                      to_mode: item.id,
+                      ...analyticsModeParams(item.id, targetBytes)
+                    });
+                  }
+                  setMode(item.id);
+                }}
+                role="radio"
+                type="button"
+              >
+                <strong>{item.label}</strong>
+                <span>{item.bestFor}</span>
+              </button>
+            ))}
           </div>
           <div className="upload-mode__meta">
             <strong>{modeMeta.bestFor}</strong>
@@ -596,7 +917,14 @@ export function UploadCard({
             <select
               id="target-size"
               value={targetBytes}
-              onChange={(event) => setTargetBytes(Number(event.target.value))}
+              onChange={(event) => {
+                const nextTargetBytes = Number(event.target.value);
+                setTargetBytes(nextTargetBytes);
+                trackEvent("target_size_changed", {
+                  target_size: nextTargetBytes ? formatBytes(nextTargetBytes) : "none",
+                  target_bytes: nextTargetBytes
+                });
+              }}
             >
               {targetSizeOptions.map((item) => (
                 <option key={item.value} value={item.value}>
@@ -629,7 +957,11 @@ export function UploadCard({
               type="button"
               className="button button--secondary"
               disabled={!hasJobs || processing}
-              onClick={() => setJobs([])}
+              onClick={() => {
+                setQueueFilter("all");
+                setQueueNotice(null);
+                setJobs([]);
+              }}
             >
               Clear list
             </button>
@@ -666,6 +998,112 @@ export function UploadCard({
         </div>
       ) : null}
 
+      {hasJobs ? (
+        <div className="upload-queue-bar">
+          <div className="upload-queue-bar__stats" aria-label="Compression queue status">
+            <span>
+              <strong>{jobs.length}</strong> total
+            </span>
+            <span>
+              <strong>{successJobs.length}</strong> done
+            </span>
+            <span>
+              <strong>{actionJobs.length}</strong> need action
+            </span>
+            <span>
+              <strong>{queuedJobs.length}</strong> waiting
+            </span>
+            {errorJobs.length ? (
+              <span className="upload-queue-bar__error">
+                <strong>{errorJobs.length}</strong> issue{errorJobs.length === 1 ? "" : "s"}
+              </span>
+            ) : null}
+          </div>
+          <div className="upload-queue-bar__actions">
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!queuedJobs.length || processing}
+              onClick={processAll}
+            >
+              Compress remaining
+            </button>
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!successJobs.length}
+              onClick={downloadAll}
+            >
+              Download ZIP
+            </button>
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={processing}
+              onClick={() => {
+                setQueueFilter("all");
+                setQueueNotice(null);
+                setJobs([]);
+              }}
+            >
+              Clear
+            </button>
+          </div>
+          <div className="upload-queue-bar__actions upload-queue-bar__actions--secondary">
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!actionJobs.some((job) => job.status === "success" && job.result) || processing}
+              onClick={tryStrongerForActionJobs}
+            >
+              Try stronger needs action
+            </button>
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!errorJobs.length || processing}
+              onClick={retryIssueJobs}
+            >
+              Retry issues
+            </button>
+          </div>
+          {queueNotice ? (
+            <div className="upload-queue-notice" role="status">
+              {queueNotice}
+            </div>
+          ) : null}
+          <div className="upload-queue-filter" role="tablist" aria-label="Filter compression results">
+            {[
+              { id: "all" as const, label: "All", count: jobs.length },
+              { id: "needs-action" as const, label: "Needs action", count: actionJobs.length },
+              { id: "done" as const, label: "Done", count: successJobs.length },
+              { id: "issues" as const, label: "Issues", count: errorJobs.length }
+            ].map((item) => (
+              <button
+                aria-selected={queueFilter === item.id}
+                className={`upload-queue-filter__button${
+                  queueFilter === item.id ? " upload-queue-filter__button--active" : ""
+                }`}
+                disabled={!item.count && item.id !== "all"}
+                key={item.id}
+                onClick={() => {
+                  setQueueFilter(item.id);
+                  trackEvent("queue_filter_changed", {
+                    filter: item.id,
+                    result_count: item.count
+                  });
+                }}
+                role="tab"
+                type="button"
+              >
+                {item.label}
+                <span>{item.count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
       {successJobs.length ? (
         <div className="upload-summary">
           <div>
@@ -693,11 +1131,19 @@ export function UploadCard({
 
       {hasJobs ? (
         <div className="upload-jobs">
-          {jobs.map((job) => {
+          {!visibleJobs.length ? (
+            <div className="upload-jobs__empty">
+              <strong>No files in this view</strong>
+              <span>Switch filters to see the rest of the compression queue.</span>
+            </div>
+          ) : null}
+          {visibleJobs.map((job) => {
             const strongerMode = chooseStrongerMode(job.mode);
             const suggestedMode = chooseSuggestedMode(job);
             const suggestedAction = getSuggestedAction(job);
             const targetStatus = formatTargetStatus(job);
+            const selectedQualityHint = qualityHint(job);
+            const compactResult = jobs.length > 1 && job.status === "success" && Boolean(job.result);
             return (
               <article className="upload-job" key={job.id}>
                 <div className="upload-job__head">
@@ -714,121 +1160,259 @@ export function UploadCard({
 
                 {job.result ? (
                   <div className="upload-job__result">
-                    <div className="upload-job__stats">
-                      <div>
-                        <span>Before</span>
-                        <strong>{formatBytes(job.result.originalBytes)}</strong>
-                      </div>
-                      <div>
-                        <span>After</span>
-                        <strong>{formatBytes(job.result.compressedBytes)}</strong>
-                      </div>
-                      <div>
-                        <span>Saved</span>
-                        <strong>{formatBytes(job.result.savedBytes)}</strong>
-                      </div>
-                      <div>
-                        <span>Reduction</span>
-                        <strong>{Math.round(job.result.reductionRatio * 100)}%</strong>
-                      </div>
-                      <div>
-                        <span>Mode</span>
-                        <strong>{getCompressionMode(job.result.mode).label}</strong>
-                      </div>
-                      <div>
-                        <span>Pages</span>
-                        <strong>{job.result.pageCount}</strong>
-                      </div>
-                      <div>
-                        <span>Profile</span>
-                        <strong>{job.result.profileLabel}</strong>
-                      </div>
-                      {job.targetBytes ? (
-                        <div>
-                          <span>Target</span>
-                          <strong>{formatBytes(job.targetBytes)}</strong>
+                    {compactResult ? (
+                      <div className="upload-job__compact-result">
+                        <div className="upload-job__compact-metrics">
+                          <span>
+                            <strong>{Math.round(job.result.reductionRatio * 100)}%</strong>
+                            smaller
+                          </span>
+                          <span>
+                            <strong>{formatBytes(job.result.compressedBytes)}</strong>
+                            after
+                          </span>
+                          <span>
+                            <strong>{formatBytes(job.result.savedBytes)}</strong>
+                            saved
+                          </span>
                         </div>
-                      ) : null}
-                    </div>
-                    <p className="upload-job__summary">
-                      {resultSummary(job.result.mode, job.result.reductionRatio)}
-                    </p>
-                    {targetStatus ? (
-                      <div
-                        className={`upload-job__hint ${
-                          targetStatus.met ? "upload-job__hint--success" : "upload-job__hint--target"
-                        }`}
-                      >
-                        <strong>{targetStatus.title}</strong>
-                        <span>{targetStatus.copy}</span>
-                      </div>
-                    ) : null}
-                    <div className="upload-job__hint upload-job__hint--neutral">
-                      <strong>
-                        {formatPagesLabel(job.result.pageCount)} · {formatBytes(job.result.bytesPerPage)} per page
-                      </strong>
-                      <span>
-                        FileSmaller is using page count and bytes-per-page signals to decide whether this PDF behaves more like a clean office file, a mixed document, or a scan.
-                      </span>
-                    </div>
-                    {job.result.likelyImageHeavy ? (
-                      <div className="upload-job__hint">
-                        <strong>Looks like a scanned or image-heavy PDF</strong>
-                        <span>
-                          Larger bytes per page usually means this file is driven more by images than text.
-                        </span>
-                      </div>
-                    ) : null}
-                    {job.result.warning ? <p className="upload-job__warning">{job.result.warning}</p> : null}
-                    {job.result.recommendation ? (
-                      <p className="upload-job__recommendation">{job.result.recommendation}</p>
-                    ) : null}
-                    {suggestedAction ? (
-                      <div className="upload-job__next-step">
-                        <strong>Recommended next step</strong>
-                        <span>{suggestedAction.reason}</span>
-                      </div>
-                    ) : null}
-                    <div className="upload-job__actions">
-                      <button
-                        type="button"
-                        className="button button--primary"
-                        onClick={() => downloadJob(job)}
-                      >
-                        Download PDF
-                      </button>
-                      <button
-                        type="button"
-                        className="button button--secondary"
-                        disabled={!suggestedAction || processing}
-                        onClick={() => {
-                          if (!suggestedAction) {
-                            return;
-                          }
+                        {targetStatus ? (
+                          <div
+                            className={`upload-job__compact-target ${
+                              targetStatus.met
+                                ? "upload-job__compact-target--success"
+                                : "upload-job__compact-target--missed"
+                            }`}
+                          >
+                            {targetStatus.title}
+                          </div>
+                        ) : null}
+                        <div className="upload-job__compact-actions">
+                          <button
+                            type="button"
+                            className="button button--primary"
+                            onClick={() => downloadJob(job)}
+                          >
+                            Download
+                          </button>
+                          <button
+                            type="button"
+                            className="button button--secondary"
+                            disabled={!suggestedAction || processing}
+                            onClick={() => {
+                              if (!suggestedAction) {
+                                return;
+                              }
 
-                          startTransition(async () => {
-                            await processJob(
-                              job.id,
-                              suggestedAction.mode,
-                              undefined,
-                              job.targetBytes ?? targetBytes
-                            );
-                          });
-                        }}
-                      >
-                        {suggestedAction ? suggestedAction.label : "Strongest used"}
-                      </button>
-                      {strongerMode && suggestedMode !== strongerMode ? (
-                        <button
-                          type="button"
-                          className="button button--secondary"
-                          disabled={processing}
-                          onClick={() => tryStronger(job)}
-                        >
-                          Try {getCompressionMode(strongerMode).label}
-                        </button>
-                      ) : null}
-                    </div>
+                              startTransition(async () => {
+                                await processJob(
+                                  job.id,
+                                  suggestedAction.mode,
+                                  undefined,
+                                  job.targetBytes ?? targetBytes
+                                );
+                              });
+                            }}
+                          >
+                            {suggestedAction ? suggestedAction.label : "Strongest used"}
+                          </button>
+                          <button
+                            type="button"
+                            className="button button--secondary"
+                            disabled={job.previewStatus === "rendering"}
+                            onClick={() => {
+                              void previewJob(job);
+                            }}
+                          >
+                            {job.previewStatus === "rendering" ? "Rendering" : "Compare"}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="upload-job__outcome">
+                          <div>
+                            <span className="upload-job__outcome-label">Compressed result</span>
+                            <strong>{Math.round(job.result.reductionRatio * 100)}% smaller</strong>
+                            <span>
+                              {formatBytes(job.result.originalBytes)} to {formatBytes(job.result.compressedBytes)}
+                            </span>
+                          </div>
+                          <div className="upload-job__outcome-save">
+                            <span>Saved</span>
+                            <strong>{formatBytes(job.result.savedBytes)}</strong>
+                          </div>
+                        </div>
+                        {targetStatus ? (
+                          <div
+                            className={`upload-job__target-status ${
+                              targetStatus.met
+                                ? "upload-job__target-status--success"
+                                : "upload-job__target-status--missed"
+                            }`}
+                          >
+                            <strong>{targetStatus.title}</strong>
+                            <span>{targetStatus.copy}</span>
+                          </div>
+                        ) : (
+                          <div className="upload-job__target-status upload-job__target-status--neutral">
+                            <strong>Ready to download</strong>
+                            <span>No fixed target size was selected for this compression run.</span>
+                          </div>
+                        )}
+                        <div className="upload-job__stats">
+                          <div>
+                            <span>Before</span>
+                            <strong>{formatBytes(job.result.originalBytes)}</strong>
+                          </div>
+                          <div>
+                            <span>After</span>
+                            <strong>{formatBytes(job.result.compressedBytes)}</strong>
+                          </div>
+                          <div>
+                            <span>Saved</span>
+                            <strong>{formatBytes(job.result.savedBytes)}</strong>
+                          </div>
+                          <div>
+                            <span>Reduction</span>
+                            <strong>{Math.round(job.result.reductionRatio * 100)}%</strong>
+                          </div>
+                          <div>
+                            <span>Mode</span>
+                            <strong>{getCompressionMode(job.result.mode).label}</strong>
+                          </div>
+                          <div>
+                            <span>Pages</span>
+                            <strong>{job.result.pageCount}</strong>
+                          </div>
+                          <div>
+                            <span>Profile</span>
+                            <strong>{job.result.profileLabel}</strong>
+                          </div>
+                          {job.targetBytes ? (
+                            <div>
+                              <span>Target</span>
+                              <strong>{formatBytes(job.targetBytes)}</strong>
+                            </div>
+                          ) : null}
+                        </div>
+                        <p className="upload-job__summary">
+                          {resultSummary(job.result.mode, job.result.reductionRatio)}
+                        </p>
+                        {job.result.warning ? <p className="upload-job__warning">{job.result.warning}</p> : null}
+                        {job.result.recommendation ? (
+                          <p className="upload-job__recommendation">{job.result.recommendation}</p>
+                        ) : null}
+                        {suggestedAction ? (
+                          <div className="upload-job__next-step">
+                            <strong>Recommended next step</strong>
+                            <span>{suggestedAction.reason}</span>
+                          </div>
+                        ) : null}
+                        <div className="upload-job__actions">
+                          <button
+                            type="button"
+                            className="button button--primary"
+                            onClick={() => downloadJob(job)}
+                          >
+                            Download PDF
+                          </button>
+                          <button
+                            type="button"
+                            className="button button--secondary"
+                            disabled={!suggestedAction || processing}
+                            onClick={() => {
+                              if (!suggestedAction) {
+                                return;
+                              }
+
+                              startTransition(async () => {
+                                await processJob(
+                                  job.id,
+                                  suggestedAction.mode,
+                                  undefined,
+                                  job.targetBytes ?? targetBytes
+                                );
+                              });
+                            }}
+                          >
+                            {suggestedAction ? suggestedAction.label : "Strongest used"}
+                          </button>
+                          {strongerMode && suggestedMode !== strongerMode ? (
+                            <button
+                              type="button"
+                              className="button button--secondary"
+                              disabled={processing}
+                              onClick={() => tryStronger(job)}
+                            >
+                              Try {getCompressionMode(strongerMode).label}
+                            </button>
+                          ) : null}
+                          <button
+                            type="button"
+                            className="button button--secondary"
+                            disabled={job.previewStatus === "rendering"}
+                            onClick={() => {
+                              void previewJob(job);
+                            }}
+                          >
+                            {job.previewStatus === "rendering" ? "Rendering preview" : "Compare first page"}
+                          </button>
+                        </div>
+                        <details className="upload-job__details">
+                          <summary>Technical details</summary>
+                          <div className="upload-job__details-body">
+                            <div className="upload-job__hint upload-job__hint--neutral">
+                              <strong>
+                                {formatPagesLabel(job.result.pageCount)} · {formatBytes(job.result.bytesPerPage)} per page
+                              </strong>
+                              <span>
+                                FileSmaller is using page count and bytes-per-page signals to decide whether this PDF behaves more like a clean office file, a mixed document, or a scan.
+                              </span>
+                            </div>
+                            {job.result.likelyImageHeavy ? (
+                              <div className="upload-job__hint">
+                                <strong>Looks like a scanned or image-heavy PDF</strong>
+                                <span>
+                                  Larger bytes per page usually means this file is driven more by images than text.
+                                </span>
+                              </div>
+                            ) : null}
+                            {job.result.compressionDetails ? (
+                              <div className="upload-job__hint upload-job__hint--neutral">
+                                <strong>Compression path</strong>
+                                <span>{job.result.compressionDetails}</span>
+                              </div>
+                            ) : null}
+                            {selectedQualityHint ? (
+                              <div
+                                className={`upload-job__hint ${
+                                  selectedQualityHint.tone === "target" ? "upload-job__hint--target" : "upload-job__hint--neutral"
+                                }`}
+                              >
+                                <strong>{selectedQualityHint.title}</strong>
+                                <span>{selectedQualityHint.copy}</span>
+                              </div>
+                            ) : null}
+                          </div>
+                        </details>
+                      </>
+                    )}
+                    {job.originalPreviewUrl && job.compressedPreviewUrl ? (
+                      <div className="upload-job__preview-grid">
+                        <figure className="upload-job__preview">
+                          <img alt={`Original first-page preview of ${job.file.name}`} src={job.originalPreviewUrl} />
+                          <figcaption>Original first page</figcaption>
+                        </figure>
+                        <figure className="upload-job__preview">
+                          <img alt={`Compressed first-page preview of ${job.result.fileName}`} src={job.compressedPreviewUrl} />
+                          <figcaption>Compressed first page</figcaption>
+                        </figure>
+                      </div>
+                    ) : null}
+                    {job.previewError ? (
+                      <p className="upload-job__warning">{job.previewError}</p>
+                    ) : null}
                   </div>
                 ) : null}
 
