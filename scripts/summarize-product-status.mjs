@@ -23,6 +23,14 @@ async function readJson(relativePath, fallback) {
   }
 }
 
+async function readText(relativePath, fallback = "") {
+  try {
+    return await readFile(path.join(projectRoot, relativePath), "utf8");
+  } catch {
+    return fallback;
+  }
+}
+
 function run(command, args) {
   execFileSync(command, args, {
     cwd: projectRoot,
@@ -74,6 +82,8 @@ async function main() {
   const releaseReadiness = await readJson("test-fixtures/pdf-compression/results/release-readiness.json", {});
   const openSourceReadiness = await readJson("test-fixtures/pdf-compression/results/open-source-readiness.json", {});
   const compressionStatus = await readJson("test-fixtures/pdf-compression/results/compression-project-status.json", {});
+  const operationsLog = await readText("运营记录.md");
+  const productionSmokeVerified = operationsLog.includes("生产 smoke check 的关键项已通过 Playwright 验证");
 
   const standard = summarizeChecks(releaseReadiness.standardRelease?.checks ?? []);
   const strong = summarizeChecks(releaseReadiness.strongCompressionRelease?.checks ?? []);
@@ -85,12 +95,22 @@ async function main() {
   const areas = {
     standardRelease: {
       label: "Standard browser-first release",
-      status: releaseReadiness.standardRelease?.status ?? "missing",
-      percent: releaseReadiness.standardRelease?.status === "PASS" ? 95 : clamp(standard.percent * 0.9),
-      summary: `${standard.passed}/${standard.total} checks passed`,
-      nextAction: releaseReadiness.standardRelease?.status === "PASS"
-        ? "Deploy, then run npm run release:postdeploy-check."
-        : "Run npm run release:standard-check and fix failed checks."
+      status: productionSmokeVerified
+        ? "RELEASED"
+        : releaseReadiness.standardRelease?.status ?? "missing",
+      percent: productionSmokeVerified
+        ? 100
+        : releaseReadiness.standardRelease?.status === "PASS"
+          ? 95
+          : clamp(standard.percent * 0.9),
+      summary: productionSmokeVerified
+        ? `${standard.passed}/${standard.total} checks passed; production smoke verified`
+        : `${standard.passed}/${standard.total} checks passed`,
+      nextAction: productionSmokeVerified
+        ? "Monitor Search Console, GA4, and user compression failures."
+        : releaseReadiness.standardRelease?.status === "PASS"
+          ? "Deploy, then run npm run release:postdeploy-check."
+          : "Run npm run release:standard-check and fix failed checks."
     },
     strongCompression: {
       label: "Strong compression engine",
