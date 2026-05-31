@@ -21,6 +21,7 @@ import {
   getNextCompressionMode,
   inferCompressionMode
 } from "@/lib/pdf/compress";
+import { getBrowserLimitAction } from "@/lib/pdf/browser-limit-action.mjs";
 import { trackEvent } from "@/lib/analytics/events";
 
 type UploadCardProps = {
@@ -230,6 +231,20 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
   };
 }
 
+function getBrowserLimitActionForJob(job: UploadJob) {
+  if (!job.result) {
+    return null;
+  }
+
+  return getBrowserLimitAction({
+    mode: job.mode,
+    targetBytes: job.targetBytes,
+    compressedBytes: job.result.compressedBytes,
+    reductionRatio: job.result.reductionRatio,
+    documentProfile: job.result.documentProfile
+  });
+}
+
 function resultSummary(mode: CompressionMode, reductionRatio: number) {
   const percent = Math.round(reductionRatio * 100);
 
@@ -335,7 +350,56 @@ function needsAction(job: UploadJob) {
     return false;
   }
 
-  return Boolean(getSuggestedAction(job));
+  return Boolean(getSuggestedAction(job) || getBrowserLimitActionForJob(job));
+}
+
+function getQueueModeHint(jobs: UploadJob[], selectedMode: CompressionMode, targetBytes: number) {
+  if (!jobs.length) {
+    return null;
+  }
+
+  const validJobs = jobs.filter((job) => job.status !== "error");
+  const largestJob = validJobs.reduce<UploadJob | null>((largest, job) => {
+    if (!largest || job.file.size > largest.file.size) {
+      return job;
+    }
+
+    return largest;
+  }, null);
+  const largePdfCount = validJobs.filter((job) => job.file.size >= 2 * 1024 * 1024).length;
+  const strictTarget = targetBytes > 0 && targetBytes <= 1024 * 1024;
+  const anyScannedResults = validJobs.some(
+    (job) =>
+      job.result &&
+      (job.result.documentProfile === "image-heavy" ||
+        job.result.documentProfile === "scanned-heavy")
+  );
+
+  if (anyScannedResults && selectedMode !== "scanned") {
+    return {
+      title: "Image-heavy results detected",
+      copy:
+        "At least one processed file behaves like a scan or image-heavy PDF. Use Scanned PDF mode for the strongest browser-side reduction path."
+    };
+  }
+
+  if (largePdfCount > 0 && selectedMode !== "scanned") {
+    return {
+      title: `${largePdfCount} large PDF${largePdfCount === 1 ? "" : "s"} in this queue`,
+      copy:
+        "Large PDFs are often scan-heavy or image-heavy. If the first pass barely moves them, rerun the affected files with Scanned PDF mode."
+    };
+  }
+
+  if (strictTarget && largestJob && largestJob.file.size > targetBytes * 2 && selectedMode === "light") {
+    return {
+      title: "Strict upload target selected",
+      copy:
+        "Light mode is unlikely to hit a tight size limit. Start with Balanced or Strong, then use the recommended retry for files that miss the target."
+    };
+  }
+
+  return null;
 }
 
 function analyticsModeParams(mode: CompressionMode, targetBytes?: number) {
@@ -416,6 +480,7 @@ export function UploadCard({
   const queuedJobs = jobs.filter((job) => job.status === "queued");
   const errorJobs = jobs.filter((job) => job.status === "error");
   const actionJobs = jobs.filter(needsAction);
+  const queueModeHint = getQueueModeHint(jobs, mode, targetBytes);
   const visibleJobs = jobs.filter((job) => {
     if (queueFilter === "needs-action") {
       return needsAction(job);
@@ -603,7 +668,11 @@ export function UploadCard({
 
     try {
       const result = await compressPdfFile(file, selectedMode, {
-        targetBytes: selectedTargetBytes || undefined
+        targetBytes: selectedTargetBytes || undefined,
+        allowPortalLimitScan:
+          selectedMode === "scanned" &&
+          Boolean(selectedTargetBytes) &&
+          (selectedTargetBytes <= 1024 * 1024 || selectedTargetBytes < file.size * 0.45)
       });
       const targetMet = selectedTargetBytes ? result.compressedBytes <= selectedTargetBytes : false;
       updateJob(id, (job) => ({
@@ -631,6 +700,23 @@ export function UploadCard({
         trackEvent("target_size_met", {
           compressed_bytes: result.compressedBytes,
           target_bytes: selectedTargetBytes,
+          ...analyticsModeParams(selectedMode, selectedTargetBytes)
+        });
+      } else if (
+        getBrowserLimitAction({
+          mode: selectedMode,
+          targetBytes: selectedTargetBytes,
+          compressedBytes: result.compressedBytes,
+          reductionRatio: result.reductionRatio,
+          documentProfile: result.documentProfile
+        })
+      ) {
+        trackEvent("browser_limit_reached", {
+          file_size: file.size,
+          compressed_bytes: result.compressedBytes,
+          reduction_percent: Math.round(result.reductionRatio * 100),
+          document_profile: result.documentProfile,
+          compression_path: result.compressionDetails ?? "pdf-lib",
           ...analyticsModeParams(selectedMode, selectedTargetBytes)
         });
       }
@@ -1056,7 +1142,7 @@ export function UploadCard({
               disabled={!actionJobs.some((job) => job.status === "success" && job.result) || processing}
               onClick={tryStrongerForActionJobs}
             >
-              Try stronger needs action
+              Try recommended modes
             </button>
             <button
               type="button"
@@ -1070,6 +1156,12 @@ export function UploadCard({
           {queueNotice ? (
             <div className="upload-queue-notice" role="status">
               {queueNotice}
+            </div>
+          ) : null}
+          {queueModeHint ? (
+            <div className="upload-queue-hint">
+              <strong>{queueModeHint.title}</strong>
+              <span>{queueModeHint.copy}</span>
             </div>
           ) : null}
           <div className="upload-queue-filter" role="tablist" aria-label="Filter compression results">
@@ -1141,6 +1233,7 @@ export function UploadCard({
             const strongerMode = chooseStrongerMode(job.mode);
             const suggestedMode = chooseSuggestedMode(job);
             const suggestedAction = getSuggestedAction(job);
+            const browserLimitAction = getBrowserLimitActionForJob(job);
             const targetStatus = formatTargetStatus(job);
             const selectedQualityHint = qualityHint(job);
             const compactResult = jobs.length > 1 && job.status === "success" && Boolean(job.result);
@@ -1185,6 +1278,12 @@ export function UploadCard({
                             }`}
                           >
                             {targetStatus.title}
+                          </div>
+                        ) : null}
+                        {selectedQualityHint ? (
+                          <div className="upload-job__compact-quality">
+                            <strong>{selectedQualityHint.title}</strong>
+                            <span>Compare before submitting this compressed file.</span>
                           </div>
                         ) : null}
                         <div className="upload-job__compact-actions">
@@ -1303,10 +1402,42 @@ export function UploadCard({
                         {job.result.recommendation ? (
                           <p className="upload-job__recommendation">{job.result.recommendation}</p>
                         ) : null}
+                        {selectedQualityHint ? (
+                          <div
+                            className={`upload-job__quality-callout ${
+                              selectedQualityHint.tone === "target"
+                                ? "upload-job__quality-callout--target"
+                                : "upload-job__quality-callout--neutral"
+                            }`}
+                          >
+                            <div>
+                              <strong>{selectedQualityHint.title}</strong>
+                              <span>{selectedQualityHint.copy}</span>
+                            </div>
+                            <button
+                              type="button"
+                              className="button button--secondary"
+                              disabled={job.previewStatus === "rendering"}
+                              onClick={() => {
+                                void previewJob(job);
+                              }}
+                            >
+                              {job.previewStatus === "rendering" ? "Rendering" : "Compare first page"}
+                            </button>
+                          </div>
+                        ) : null}
                         {suggestedAction ? (
                           <div className="upload-job__next-step">
                             <strong>Recommended next step</strong>
                             <span>{suggestedAction.reason}</span>
+                          </div>
+                        ) : null}
+                        {browserLimitAction ? (
+                          <div
+                            className={`upload-job__browser-limit upload-job__browser-limit--${browserLimitAction.severity}`}
+                          >
+                            <strong>{browserLimitAction.title}</strong>
+                            <span>{browserLimitAction.copy}</span>
                           </div>
                         ) : null}
                         <div className="upload-job__actions">
@@ -1382,16 +1513,6 @@ export function UploadCard({
                               <div className="upload-job__hint upload-job__hint--neutral">
                                 <strong>Compression path</strong>
                                 <span>{job.result.compressionDetails}</span>
-                              </div>
-                            ) : null}
-                            {selectedQualityHint ? (
-                              <div
-                                className={`upload-job__hint ${
-                                  selectedQualityHint.tone === "target" ? "upload-job__hint--target" : "upload-job__hint--neutral"
-                                }`}
-                              >
-                                <strong>{selectedQualityHint.title}</strong>
-                                <span>{selectedQualityHint.copy}</span>
                               </div>
                             ) : null}
                           </div>

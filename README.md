@@ -28,6 +28,47 @@ npm install
 npm run dev
 ```
 
+## Compression Evidence Terms
+
+- Real samples: reviewed non-sensitive PDFs that represent actual user scenarios, such as resumes, upload forms, scanned documents, image-heavy PDFs, invoices/tables, large upload-limit files, and email attachments. Synthetic fixtures validate the pipeline, but real samples are required before choosing a production compression engine.
+- External engines: mature PDF compression tools reused instead of writing low-level PDF compression from scratch. Current candidates are `qpdf`, `pdfcpu`, and Ghostscript. qpdf is the first low-risk candidate; Ghostscript is comparison-only until license, deployment, and quality review are approved.
+
+Current blockers are visible through:
+
+```bash
+npm run project:status
+npm run benchmark:status
+npm run benchmark:external-setup
+npm run release:readiness
+npm run release:standard-check
+npm run release:ci-check
+npm run release:seo-check
+```
+
+Open-source reuse research:
+
+- Product-specific plan: `产品规划-v2.md`
+- GitHub reuse matrix: `docs/GitHub开源复用调研.md`
+- Current decision: keep FileSmaller, reuse mature engines where they pass evidence gates, and do not replace the product with a large fork.
+
+Release policy:
+
+- A standard release may ship browser-first product, UI, SEO, analytics, and tooling changes when `npm run release:standard-check` passes. This checks the Next.js build and Cloudflare Workers build, but does not deploy.
+- CI deploys run `npm run release:ci-check`, which uses only fresh-clone reproducible fixtures, robots/sitemap checks, and build checks before `cf:deploy`.
+- A strong-compression engine release must not be marketed or shipped as production-ready until real samples, browser real-suite rows, manual quality review, and external engine results pass `npm run benchmark:decision-gate`.
+- Release checklist: `发布检查清单.md`
+- Release handoff: `发布交接.md`
+- Current release notes: `发布说明-2026-05-31.md`
+- Open-source readiness: `开源准备清单.md`
+- Changelog: `CHANGELOG.md`
+- Contributing guide: `CONTRIBUTING.md`
+
+Open-source status:
+
+- Current metadata gate: `npm run release:open-source-check`
+- The repository should not be made public as an open-source project until a license is selected, `package.json.license` is set, and `package.json.private` is reviewed.
+- Real PDFs and private benchmark results must stay out of git.
+
 ## Deploy
 
 GitHub Actions deploys automatically on push to `master`.
@@ -52,6 +93,11 @@ Analytics notes:
 Relevant scripts:
 
 ```bash
+npm run project:status
+npm run release:standard-check
+npm run release:ci-check
+npm run release:seo-check
+npm run release:postdeploy-check
 npm run build
 npm run cf:build
 npm run cf:deploy
@@ -84,7 +130,16 @@ npm run cf:deploy
 - GA4 event tracking for upload, compression, preview, download, batch actions, and tool-routing clicks
 - Local compression benchmark tooling:
   - `npm run fixtures:compression`
+  - `npm run samples:intake-kit`
+  - `npm run samples:check`
   - `npm run benchmark:compression`
+  - `npm run benchmark:external-compressors`
+  - `npm run benchmark:decision`
+  - `npm run benchmark:engine-recommendation`
+  - `npm run benchmark:decision-gate`
+  - `npm run benchmark:quality-review`
+  - `npm run benchmark:status`
+  - `npm run benchmark:pipeline`
   - `/dev/compression-benchmark`
 - GA4 validation checklist in `GA4事件验证清单.md`
 - Product progress plan in `PDF压缩产品功能规划.md`

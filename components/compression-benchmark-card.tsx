@@ -41,11 +41,16 @@ type BenchmarkExport = {
 
 type LocalFixture = {
   name: string;
+  kind: "synthetic" | "real" | "other";
+  note?: string;
+  originalFileName?: string;
   url: string;
 };
 
 type MultiFixtureRun = {
   fileName: string;
+  sampleKind: LocalFixture["kind"];
+  note?: string;
   size: number;
   sizeLabel: string;
   bestMode?: {
@@ -132,31 +137,34 @@ function buildMarkdownReport(data: BenchmarkExport) {
 
 function buildMultiFixtureMarkdown(generatedAt: string, runs: MultiFixtureRun[]) {
   const summaryHeader = [
-    "| File | Best mode | Before | Best after | Best reduction | Scanned after | Scanned reduction | Scanned details |",
-    "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |"
+    "| File | Type | Best mode | Before | Best after | Best reduction | Scanned after | Scanned reduction | Scanned details | Note |",
+    "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |"
   ];
   const summaryRows = runs.map((run) => {
     const scanned = run.rows.find((row) => row.mode === "scanned" && row.status === "success");
 
     return [
       run.fileName,
+      run.sampleKind,
       run.bestMode?.label ?? "-",
       run.sizeLabel,
       run.bestMode ? formatBytes(run.bestMode.compressedBytes) : "-",
       run.bestMode ? formatPercent(run.bestMode.reductionRatio) : "-",
       scanned?.compressedBytes ? formatBytes(scanned.compressedBytes) : "-",
       scanned ? formatPercent(scanned.reductionRatio) : "-",
-      scanned?.compressionDetails ?? "-"
+      scanned?.compressionDetails ?? "-",
+      run.note || "-"
     ].join(" | ");
   });
   const detailHeader = [
-    "| File | Mode | Status | Profile | Before | After | Saved | Reduction | Time | Details | Error |",
-    "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |"
+    "| File | Type | Mode | Status | Profile | Before | After | Saved | Reduction | Time | Details | Error |",
+    "| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |"
   ];
   const detailRows = runs.flatMap((run) =>
     run.rows.map((row) =>
       [
         run.fileName,
+        run.sampleKind,
         getCompressionMode(row.mode).label,
         row.status,
         row.profileLabel ?? "-",
@@ -177,6 +185,8 @@ function buildMultiFixtureMarkdown(generatedAt: string, runs: MultiFixtureRun[])
     `Generated: ${generatedAt}`,
     "",
     "This report measures local PDF fixtures through the browser compression path, including the Scanned PDF render-and-rebuild path.",
+    "",
+    `Fixture mix: ${runs.filter((run) => run.sampleKind === "real").length} real, ${runs.filter((run) => run.sampleKind === "synthetic").length} synthetic, ${runs.filter((run) => run.sampleKind === "other").length} other.`,
     "",
     "## Summary",
     "",
@@ -199,6 +209,7 @@ export function CompressionBenchmarkCard() {
   const [localFixtures, setLocalFixtures] = useState<LocalFixture[]>([]);
   const [fixtureRuns, setFixtureRuns] = useState<MultiFixtureRun[]>([]);
   const [suiteError, setSuiteError] = useState("");
+  const [suiteSaveStatus, setSuiteSaveStatus] = useState("");
   const [isPending, startTransition] = useTransition();
   const processing = isPending || rows.some((row) => row.status === "processing");
   const hasResult = rows.some((row) => row.status === "success" || row.status === "error");
@@ -219,7 +230,12 @@ export function CompressionBenchmarkCard() {
         const data = (await response.json()) as { files?: LocalFixture[] };
 
         if (!cancelled) {
-          setLocalFixtures(data.files ?? []);
+          setLocalFixtures(
+            (data.files ?? []).map((fixture) => ({
+              ...fixture,
+              kind: fixture.kind ?? "other"
+            }))
+          );
         }
       } catch {
         if (!cancelled) {
@@ -352,6 +368,8 @@ export function CompressionBenchmarkCard() {
 
           runs.push({
             fileName: fixture.name,
+            sampleKind: fixture.kind,
+            note: fixture.note,
             size: fixtureFile.size,
             sizeLabel: formatBytes(fixtureFile.size),
             bestMode: best
@@ -441,6 +459,19 @@ export function CompressionBenchmarkCard() {
     );
   }
 
+  function buildFixtureSuiteJson() {
+    return {
+      generatedAt: lastRunAt || new Date().toISOString(),
+      allowPortalLimitScan,
+      fixtureMix: {
+        real: fixtureRuns.filter((run) => run.sampleKind === "real").length,
+        synthetic: fixtureRuns.filter((run) => run.sampleKind === "synthetic").length,
+        other: fixtureRuns.filter((run) => run.sampleKind === "other").length
+      },
+      runs: fixtureRuns
+    };
+  }
+
   function exportFixtureSuiteJson() {
     if (!fixtureRuns.length) {
       return;
@@ -448,17 +479,45 @@ export function CompressionBenchmarkCard() {
 
     downloadText(
       `browser-compression-benchmark-suite-${new Date().toISOString().slice(0, 10)}.json`,
-      `${JSON.stringify(
-        {
-          generatedAt: lastRunAt || new Date().toISOString(),
-          allowPortalLimitScan,
-          runs: fixtureRuns
-        },
-        null,
-        2
-      )}\n`,
+      `${JSON.stringify(buildFixtureSuiteJson(), null, 2)}\n`,
       "application/json"
     );
+  }
+
+  async function saveFixtureSuite() {
+    if (!fixtureRuns.length || processing) {
+      return;
+    }
+
+    setSuiteSaveStatus("Saving suite files...");
+
+    try {
+      const response = await fetch("/dev/compression-benchmark/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          filePart: new Date().toISOString().slice(0, 10),
+          markdown: buildMultiFixtureMarkdown(lastRunAt || new Date().toISOString(), fixtureRuns),
+          json: buildFixtureSuiteJson()
+        })
+      });
+      const data = (await response.json()) as {
+        ok?: boolean;
+        markdownPath?: string;
+        jsonPath?: string;
+        error?: string;
+      };
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error ?? "Unable to save benchmark suite");
+      }
+
+      setSuiteSaveStatus(`Saved ${data.markdownPath} and ${data.jsonPath}`);
+    } catch (error) {
+      setSuiteSaveStatus(error instanceof Error ? error.message : "Unable to save benchmark suite");
+    }
   }
 
   return (
@@ -518,7 +577,11 @@ export function CompressionBenchmarkCard() {
       <div className="dev-benchmark-suite">
         <div>
           <strong>Local fixture suite</strong>
-          <span>{localFixtures.length ? `${localFixtures.length} fixture(s) found` : "No local fixtures found"}</span>
+          <span>
+            {localFixtures.length
+              ? `${localFixtures.length} fixture(s): ${localFixtures.filter((fixture) => fixture.kind === "real").length} real, ${localFixtures.filter((fixture) => fixture.kind === "synthetic").length} synthetic`
+              : "No local fixtures found"}
+          </span>
         </div>
         <div className="dev-benchmark-card__exports">
           <button
@@ -545,8 +608,23 @@ export function CompressionBenchmarkCard() {
           >
             Export suite Markdown
           </button>
+          <button
+            className="button button--secondary"
+            disabled={!fixtureRuns.length || processing}
+            onClick={saveFixtureSuite}
+            type="button"
+          >
+            Save suite files
+          </button>
         </div>
       </div>
+
+      {suiteSaveStatus ? (
+        <div className="upload-job__hint upload-job__hint--neutral">
+          <strong>Suite save status</strong>
+          <span>{suiteSaveStatus}</span>
+        </div>
+      ) : null}
 
       {suiteError ? (
         <div className="upload-job__hint upload-job__hint--warning">
@@ -561,7 +639,7 @@ export function CompressionBenchmarkCard() {
             <div className="upload-job__hint upload-job__hint--neutral" key={run.fileName}>
               <strong>{run.fileName}</strong>
               <span>
-                Best: {run.bestMode?.label ?? "-"} ·{" "}
+                {run.sampleKind} · Best: {run.bestMode?.label ?? "-"} ·{" "}
                 {run.bestMode ? formatPercent(run.bestMode.reductionRatio) : "-"} smaller ·{" "}
                 {run.bestMode ? formatBytes(run.bestMode.compressedBytes) : "-"}
               </span>

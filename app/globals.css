@@ -1522,6 +1522,27 @@ img {
   line-height: 1.4;
 }
 
+.upload-queue-hint {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.72rem 0.82rem;
+  border: 1px solid rgba(201, 138, 84, 0.18);
+  border-radius: 0.85rem;
+  background: rgba(255, 248, 233, 0.88);
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.upload-queue-hint strong {
+  color: #7a4d1f;
+  font-size: 0.9rem;
+}
+
+.upload-queue-hint span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
 .upload-queue-filter {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 118px), 1fr));
@@ -1863,6 +1884,27 @@ img {
   border-color: rgba(201, 138, 84, 0.24);
 }
 
+.upload-job__compact-quality {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.58rem 0.68rem;
+  border: 1px solid rgba(201, 138, 84, 0.2);
+  border-radius: 0.8rem;
+  background: rgba(255, 248, 233, 0.9);
+  color: var(--text);
+}
+
+.upload-job__compact-quality strong {
+  color: #7a4d1f;
+  font-size: 0.84rem;
+}
+
+.upload-job__compact-quality span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
 .upload-job__compact-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1943,6 +1985,47 @@ img {
   padding: 0.85rem 0.95rem;
 }
 
+.upload-job__quality-callout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  border-radius: 1rem;
+  padding: 0.85rem 0.95rem;
+}
+
+.upload-job__quality-callout--neutral {
+  color: var(--text);
+  background: rgba(255, 252, 247, 0.78);
+  border: 1px solid rgba(58, 83, 68, 0.1);
+}
+
+.upload-job__quality-callout--target {
+  color: var(--text);
+  background: rgba(255, 248, 233, 0.9);
+  border: 1px solid rgba(201, 138, 84, 0.2);
+}
+
+.upload-job__quality-callout div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.upload-job__quality-callout strong {
+  color: #7a4d1f;
+  font-size: 0.9rem;
+}
+
+.upload-job__quality-callout span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.upload-job__quality-callout .button {
+  min-width: 150px;
+}
+
 .upload-job__next-step {
   display: grid;
   gap: 0.18rem;
@@ -1960,6 +2043,40 @@ img {
 }
 
 .upload-job__next-step span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.upload-job__browser-limit {
+  display: grid;
+  gap: 0.18rem;
+  margin: 0;
+  color: var(--text);
+  border-radius: 1rem;
+  padding: 0.85rem 0.95rem;
+}
+
+.upload-job__browser-limit--target {
+  background: rgba(179, 42, 42, 0.08);
+  border: 1px solid rgba(179, 42, 42, 0.14);
+}
+
+.upload-job__browser-limit--resistant {
+  background: rgba(45, 106, 96, 0.08);
+  border: 1px solid rgba(45, 106, 96, 0.14);
+}
+
+.upload-job__browser-limit strong {
+  font-size: 0.9rem;
+  color: var(--brand-dark);
+}
+
+.upload-job__browser-limit--target strong {
+  color: #8a2f2f;
+}
+
+.upload-job__browser-limit span {
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.45;
@@ -2235,6 +2352,14 @@ img {
 
   .upload-job__preview-grid {
     grid-template-columns: 1fr;
+  }
+
+  .upload-job__quality-callout {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-job__quality-callout .button {
+    width: 100%;
   }
 }
 

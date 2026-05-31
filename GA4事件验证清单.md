@@ -39,6 +39,7 @@
 | `compression_success` | 压缩成功 | `mode`, `target_size`, `original_size`, `compressed_size`, `reduction_percent`, `document_profile`, `page_count`, `page_path`, `page_title` |
 | `compression_failed` | 压缩失败 | `mode`, `target_size`, `error`, `page_path`, `page_title` |
 | `target_size_met` | 压缩结果低于所选目标大小 | `mode`, `target_size`, `compressed_size`, `page_path`, `page_title` |
+| `browser_limit_reached` | Scanned/Extreme 后仍未达目标或收益很低 | `mode`, `target_size`, `compressed_bytes`, `reduction_percent`, `document_profile`, `compression_path`, `page_path`, `page_title` |
 | `try_stronger_clicked` | 单个结果点击更强压缩 | `mode`, `target_size`, `next_mode`, `page_path`, `page_title` |
 | `download_clicked` | 下载单个压缩结果 | `mode`, `target_size`, `compressed_size`, `page_path`, `page_title` |
 | `download_zip_clicked` | 批量下载 ZIP | `file_count`, `compressed_total_size`, `page_path`, `page_title` |
@@ -68,5 +69,6 @@
 3. 回到 `/compress-pdf`，上传 2-3 个 fixture PDF，确认 `file_selected`。
 4. 切换 `Scanned PDF` 和 `Under 500 KB`，确认 `compression_mode_changed` 和 `target_size_changed`。
 5. 点击 `Compress remaining`，确认 `compression_started` 和 `compression_success`。
-6. 点击 `Compare first page`，确认 `preview_clicked` 和 `preview_success`。
-7. 点击 `Download ZIP`，确认 `download_zip_clicked`。
+6. 如果 Scanned/Extreme 后仍未达目标，确认 `browser_limit_reached`。
+7. 点击 `Compare first page`，确认 `preview_clicked` 和 `preview_success`。
+8. 点击 `Download ZIP`，确认 `download_zip_clicked`。

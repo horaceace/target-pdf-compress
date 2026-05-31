@@ -76,6 +76,18 @@ function classifyDocumentProfile(bytesPerPage, pageCount) {
   return "mixed";
 }
 
+function fixtureKind(fileName) {
+  if (fileName.startsWith("real-")) {
+    return "real";
+  }
+
+  if (fileName.startsWith("sample-")) {
+    return "synthetic";
+  }
+
+  return "other";
+}
+
 async function saveOptimized(source) {
   return source.save({
     useObjectStreams: true,
@@ -191,6 +203,7 @@ async function benchmarkMode(fileName, fileBytes, mode) {
 
   return {
     fileName,
+    sampleKind: fixtureKind(fileName),
     mode: mode.id,
     label: mode.label,
     pageCount,
@@ -206,13 +219,14 @@ async function benchmarkMode(fileName, fileBytes, mode) {
 
 function markdownTable(rows) {
   const header = [
-    "| File | Mode | Profile | Pages | Original | Compressed | Saved | Reduction | Time | Note |",
-    "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |"
+    "| File | Type | Mode | Profile | Pages | Original | Compressed | Saved | Reduction | Time | Note |",
+    "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |"
   ];
 
   const body = rows.map((row) =>
     [
       row.fileName,
+      row.sampleKind,
       row.label,
       row.profile,
       row.pageCount,
@@ -274,6 +288,7 @@ async function main() {
       } catch (error) {
         rows.push({
           fileName,
+          sampleKind: fixtureKind(fileName),
           mode: mode.id,
           label: mode.label,
           pageCount: 0,

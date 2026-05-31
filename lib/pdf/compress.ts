@@ -1,4 +1,9 @@
 import { PDFDocument } from "pdf-lib";
+import {
+  getScannedRenderCandidates,
+  type DocumentProfile,
+  type RenderCandidate
+} from "./scanned-candidates.mjs";
 
 export type CompressionMode =
   | "light"
@@ -20,7 +25,7 @@ export type CompressionResult = {
   mode: CompressionMode;
   pageCount: number;
   likelyImageHeavy: boolean;
-  documentProfile: "clean-office" | "mixed" | "image-heavy" | "scanned-heavy";
+  documentProfile: DocumentProfile;
   profileLabel: string;
   bytesPerPage: number;
   originalBytes: number;
@@ -117,13 +122,6 @@ type RenderedImagePage = {
   imageBytes: Uint8Array;
   width: number;
   height: number;
-};
-
-type RenderCandidate = {
-  label: string;
-  quality: number;
-  scale: number;
-  grayscale?: boolean;
 };
 
 function shouldUseRenderedScannedPath(
@@ -397,28 +395,17 @@ async function rebuildFromRenderedPages(
 
 function scannedRenderCandidates(
   profile: CompressionResult["documentProfile"],
+  originalBytes: number,
   bytesPerPage: number,
   options: CompressionOptions = {}
 ): RenderCandidate[] {
-  const base: RenderCandidate[] = [
-    { label: "balanced scan", quality: 0.72, scale: 1.35 },
-    { label: "smaller scan", quality: 0.62, scale: 1.15 },
-    { label: "smallest scan", quality: 0.52, scale: 0.95 },
-    { label: "grayscale scan", quality: 0.56, scale: 1.05, grayscale: true }
-  ];
-  const shouldTryPortalLimit =
-    Boolean(options.allowPortalLimitScan) ||
-    Boolean(options.targetBytes && options.targetBytes < bytesPerPage);
-
-  if (shouldTryPortalLimit && (profile === "scanned-heavy" || bytesPerPage > 2_000_000)) {
-    return [
-      ...base,
-      { label: "portal limit scan", quality: 0.44, scale: 0.82 },
-      { label: "portal grayscale scan", quality: 0.46, scale: 0.88, grayscale: true }
-    ];
-  }
-
-  return base;
+  return getScannedRenderCandidates({
+    profile,
+    originalBytes,
+    bytesPerPage,
+    targetBytes: options.targetBytes,
+    allowPortalLimitScan: options.allowPortalLimitScan
+  });
 }
 
 async function rebuildBestRenderedCandidate(
@@ -515,7 +502,7 @@ export async function compressPdfFile(
       : mode;
 
   if (shouldRunRenderedScannedPath) {
-    const renderCandidates = scannedRenderCandidates(profile.id, bytesPerPage, options);
+    const renderCandidates = scannedRenderCandidates(profile.id, file.size, bytesPerPage, options);
     const rebuiltFromImages = await rebuildBestRenderedCandidate(sourceBytes, renderCandidates);
     const compressedBytes = rebuiltFromImages.bytes.byteLength;
     const originalBytes = file.size;
@@ -566,7 +553,7 @@ export async function compressPdfFile(
     null;
 
   if (shouldCompareRenderedScannedPath) {
-    const renderCandidates = scannedRenderCandidates(profile.id, bytesPerPage, options);
+    const renderCandidates = scannedRenderCandidates(profile.id, file.size, bytesPerPage, options);
     comparedRenderedCandidate = await rebuildBestRenderedCandidate(sourceBytes, renderCandidates);
     candidates.push(comparedRenderedCandidate.bytes);
   }

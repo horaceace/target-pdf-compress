@@ -1,0 +1,52 @@
+{
+  "requiredRealSamples": [
+    {
+      "fileName": "real-resume-export.pdf",
+      "type": "resume / job application material",
+      "goal": "Validate job application upload compression",
+      "reviewFocus": "Readability and whether the output remains suitable for application portals"
+    },
+    {
+      "fileName": "real-form-upload.pdf",
+      "type": "form / application document",
+      "goal": "Validate portal upload compression",
+      "reviewFocus": "Whether the output can approach common upload limits"
+    },
+    {
+      "fileName": "real-scanned-color.pdf",
+      "type": "color scanned document",
+      "goal": "Validate scanned-document strong compression",
+      "reviewFocus": "Text, stamps, tables, and fine details remain readable enough"
+    },
+    {
+      "fileName": "real-scanned-bw.pdf",
+      "type": "black-and-white scanned document",
+      "goal": "Validate low-color scanned compression",
+      "reviewFocus": "Text edges, line clarity, and file size"
+    },
+    {
+      "fileName": "real-image-heavy.pdf",
+      "type": "image-heavy or screenshot-based PDF",
+      "goal": "Validate browser render-and-rebuild path",
+      "reviewFocus": "Image detail versus compression ratio"
+    },
+    {
+      "fileName": "real-invoice-or-table.pdf",
+      "type": "invoice or table-heavy PDF",
+      "goal": "Validate numeric and grid readability",
+      "reviewFocus": "Table lines, small numbers, and labels remain readable"
+    },
+    {
+      "fileName": "real-large-upload.pdf",
+      "type": "large upload-limit PDF",
+      "goal": "Validate performance and failure paths",
+      "reviewFocus": "Processing time, memory pressure, and whether the browser stalls"
+    },
+    {
+      "fileName": "real-email-attachment.pdf",
+      "type": "email attachment PDF",
+      "goal": "Validate everyday sharing compression",
+      "reviewFocus": "Whether size drops enough for email while preserving readability"
+    }
+  ]
+}
