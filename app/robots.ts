@@ -7,9 +7,32 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         disallow: ["/dev/"]
+      },
+      {
+        userAgent: "GPTBot",
+        disallow: "/"
+      },
+      {
+        userAgent: "CCBot",
+        disallow: "/"
+      },
+      {
+        userAgent: "anthropic-ai",
+        disallow: "/"
+      },
+      {
+        userAgent: "Claude-Web",
+        disallow: "/"
+      },
+      {
+        userAgent: "OAI-SearchBot",
+        allow: "/"
+      },
+      {
+        userAgent: "Claude-SearchBot",
+        allow: "/"
       }
     ],
-    sitemap: "https://filesmaller.space/sitemap.xml",
-    host: "https://filesmaller.space"
+    sitemap: "https://filesmaller.space/sitemap.xml"
   };
 }

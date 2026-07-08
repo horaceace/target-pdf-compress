@@ -13,11 +13,21 @@ export const metadata: Metadata = {
   openGraph: {
     title: homepage.title,
     description: homepage.description,
-    url: "https://filesmaller.space"
+    url: "https://filesmaller.space",
+    images: [
+      {
+        url: "https://filesmaller.space/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: homepage.title
+      }
+    ]
   },
   twitter: {
+    card: "summary_large_image",
     title: homepage.title,
-    description: homepage.description
+    description: homepage.description,
+    images: ["https://filesmaller.space/og-image.png"]
   }
 };
 

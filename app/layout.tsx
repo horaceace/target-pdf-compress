@@ -26,13 +26,22 @@ export const metadata: Metadata = {
     siteName: "FileSmaller",
     title: "Free PDF Tools Online | FileSmaller",
     description:
-      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
+      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
+    images: [
+      {
+        url: "https://filesmaller.space/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "FileSmaller — Free PDF Tools Online"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
     title: "Free PDF Tools Online | FileSmaller",
     description:
-      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow."
+      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
+    images: ["https://filesmaller.space/og-image.png"]
   }
 };
 
