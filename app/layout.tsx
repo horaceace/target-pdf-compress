@@ -1,45 +1,46 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@/components/analytics";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://filesmaller.space"),
-  title: {
-    default: "Free PDF Tools Online | FileSmaller",
-    template: "%s | FileSmaller"
-  },
-  description:
-    "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg"
-  },
-  openGraph: {
-    type: "website",
-    url: "https://filesmaller.space",
-    siteName: "FileSmaller",
-    title: "Free PDF Tools Online | FileSmaller",
-    description:
-      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
-    images: [
-      {
-        url: "https://filesmaller.space/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "FileSmaller — Free PDF Tools Online"
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Free PDF Tools Online | FileSmaller",
-    description:
-      "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
-    images: ["https://filesmaller.space/og-image.png"]
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "Common" });
+  return {
+    metadataBase: new URL("https://filesmaller.space"),
+    title: {
+      default: t("siteTitle"),
+      template: t("siteTitleTemplate")
+    },
+    description: t("siteDescription"),
+    icons: {
+      icon: "/favicon.svg",
+      shortcut: "/favicon.svg",
+      apple: "/favicon.svg"
+    },
+    openGraph: {
+      type: "website",
+      url: "https://filesmaller.space",
+      siteName: "FileSmaller",
+      title: t("siteTitle"),
+      description: t("siteDescription"),
+      images: [
+        {
+          url: "https://filesmaller.space/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "FileSmaller — Free PDF Tools Online"
+        }
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("siteTitle"),
+      description: t("siteDescription"),
+      images: ["https://filesmaller.space/og-image.png"]
+    }
+  };
+}
 
 export default async function RootLayout({
   children

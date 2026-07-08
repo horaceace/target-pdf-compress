@@ -1,5 +1,9 @@
 {
   "HomePage": {
+    "seoTitle": "Free PDF Tools Online: Compress, Merge, Split, Rotate, Convert",
+    "seoDescription": "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in your browser.",
+    "heroH1": "Compress PDF Online Free and Convert Document Files Fast",
+    "heroSubheading": "Use free browser-first tools to compress PDF, merge PDF, split PDF, rotate, remove, or reorder PDF pages, convert PDF to JPG, and convert JPG to PDF for uploads, forms, and sharing.",
     "heroEyebrow": "Browser-first PDF tools",
     "heroFeaturedKicker": "Start here",
     "heroStatCoreTools": "core tools live",
@@ -924,6 +928,9 @@
     "seoDescription": "Read the privacy policy for FileSmaller, including analytics, browser-side PDF handling, and future processing disclosures."
   },
   "Common": {
+    "siteTitle": "Free PDF Tools Online | FileSmaller",
+    "siteTitleTemplate": "%s | FileSmaller",
+    "siteDescription": "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
     "home": "Home",
     "errorGeneral": "Something went wrong. Please try again.",
     "loading": "Loading...",

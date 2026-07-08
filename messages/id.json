@@ -117,7 +117,11 @@
     "howItWorksStep2": "Unggah file, pilih mode atau rute yang sesuai dengan kasus penggunaan, dan jalankan tindakan sisi browser.",
     "howItWorksStep3": "Unduh hasilnya, lalu lanjutkan ke alat berikutnya jika Anda masih memerlukan kompresi, pemisahan, penggabungan, atau konversi.",
     "faqTitle": "Pertanyaan umum yang dicari orang",
-    "moreLongTailTitle": "Halaman long-tail lainnya"
+    "moreLongTailTitle": "Halaman long-tail lainnya",
+    "seoTitle": "Alat PDF Online Gratis: Kompres, Gabung, Pisah, Putar, Konversi",
+    "seoDescription": "Kompres PDF online gratis, gabung file PDF, pisah halaman PDF, putar, hapus, atau urutkan ulang halaman PDF, konversi PDF ke JPG, dan ubah JPG ke PDF di browser Anda.",
+    "heroH1": "Kompres PDF Online Gratis dan Konversi File Dokumen dengan Cepat",
+    "heroSubheading": "Gunakan alat browser-first gratis untuk mengompres PDF, menggabung PDF, memisah PDF, memutar, menghapus, atau mengurutkan ulang halaman PDF, mengonversi PDF ke JPG, dan mengonversi JPG ke PDF untuk unggahan, formulir, dan berbagi."
   },
   "SiteShell": {
     "navHome": "Beranda",
@@ -927,6 +931,9 @@
     "home": "Beranda",
     "errorGeneral": "Terjadi kesalahan. Silakan coba lagi.",
     "loading": "Memuat...",
-    "switchLanguage": "Ganti bahasa"
+    "switchLanguage": "Ganti bahasa",
+    "siteTitle": "Alat PDF Online Gratis | FileSmaller",
+    "siteTitleTemplate": "%s | FileSmaller",
+    "siteDescription": "Kompres PDF online gratis, gabung file PDF, pisah halaman PDF, putar, hapus, atau urutkan ulang halaman PDF, konversi PDF ke JPG, dan ubah JPG ke PDF dalam alur kerja browser-first."
   }
 }

@@ -6,32 +6,37 @@ import { TrackedLink } from "@/components/tracked-link";
 import { homepage, toolPageMap } from "@/content/tool-pages";
 import { Wrench, FileText, Zap } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: homepage.title,
-  description: homepage.description,
-  alternates: {
-    canonical: "/"
-  },
-  openGraph: {
-    title: homepage.title,
-    description: homepage.description,
-    url: "https://filesmaller.space",
-    images: [
-      {
-        url: "https://filesmaller.space/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: homepage.title
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: homepage.title,
-    description: homepage.description,
-    images: ["https://filesmaller.space/og-image.png"]
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("HomePage");
+  const title = t("seoTitle");
+  const description = t("seoDescription");
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: "/"
+    },
+    openGraph: {
+      title,
+      description,
+      url: "https://filesmaller.space",
+      images: [
+        {
+          url: "https://filesmaller.space/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: title
+        }
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["https://filesmaller.space/og-image.png"]
+    }
+  };
+}
 
 export default async function HomePage() {
   const t = await getTranslations("HomePage");
@@ -329,8 +334,8 @@ export default async function HomePage() {
         <div className="hero__wrap">
           <div className="panel hero__copy">
             <span className="eyebrow">{t("heroEyebrow")}</span>
-            <h1>{homepage.h1}</h1>
-            <p className="hero__lede">{homepage.subheading}</p>
+            <h1>{t("heroH1")}</h1>
+            <p className="hero__lede">{t("heroSubheading")}</p>
             <div className="stat-strip">
               {heroStats.map((item) => {
                 const Icon = item.icon;
