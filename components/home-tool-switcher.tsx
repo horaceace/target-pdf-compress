@@ -10,6 +10,16 @@ import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { UploadCard } from "@/components/upload-card";
 import { trackEvent } from "@/lib/analytics/events";
+import {
+  FileDown,
+  Combine,
+  Scissors,
+  RotateCw,
+  Trash2,
+  ArrowLeftRight,
+  FileImage,
+  Images
+} from "lucide-react";
 
 type ToolKey =
   | "compress"
@@ -20,6 +30,17 @@ type ToolKey =
   | "reorder"
   | "pdf-to-jpg"
   | "jpg-to-pdf";
+
+const toolIcons: Record<ToolKey, typeof FileDown> = {
+  compress: FileDown,
+  merge: Combine,
+  split: Scissors,
+  rotate: RotateCw,
+  remove: Trash2,
+  reorder: ArrowLeftRight,
+  "pdf-to-jpg": FileImage,
+  "jpg-to-pdf": Images
+};
 
 const toolTabs: Array<{
   key: ToolKey;
@@ -84,26 +105,30 @@ export function HomeToolSwitcher() {
   return (
     <div className="home-tool-switcher">
       <div className="home-tool-switcher__tabs" role="tablist" aria-label="Choose PDF tool">
-        {toolTabs.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            role="tab"
-            aria-selected={activeTool === item.key}
-            className={`home-tool-tab${activeTool === item.key ? " home-tool-tab--active" : ""}`}
-            onClick={() => {
-              trackEvent("tool_switch_clicked", {
-                source: "home_tool_switcher_tab",
-                tool: item.key,
-                label: item.title
-              });
-              setActiveTool(item.key);
-            }}
-          >
-            <strong>{item.label}</strong>
-            <span>{item.title}</span>
-          </button>
-        ))}
+        {toolTabs.map((item) => {
+          const Icon = toolIcons[item.key];
+          return (
+            <button
+              key={item.key}
+              type="button"
+              role="tab"
+              aria-selected={activeTool === item.key}
+              className={`home-tool-tab${activeTool === item.key ? " home-tool-tab--active" : ""}`}
+              onClick={() => {
+                trackEvent("tool_switch_clicked", {
+                  source: "home_tool_switcher_tab",
+                  tool: item.key,
+                  label: item.title
+                });
+                setActiveTool(item.key);
+              }}
+            >
+              <Icon className="home-tool-tab__icon" />
+              <strong>{item.label}</strong>
+              <span>{item.title}</span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="home-tool-switcher__meta">

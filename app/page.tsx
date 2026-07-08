@@ -3,6 +3,7 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { HomeToolSwitcher } from "@/components/home-tool-switcher";
 import { TrackedLink } from "@/components/tracked-link";
 import { homepage, toolPageMap } from "@/content/tool-pages";
+import { Wrench, FileText, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
   title: homepage.title,
@@ -285,9 +286,9 @@ export default function HomePage() {
   };
 
   const heroStats = [
-    { value: String(coreTools.length), label: "core tools live" },
-    { value: "50+", label: "scenario pages live" },
-    { value: "Browser-first", label: "no install workflow" }
+    { value: String(coreTools.length), label: "core tools live", icon: Wrench },
+    { value: "50+", label: "scenario pages live", icon: FileText },
+    { value: "Browser-first", label: "no install workflow", icon: Zap }
   ];
 
   const workflowColumns = [
@@ -362,12 +363,18 @@ export default function HomePage() {
             <h1>{homepage.h1}</h1>
             <p className="hero__lede">{homepage.subheading}</p>
             <div className="stat-strip">
-              {heroStats.map((item) => (
-                <div className="stat-chip" key={item.label}>
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
-                </div>
-              ))}
+              {heroStats.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div className="stat-chip" key={item.label}>
+                    <Icon />
+                    <div>
+                      <strong>{item.value}</strong>
+                      <span>{item.label}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             <div className="hero-toolset">
               <TrackedLink
