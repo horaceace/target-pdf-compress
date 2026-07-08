@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { ImageFitMode, ImageToPdfResult, imagesToPdf } from "@/lib/pdf/jpg-to-pdf";
 
@@ -13,24 +14,6 @@ type JpgToPdfError = {
   title: string;
   message: string;
   hint?: string;
-};
-
-const fitModeOptions: Record<
-  ImageFitMode,
-  { label: string; description: string }
-> = {
-  original: {
-    label: "Original size",
-    description: "Keep each image at its original dimensions on its own PDF page."
-  },
-  contain: {
-    label: "Fit inside page",
-    description: "Keep the full image visible and centered on each PDF page."
-  },
-  cover: {
-    label: "Fill page",
-    description: "Fill the page area completely, which may crop some edges on wide or tall images."
-  }
 };
 
 function imageId(file: File) {
@@ -58,6 +41,7 @@ function downloadPdf(blob: Blob, fileName: string) {
 }
 
 export function JpgToPdfCard() {
+  const t = useTranslations("JpgToPdfCard");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [items, setItems] = useState<ImageItem[]>([]);
   const [fitMode, setFitMode] = useState<ImageFitMode>("contain");
@@ -65,6 +49,24 @@ export function JpgToPdfCard() {
   const [error, setError] = useState<JpgToPdfError | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  const fitModeOptions: Record<
+    ImageFitMode,
+    { label: string; description: string }
+  > = {
+    original: {
+      label: t("fitOriginal"),
+      description: t("fitOriginalDesc")
+    },
+    contain: {
+      label: t("fitInside"),
+      description: t("fitInsideDesc")
+    },
+    cover: {
+      label: t("fillPage"),
+      description: t("fillPageDesc")
+    }
+  };
 
   function triggerPicker() {
     inputRef.current?.click();
@@ -76,8 +78,8 @@ export function JpgToPdfCard() {
 
     if (unsupported) {
       setError({
-        title: "Unsupported image",
-        message: `${unsupported.name} is not a supported JPG or PNG image.`,
+        title: t("errors.unsupportedImage"),
+        message: `${unsupported.name} ${t("errors.unsupportedImageHint")}`,
         hint: "Upload JPG, JPEG, or PNG images only in this browser flow."
       });
       return;
@@ -131,12 +133,12 @@ export function JpgToPdfCard() {
       } catch (conversionError) {
         setResult(null);
         setError({
-          title: "JPG to PDF failed",
+          title: t("errors.jpgToPdfFailed"),
           message:
             conversionError instanceof Error
               ? conversionError.message
-              : "The selected images could not be turned into a PDF in the browser.",
-          hint: "Try fewer images first, or replace any very large source image."
+              : t("errors.jpgToPdfFailedMessage"),
+          hint: t("errors.jpgToPdfFailedHint")
         });
       }
     });
@@ -149,9 +151,9 @@ export function JpgToPdfCard() {
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Turn JPG images into one PDF</span>
-          <h2>JPG to PDF</h2>
-          <p>Upload JPG or PNG files, set the page order, and export one combined PDF.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -182,9 +184,9 @@ export function JpgToPdfCard() {
             }
           }}
         >
-          <strong>Drop JPG or PNG files here</strong>
-          <span>or click to choose images</span>
-          <small>Every uploaded image becomes one PDF page in the final file.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -197,7 +199,7 @@ export function JpgToPdfCard() {
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="image-fit-mode">Image page mode</label>
+            <label htmlFor="image-fit-mode">{t("imagePageMode")}</label>
             <select
               id="image-fit-mode"
               value={fitMode}
@@ -223,7 +225,7 @@ export function JpgToPdfCard() {
             disabled={!items.length || isPending}
             onClick={createPdf}
           >
-            {isPending ? "Creating PDF..." : "Convert JPG to PDF"}
+            {isPending ? t("creating") : t("createButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -236,7 +238,7 @@ export function JpgToPdfCard() {
                 setError(null);
               }}
             >
-              Clear images
+              {t("clearImages")}
             </button>
           </div>
         </div>
@@ -246,35 +248,35 @@ export function JpgToPdfCard() {
         <div className="upload-summary">
           <div>
             <strong>{items.length}</strong>
-            <span>images selected</span>
+            <span>{t("imagesSelected")}</span>
           </div>
           <div>
             <strong>{formatBytes(totalInputBytes)}</strong>
-            <span>total input size</span>
+            <span>{t("totalInputSize")}</span>
           </div>
           <div>
             <strong>{fitMeta.label}</strong>
-            <span>page mode</span>
+            <span>{t("pageMode")}</span>
           </div>
         </div>
       ) : (
         <div className="upload-empty">
-          <div className="upload-empty__badge">JPG to PDF preview</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Input</span>
-              <strong>Multiple images</strong>
+              <span>{t("emptyStatInput")}</span>
+              <strong>{t("emptyStatInputValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>1 combined PDF</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
             <div>
-              <span>Use case</span>
-              <strong>Receipts, forms, screenshots</strong>
+              <span>{t("emptyStatUseCase")}</span>
+              <strong>{t("emptyStatUseCaseValue")}</strong>
             </div>
           </div>
-          <p>Use this when you need one PDF from multiple screenshots, receipts, scans, or exported JPG pages.</p>
+          <p>{t("emptyText")}</p>
         </div>
       )}
 
@@ -296,7 +298,7 @@ export function JpgToPdfCard() {
                   disabled={index === 0}
                   onClick={() => moveItem(index, -1)}
                 >
-                  Move up
+                  {t("moveUp")}
                 </button>
                 <button
                   type="button"
@@ -304,14 +306,14 @@ export function JpgToPdfCard() {
                   disabled={index === items.length - 1}
                   onClick={() => moveItem(index, 1)}
                 >
-                  Move down
+                  {t("moveDown")}
                 </button>
                 <button
                   type="button"
                   className="button button--secondary"
                   onClick={() => removeItem(item.id)}
                 >
-                  Remove
+                  {t("remove")}
                 </button>
               </div>
             </article>
@@ -323,23 +325,23 @@ export function JpgToPdfCard() {
         <div className="upload-summary">
           <div>
             <strong>{result.pageCount}</strong>
-            <span>pdf pages</span>
+            <span>{t("pdfPages")}</span>
           </div>
           <div>
             <strong>{formatBytes(result.outputBytes)}</strong>
-            <span>output pdf size</span>
+            <span>{t("outputPdfSize")}</span>
           </div>
           <div>
             <strong>{result.totalImages}</strong>
-            <span>images merged</span>
+            <span>{t("imagesMerged")}</span>
           </div>
         </div>
       ) : null}
 
       {result ? (
         <div className="upload-job__next-step">
-          <strong>Recommended next step</strong>
-          <span>Download the PDF now, then use Compress PDF if you need a smaller upload-ready file afterward.</span>
+          <strong>{t("recommendedNextStep")}</strong>
+          <span>{t("nextStepCopy")}</span>
         </div>
       ) : null}
 

@@ -1,9 +1,12 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { SplitPageConfig, splitToolPageMap } from "@/content/split-pages";
 
-export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
+export async function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
+  const t = await getTranslations("SplitPageTemplate");
+
   const relatedPages = page.relatedSlugs
     .map((slug) => splitToolPageMap.get(slug))
     .filter((item): item is SplitPageConfig => Boolean(item));
@@ -26,7 +29,7 @@ export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
       {
         "@type": "ListItem",
         position: 1,
-        name: "Home",
+        name: t("breadcrumbHome"),
         item: "https://filesmaller.space"
       },
       {
@@ -76,21 +79,21 @@ export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Page-range splitting for real document tasks</span>
+            <span className="eyebrow eyebrow--feature">{t("eyebrow")}</span>
             <h2>{page.h1}</h2>
             <p>{page.intro}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Extract the exact pages you need</strong>
-                <span>Useful for forms, signatures, certificates, reports, and upload-ready subsets.</span>
+                <strong>{t("heroTitle1")}</strong>
+                <span>{t("heroDesc1")}</span>
               </div>
               <div className="hero-point">
-                <strong>Use simple page ranges</strong>
-                <span>Enter formats like 1-3, 5, 7-9 to export one or more smaller PDF files.</span>
+                <strong>{t("heroTitle2")}</strong>
+                <span>{t("heroDesc2")}</span>
               </div>
               <div className="hero-point">
-                <strong>Split before compressing</strong>
-                <span>Break one large file into smaller parts first, then compress only the pages that still need smaller sizes.</span>
+                <strong>{t("heroTitle3")}</strong>
+                <span>{t("heroDesc3")}</span>
               </div>
             </div>
           </div>
@@ -100,7 +103,7 @@ export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
 
       <section className="section-stack">
         <div className="panel section">
-          <h2 className="section-title">How it works</h2>
+          <h2 className="section-title">{t("howItWorks")}</h2>
           <div className="step-list">
             {page.steps.map((step, index) => (
               <div className="step-card" key={step}>
@@ -112,12 +115,12 @@ export function SplitPageTemplate({ page }: { page: SplitPageConfig }) {
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">Common questions</h2>
+          <h2 className="section-title">{t("commonQuestions")}</h2>
           <FaqAccordion items={page.faq} />
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">Related split pages</h2>
+          <h2 className="section-title">{t("relatedSplitPages")}</h2>
           <div className="related-links">
             {relatedPages.map((related) => (
               <Link className="related-link" href={`/${related.slug}`} key={related.slug}>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
 
 export const metadata: Metadata = {
@@ -21,36 +22,35 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RemovePdfPagesPage() {
+export default async function RemovePdfPagesPage() {
+  const t = await getTranslations("RemovePdfPagesCard");
+
   return (
     <main className="container">
       <section className="tool-page__headline">
-        <span className="eyebrow">PDF workflow: delete unwanted pages</span>
-        <h1>Remove PDF pages</h1>
-        <p>Delete blank, duplicate, or unnecessary PDF pages and download a cleaned document.</p>
+        <span className="eyebrow">{t("eyebrow")}</span>
+        <h1>{t("heading")}</h1>
+        <p>{t("description")}</p>
       </section>
 
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Keep only the pages that matter</span>
-            <h2>Remove pages before uploading or sending a PDF</h2>
-            <p>
-              Upload one PDF, enter the pages you want to remove, and export a cleaner file
-              directly in the browser.
-            </p>
+            <span className="eyebrow eyebrow--feature">{t("heroEyebrow")}</span>
+            <h2>{t("heroHeading")}</h2>
+            <p>{t("heroIntro")}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Delete exact pages</strong>
-                <span>Use formats like 2, 4-6, 9 to remove single pages or page ranges.</span>
+                <strong>{t("heroPoint1Title")}</strong>
+                <span>{t("heroPoint1Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Browser-first editing</strong>
-                <span>The current flow edits the PDF locally without a server-side document queue.</span>
+                <strong>{t("heroPoint2Title")}</strong>
+                <span>{t("heroPoint2Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Cleaner upload files</strong>
-                <span>Remove cover sheets, blanks, or duplicate pages before compressing or submitting.</span>
+                <strong>{t("heroPoint3Title")}</strong>
+                <span>{t("heroPoint3Copy")}</span>
               </div>
             </div>
           </div>
@@ -60,4 +60,3 @@ export default function RemovePdfPagesPage() {
     </main>
   );
 }
-

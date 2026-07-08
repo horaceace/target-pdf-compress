@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { downloadFilesAsZip } from "@/lib/download/download-zip";
 
@@ -28,28 +29,10 @@ type ConvertedImage = {
   height: number;
 };
 
-const qualityOptions: Record<
-  ImageQuality,
-  { label: string; scale: number; quality: number; description: string }
-> = {
-  web: {
-    label: "Web JPG",
-    scale: 1.15,
-    quality: 0.72,
-    description: "Smaller JPG files for uploads, previews, and sharing."
-  },
-  balanced: {
-    label: "Balanced JPG",
-    scale: 1.45,
-    quality: 0.82,
-    description: "Good default output for most page-to-image conversions."
-  },
-  print: {
-    label: "Higher quality JPG",
-    scale: 1.9,
-    quality: 0.9,
-    description: "Larger JPG files with better visual detail."
-  }
+const qualityConfigMap: Record<ImageQuality, { scale: number; quality: number }> = {
+  web: { scale: 1.15, quality: 0.72 },
+  balanced: { scale: 1.45, quality: 0.82 },
+  print: { scale: 1.9, quality: 0.9 }
 };
 
 function downloadBlob(blob: Blob, fileName: string) {
@@ -87,7 +70,11 @@ async function loadPdfPageCount(file: File) {
   return count;
 }
 
-async function convertPdfToJpg(file: File, imageQuality: ImageQuality): Promise<ConvertedImage[]> {
+async function convertPdfToJpg(
+  file: File,
+  imageQuality: ImageQuality,
+  t: (key: string, values?: Record<string, string | number>) => string
+): Promise<ConvertedImage[]> {
   const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
   if (!pdfjs.GlobalWorkerOptions.workerSrc) {
     pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -96,7 +83,7 @@ async function convertPdfToJpg(file: File, imageQuality: ImageQuality): Promise<
     ).toString();
   }
 
-  const qualityConfig = qualityOptions[imageQuality];
+  const qualityConfig = qualityConfigMap[imageQuality];
   const bytes = new Uint8Array(await file.arrayBuffer());
   const loadingTask = pdfjs.getDocument({
     data: bytes,
@@ -113,7 +100,7 @@ async function convertPdfToJpg(file: File, imageQuality: ImageQuality): Promise<
     const context = canvas.getContext("2d", { alpha: false });
 
     if (!context) {
-      throw new Error("Canvas rendering is not available in this browser.");
+      throw new Error(t("errors.canvasNotAvailable"));
     }
 
     canvas.width = Math.max(1, Math.floor(viewport.width));
@@ -130,7 +117,7 @@ async function convertPdfToJpg(file: File, imageQuality: ImageQuality): Promise<
     });
 
     if (!blob) {
-      throw new Error("The browser could not export one of the PDF pages as JPG.");
+      throw new Error(t("errors.pageExportFailed"));
     }
 
     images.push({
@@ -152,6 +139,7 @@ async function convertPdfToJpg(file: File, imageQuality: ImageQuality): Promise<
 }
 
 export function PdfToJpgCard() {
+  const t = useTranslations("PdfToJpgCard");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<SelectedPdf | null>(null);
   const [imageQuality, setImageQuality] = useState<ImageQuality>("balanced");
@@ -159,6 +147,27 @@ export function PdfToJpgCard() {
   const [error, setError] = useState<ConversionError | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  const qualityOptions: Record<
+    ImageQuality,
+    { label: string; scale: number; quality: number; description: string }
+  > = {
+    web: {
+      ...qualityConfigMap.web,
+      label: t("qualityWeb"),
+      description: t("qualityWebDesc")
+    },
+    balanced: {
+      ...qualityConfigMap.balanced,
+      label: t("qualityBalanced"),
+      description: t("qualityBalancedDesc")
+    },
+    print: {
+      ...qualityConfigMap.print,
+      label: t("qualityHigh"),
+      description: t("qualityHighDesc")
+    }
+  };
 
   function resetState() {
     setResults([]);
@@ -173,8 +182,8 @@ export function PdfToJpgCard() {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setSelected(null);
       setError({
-        title: "Unsupported file",
-        message: `${file.name} is not a supported PDF file. Upload a .pdf document and try again.`,
+        title: t("errors.unsupportedFile"),
+        message: `${file.name} ${t("errors.unsupportedFileHint")}`,
         hint: "Only PDF files can be converted to JPG in this flow."
       });
       return;
@@ -183,8 +192,8 @@ export function PdfToJpgCard() {
     if (file.size === 0) {
       setSelected(null);
       setError({
-        title: "Empty PDF",
-        message: `${file.name} is empty. Upload a PDF with actual document pages and try again.`,
+        title: t("errors.emptyPdf"),
+        message: `${file.name} ${t("errors.emptyPdfHint")}`,
         hint: "Use a PDF that contains actual pages before converting."
       });
       return;
@@ -193,8 +202,8 @@ export function PdfToJpgCard() {
     if (file.size > MAX_FILE_BYTES) {
       setSelected(null);
       setError({
-        title: "File too large",
-        message: `${file.name} is larger than 50 MB. Try a smaller PDF or split it before converting pages in the browser.`,
+        title: t("errors.fileTooLarge"),
+        message: `${file.name} is larger than 50 MB. ${t("errors.fileTooLargeHint")}`,
         hint: "Large files take longer because every page has to be rendered in the browser."
       });
       return;
@@ -207,11 +216,11 @@ export function PdfToJpgCard() {
     } catch (loadError) {
       setSelected(null);
       setError({
-        title: "Unreadable PDF",
+        title: t("errors.unreadablePdf"),
         message:
           loadError instanceof Error
             ? loadError.message
-            : "This PDF could not be read for page conversion.",
+            : `${file.name} ${t("errors.unreadablePdfHint")}`,
         hint: "Try a cleaner PDF copy or re-export the file before converting."
       });
     }
@@ -250,8 +259,8 @@ export function PdfToJpgCard() {
   function convertCurrentPdf() {
     if (!selected) {
       setError({
-        title: "No PDF selected",
-        message: "Choose a PDF before converting pages to JPG.",
+        title: t("errors.noPdfSelected"),
+        message: t("errors.noPdfSelectedHint"),
         hint: "Upload one PDF first, then start the conversion."
       });
       return;
@@ -259,18 +268,18 @@ export function PdfToJpgCard() {
 
     startTransition(async () => {
       try {
-        const converted = await convertPdfToJpg(selected.file, imageQuality);
+        const converted = await convertPdfToJpg(selected.file, imageQuality, t);
         setResults(converted);
         setError(null);
       } catch (conversionError) {
         setResults([]);
         setError({
-          title: "Conversion failed",
+          title: t("errors.conversionFailed"),
           message:
             conversionError instanceof Error
               ? conversionError.message
-              : "The PDF could not be converted to JPG in the browser.",
-          hint: "Try a different quality level or a smaller PDF first."
+              : t("errors.conversionFailedMessage"),
+          hint: t("errors.conversionFailedHint")
         });
       }
     });
@@ -283,9 +292,9 @@ export function PdfToJpgCard() {
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Convert PDF pages into JPG images</span>
-          <h2>PDF to JPG</h2>
-          <p>Upload one PDF, render each page in the browser, and download JPG files.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -310,9 +319,9 @@ export function PdfToJpgCard() {
             }
           }}
         >
-          <strong>Drop one PDF here</strong>
-          <span>or click to choose a file</span>
-          <small>Each page will be exported as a JPG image. Up to 50 MB in the current browser flow.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -326,22 +335,22 @@ export function PdfToJpgCard() {
           <div className="upload-summary">
             <div>
               <strong>{selected.file.name}</strong>
-              <span>selected file</span>
+              <span>{t("selectedFile")}</span>
             </div>
             <div>
               <strong>{formatBytes(selected.file.size)}</strong>
-              <span>file size</span>
+              <span>{t("fileSize")}</span>
             </div>
             <div>
               <strong>{selected.pageCount}</strong>
-              <span>pages to export</span>
+              <span>{t("pagesToExport")}</span>
             </div>
           </div>
         ) : null}
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="jpg-quality">JPG output mode</label>
+            <label htmlFor="jpg-quality">{t("jpgOutputMode")}</label>
             <select
               id="jpg-quality"
               value={imageQuality}
@@ -367,7 +376,7 @@ export function PdfToJpgCard() {
             disabled={!selected || isPending}
             onClick={convertCurrentPdf}
           >
-            {isPending ? "Converting..." : "Convert PDF to JPG"}
+            {isPending ? t("converting") : t("convertButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -379,7 +388,7 @@ export function PdfToJpgCard() {
                 resetState();
               }}
             >
-              Clear file
+              {t("clearFile")}
             </button>
             <button
               type="button"
@@ -387,7 +396,7 @@ export function PdfToJpgCard() {
               disabled={!results.length}
               onClick={downloadAll}
             >
-              Download ZIP
+              {t("downloadZip")}
             </button>
           </div>
         </div>
@@ -395,22 +404,22 @@ export function PdfToJpgCard() {
 
       {!selected ? (
         <div className="upload-empty">
-          <div className="upload-empty__badge">PDF to JPG preview</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Input</span>
-              <strong>1 PDF</strong>
+              <span>{t("emptyStatInput")}</span>
+              <strong>{t("emptyStatInputValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>One JPG per page</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
             <div>
-              <span>Use case</span>
-              <strong>Preview, upload, share</strong>
+              <span>{t("emptyStatUseCase")}</span>
+              <strong>{t("emptyStatUseCaseValue")}</strong>
             </div>
           </div>
-          <p>Use this when you need page images for previews, CMS uploads, sharing, or extracting visuals from a PDF.</p>
+          <p>{t("emptyText")}</p>
         </div>
       ) : null}
 
@@ -418,15 +427,15 @@ export function PdfToJpgCard() {
         <div className="upload-summary">
           <div>
             <strong>{results.length}</strong>
-            <span>jpg files</span>
+            <span>{t("jpgFiles")}</span>
           </div>
           <div>
             <strong>{formatBytes(totalOutputBytes)}</strong>
-            <span>combined output size</span>
+            <span>{t("combinedOutputSize")}</span>
           </div>
           <div>
             <strong>{qualityMeta.label}</strong>
-            <span>jpg mode used</span>
+            <span>{t("jpgModeUsed")}</span>
           </div>
         </div>
       ) : null}
@@ -438,21 +447,21 @@ export function PdfToJpgCard() {
               <div className="upload-job__head">
                 <div>
                   <strong>{item.fileName}</strong>
-                  <span>Page {item.pageNumber}</span>
+                  <span>{t("pageN", { n: item.pageNumber })}</span>
                 </div>
-                <span className="upload-job__status upload-job__status--success">ready</span>
+                <span className="upload-job__status upload-job__status--success">{t("ready")}</span>
               </div>
               <div className="upload-job__stats">
                 <div>
-                  <span>Output size</span>
+                  <span>{t("outputSize")}</span>
                   <strong>{formatBytes(item.blob.size)}</strong>
                 </div>
                 <div>
-                  <span>Dimensions</span>
-                  <strong>{item.width} × {item.height}</strong>
+                  <span>{t("dimensions")}</span>
+                  <strong>{item.width} &times; {item.height}</strong>
                 </div>
                 <div>
-                  <span>Page</span>
+                  <span>{t("page")}</span>
                   <strong>{item.pageNumber}</strong>
                 </div>
               </div>
@@ -462,10 +471,10 @@ export function PdfToJpgCard() {
                   className="button button--primary"
                   onClick={() => downloadBlob(item.blob, item.fileName)}
                 >
-                  Download JPG
+                  {t("downloadJpg")}
                 </button>
                 <a className="button button--secondary" href="/compress-pdf">
-                  Compress PDF next
+                  {t("compressPdfNext")}
                 </a>
               </div>
             </article>
@@ -475,15 +484,15 @@ export function PdfToJpgCard() {
 
       {results.length ? (
         <div className="upload-job__next-step">
-          <strong>Recommended next step</strong>
-          <span>Download the JPG files now, or use a lower JPG output mode next time if you need smaller image files for web uploads.</span>
+          <strong>{t("recommendedNextStep")}</strong>
+          <span>{t("nextStepCopy")}</span>
         </div>
       ) : null}
 
       {selected ? (
         <div className="upload-job__hint upload-job__hint--neutral">
-          <strong>{selected.pageCount} total pages loaded</strong>
-          <span>PDF to JPG works best when you need page previews, image uploads, or one image file per page instead of another PDF.</span>
+          <strong>{selected.pageCount} {t("totalPagesLoaded")}</strong>
+          <span>{t("pdfToJpgHint")}</span>
         </div>
       ) : null}
 

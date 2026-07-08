@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { downloadFilesAsZip } from "@/lib/download/download-zip";
 import {
@@ -34,6 +35,7 @@ function downloadBlob(blob: Blob, fileName: string) {
 }
 
 export function SplitPdfCard() {
+  const t = useTranslations("SplitPdfCard");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<SelectedPdf | null>(null);
   const [rangeInput, setRangeInput] = useState("1");
@@ -52,9 +54,9 @@ export function SplitPdfCard() {
   function normalizeSplitError(splitError: unknown): SplitCardError {
     if (!(splitError instanceof Error)) {
       return {
-        title: "Split failed",
-        message: "The PDF could not be split in the current browser flow.",
-        hint: "Check the file and the page ranges, then try again."
+        title: t("errors.splitFailed"),
+        message: t("errors.splitFailedMessage"),
+        hint: t("errors.splitFailedHint")
       };
     }
 
@@ -62,40 +64,40 @@ export function SplitPdfCard() {
 
     if (lowered.includes("not a pdf")) {
       return {
-        title: "Unsupported file",
+        title: t("errors.unsupportedFile"),
         message: splitError.message,
-        hint: "Upload a valid .pdf document before splitting."
+        hint: t("errors.unsupportedFileHint")
       };
     }
 
     if (lowered.includes("empty")) {
       return {
-        title: "Empty PDF",
+        title: t("errors.emptyPdf"),
         message: splitError.message,
-        hint: "Use a PDF that contains actual document pages."
+        hint: t("errors.emptyPdfHint")
       };
     }
 
     if (lowered.includes("page range") || lowered.includes("page ") || lowered.includes("range")) {
       return {
-        title: "Invalid page ranges",
+        title: t("errors.invalidRanges"),
         message: splitError.message,
-        hint: "Use formats like 1-3, 5, 7-9 and stay within the total page count."
+        hint: t("errors.invalidRangesHint")
       };
     }
 
     if (lowered.includes("encrypted") || lowered.includes("password")) {
       return {
-        title: "Protected PDF",
-        message: "This PDF appears to be password-protected or restricted.",
-        hint: "Unlock the file first, then upload it again for splitting."
+        title: t("errors.protectedPdf"),
+        message: t("errors.protectedPdfHint"),
+        hint: undefined
       };
     }
 
     return {
-      title: "Split failed",
+      title: t("errors.splitFailed"),
       message: splitError.message,
-      hint: "Try a cleaner PDF copy or a simpler range first."
+      hint: t("errors.splitFailedHint")
     };
   }
 
@@ -107,9 +109,9 @@ export function SplitPdfCard() {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setSelected(null);
       setError({
-        title: "Unsupported file",
-        message: `${file.name} is not a supported PDF file. Upload a .pdf document and try again.`,
-        hint: "Only PDF files can be split in this flow."
+        title: t("errors.unsupportedFile"),
+        message: `${file.name} ${t("errors.unsupportedFileHint")}`,
+        hint: undefined
       });
       return;
     }
@@ -117,9 +119,9 @@ export function SplitPdfCard() {
     if (file.size === 0) {
       setSelected(null);
       setError({
-        title: "Empty PDF",
-        message: `${file.name} is empty. Upload a PDF with actual document pages and try again.`,
-        hint: "Use a PDF that contains actual pages before splitting."
+        title: t("errors.emptyPdf"),
+        message: `${file.name} ${t("errors.emptyPdfHint")}`,
+        hint: undefined
       });
       return;
     }
@@ -127,9 +129,9 @@ export function SplitPdfCard() {
     if (file.size > MAX_FILE_BYTES) {
       setSelected(null);
       setError({
-        title: "File too large",
-        message: `${file.name} is larger than 50 MB. Try a smaller PDF or compress it before splitting in the browser.`,
-        hint: "Compress the file first or use a smaller PDF in the current browser flow."
+        title: t("errors.fileTooLarge"),
+        message: `${file.name} is larger than 50 MB. ${t("errors.fileTooLargeHint")}`,
+        hint: undefined
       });
       return;
     }
@@ -167,9 +169,9 @@ export function SplitPdfCard() {
   function splitCurrentPdf() {
     if (!selected) {
       setError({
-        title: "No PDF selected",
-        message: "Choose a PDF before splitting pages.",
-        hint: "Upload one PDF first, then define the page ranges."
+        title: t("errors.noPdfSelected"),
+        message: t("errors.noPdfSelectedHint"),
+        hint: undefined
       });
       return;
     }
@@ -213,9 +215,9 @@ export function SplitPdfCard() {
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Split one PDF into smaller files</span>
-          <h2>Split PDF files</h2>
-          <p>Upload one PDF, choose page ranges, and export separate PDF files in the browser.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -240,9 +242,9 @@ export function SplitPdfCard() {
             }
           }}
         >
-          <strong>Drop one PDF here</strong>
-          <span>or click to choose a file</span>
-          <small>Use formats like 1-3, 5, 7-9. Up to 50 MB in the current browser flow.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -256,34 +258,34 @@ export function SplitPdfCard() {
           <div className="upload-summary">
             <div>
               <strong>{selected.file.name}</strong>
-              <span>selected file</span>
+              <span>{t("selectedFile")}</span>
             </div>
             <div>
               <strong>{formatBytes(selected.file.size)}</strong>
-              <span>file size</span>
+              <span>{t("fileSize")}</span>
             </div>
             <div>
               <strong>{selected.pageCount}</strong>
-              <span>total pages</span>
+              <span>{t("totalPages")}</span>
             </div>
           </div>
         ) : null}
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="page-ranges">Page ranges</label>
+            <label htmlFor="page-ranges">{t("pageRanges")}</label>
             <input
               id="page-ranges"
               className="upload-mode__input"
               type="text"
-              placeholder="1-3, 5, 7-9"
+              placeholder={t("pageRangesPlaceholder")}
               value={rangeInput}
               onChange={(event) => setRangeInput(event.target.value)}
             />
           </div>
           <div className="upload-mode__meta">
-            <strong>Split by page ranges</strong>
-            <span>Use commas to separate multiple ranges. Example: 1-2, 4, 7-9.</span>
+            <strong>{t("splitByRanges")}</strong>
+            <span>{t("rangesHint")}</span>
           </div>
         </div>
 
@@ -294,7 +296,7 @@ export function SplitPdfCard() {
             disabled={!selected || isPending}
             onClick={splitCurrentPdf}
           >
-            {isPending ? "Splitting..." : "Split PDF"}
+            {isPending ? t("splitting") : t("splitButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -307,7 +309,7 @@ export function SplitPdfCard() {
                 resetResults();
               }}
             >
-              Clear file
+              {t("clearFile")}
             </button>
             <button
               type="button"
@@ -315,7 +317,7 @@ export function SplitPdfCard() {
               disabled={!results.length}
               onClick={downloadAll}
             >
-              Download ZIP
+              {t("downloadZip")}
             </button>
           </div>
         </div>
@@ -323,28 +325,28 @@ export function SplitPdfCard() {
 
       {!selected ? (
         <div className="upload-empty">
-          <div className="upload-empty__badge">Split preview</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Input</span>
-              <strong>1 PDF</strong>
+              <span>{t("emptyStatInput")}</span>
+              <strong>{t("emptyStatInputValue")}</strong>
             </div>
             <div>
-              <span>Ranges</span>
-              <strong>1-3, 5, 7-9</strong>
+              <span>{t("emptyStatRanges")}</span>
+              <strong>{t("emptyStatRangesValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>Multiple PDFs</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
           </div>
-          <p>Upload one PDF to split out selected pages for forms, uploads, or document sharing.</p>
+          <p>{t("emptyText")}</p>
         </div>
       ) : null}
 
       {parsedRanges.length ? (
         <div className="upload-job__hint">
-          <strong>{parsedRanges.length} ranges ready</strong>
+          <strong>{parsedRanges.length} {t("rangesReady")}</strong>
           <span>
             {parsedRanges.map((range) => (range.start === range.end ? `${range.start}` : `${range.start}-${range.end}`)).join(", ")}
           </span>
@@ -355,19 +357,19 @@ export function SplitPdfCard() {
         <div className="upload-summary">
           <div>
             <strong>{results.length}</strong>
-            <span>split files</span>
+            <span>{t("splitFiles")}</span>
           </div>
           <div>
             <strong>{formatBytes(totalOutputBytes)}</strong>
-            <span>combined output size</span>
+            <span>{t("combinedOutputSize")}</span>
           </div>
           <div>
             <strong>{totalOutputPages}</strong>
-            <span>exported pages</span>
+            <span>{t("exportedPages")}</span>
           </div>
           <div>
             <strong>{parsedRanges.map((range) => range.start === range.end ? `${range.start}` : `${range.start}-${range.end}`).join(", ")}</strong>
-            <span>exported ranges</span>
+            <span>{t("exportedRanges")}</span>
           </div>
         </div>
       ) : null}
@@ -381,19 +383,19 @@ export function SplitPdfCard() {
                   <strong>{item.fileName}</strong>
                   <span>{item.label}</span>
                 </div>
-                <span className="upload-job__status upload-job__status--success">ready</span>
+                <span className="upload-job__status upload-job__status--success">{t("ready")}</span>
               </div>
               <div className="upload-job__stats">
                 <div>
-                  <span>Pages</span>
+                  <span>{t("pages")}</span>
                   <strong>{item.pageStart === item.pageEnd ? item.pageStart : `${item.pageStart}-${item.pageEnd}`}</strong>
                 </div>
                 <div>
-                  <span>Output size</span>
+                  <span>{t("outputSize")}</span>
                   <strong>{formatBytes(item.blob.size)}</strong>
                 </div>
                 <div>
-                  <span>Total pages</span>
+                  <span>{t("totalPagesLabel")}</span>
                   <strong>{item.pageTotal}</strong>
                 </div>
               </div>
@@ -403,10 +405,10 @@ export function SplitPdfCard() {
                   className="button button--primary"
                   onClick={() => downloadBlob(item.blob, item.fileName)}
                 >
-                  Download PDF
+                  {t("downloadPdf")}
                 </button>
                 <a className="button button--secondary" href="/compress-pdf">
-                  Compress this next
+                  {t("compressNext")}
                 </a>
               </div>
             </article>
@@ -416,15 +418,15 @@ export function SplitPdfCard() {
 
       {results.length ? (
         <div className="upload-job__next-step">
-          <strong>Recommended next step</strong>
-          <span>Download the extracted files now, or open Compress PDF next if one of the split outputs still needs to fit a stricter upload limit.</span>
+          <strong>{t("recommendedNextStep")}</strong>
+          <span>{t("nextStepCopy")}</span>
         </div>
       ) : null}
 
       {selected ? (
         <div className="upload-job__hint upload-job__hint--neutral">
-          <strong>{selected.pageCount} total pages loaded</strong>
-          <span>Split works best when you define the smallest page ranges you actually need, then compress only those outputs if size still matters.</span>
+          <strong>{selected.pageCount} {t("totalPagesLoaded")}</strong>
+          <span>{t("splitHint")}</span>
         </div>
       ) : null}
 

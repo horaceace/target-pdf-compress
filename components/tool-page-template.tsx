@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { ToolPageConfig, toolPageMap } from "@/content/tool-pages";
 import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
@@ -9,7 +10,9 @@ import { ReorderPdfCard } from "@/components/reorder-pdf-card";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { UploadCard } from "@/components/upload-card";
 
-export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
+export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
+  const t = await getTranslations("ToolPageTemplate");
+
   const relatedPages = page.relatedSlugs
     .map((slug) => toolPageMap.get(slug))
     .filter((item): item is ToolPageConfig => Boolean(item));
@@ -32,7 +35,7 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
       {
         "@type": "ListItem",
         position: 1,
-        name: "Home",
+        name: t("breadcrumbHome"),
         item: "https://filesmaller.space"
       },
       {
@@ -54,22 +57,22 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
     }
   };
   const toolLabelMap: Record<ToolPageConfig["tool"], string> = {
-    "compress-pdf": "Scenario-driven compression",
-    "merge-pdf": "Scenario-driven PDF merge",
-    "pdf-to-jpg": "Scenario-driven PDF to JPG conversion",
-    "jpg-to-pdf": "Scenario-driven JPG to PDF conversion",
-    "rotate-pdf": "Scenario-driven PDF rotation",
-    "remove-pdf-pages": "Scenario-driven page removal",
-    "reorder-pdf-pages": "Scenario-driven page reordering"
+    "compress-pdf": t("scenarioCompress"),
+    "merge-pdf": t("scenarioMerge"),
+    "pdf-to-jpg": t("scenarioPdfToJpg"),
+    "jpg-to-pdf": t("scenarioJpgToPdf"),
+    "rotate-pdf": t("scenarioRotate"),
+    "remove-pdf-pages": t("scenarioRemove"),
+    "reorder-pdf-pages": t("scenarioReorder")
   };
   const relatedTitleMap: Record<ToolPageConfig["tool"], string> = {
-    "compress-pdf": "Related compression pages",
-    "merge-pdf": "Related merge pages",
-    "pdf-to-jpg": "Related PDF to JPG pages",
-    "jpg-to-pdf": "Related JPG to PDF pages",
-    "rotate-pdf": "Related rotate PDF pages",
-    "remove-pdf-pages": "Related remove pages tools",
-    "reorder-pdf-pages": "Related reorder pages tools"
+    "compress-pdf": t("relatedCompress"),
+    "merge-pdf": t("relatedMerge"),
+    "pdf-to-jpg": t("relatedPdfToJpg"),
+    "jpg-to-pdf": t("relatedJpgToPdf"),
+    "rotate-pdf": t("relatedRotate"),
+    "remove-pdf-pages": t("relatedRemove"),
+    "reorder-pdf-pages": t("relatedReorder")
   };
 
   function renderToolCard() {
@@ -79,9 +82,9 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
           copy={page.targetLabel}
           heading={page.h1}
           initialTarget={page.targetLabel
-            .replace("Compression mode: ", "")
-            .replace("Target size: ", "")
-            .replace("Compression goal: ", "")}
+            .replace(t("compressionMode"), "")
+            .replace(t("targetSize"), "")
+            .replace(t("compressionGoal"), "")}
         />
       );
     }
@@ -147,7 +150,7 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
 
       <section className="section-stack">
         <div className="panel section">
-          <h2 className="section-title">How it works</h2>
+          <h2 className="section-title">{t("howItWorks")}</h2>
           <div className="step-list">
             {page.steps.map((step, index) => (
               <div className="step-card" key={step}>
@@ -159,7 +162,7 @@ export function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
         </div>
 
         <div className="panel section">
-          <h2 className="section-title">Common questions</h2>
+          <h2 className="section-title">{t("commonQuestions")}</h2>
           <FaqAccordion items={page.faq} />
         </div>
 

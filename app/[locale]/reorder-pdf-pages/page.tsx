@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ReorderPdfCard } from "@/components/reorder-pdf-card";
 
 export const metadata: Metadata = {
@@ -21,36 +22,35 @@ export const metadata: Metadata = {
   }
 };
 
-export default function ReorderPdfPagesPage() {
+export default async function ReorderPdfPagesPage() {
+  const t = await getTranslations("ReorderPdfCard");
+
   return (
     <main className="container">
       <section className="tool-page__headline">
-        <span className="eyebrow">PDF workflow: rearrange page order</span>
-        <h1>Reorder PDF pages</h1>
-        <p>Move PDF pages into the order you need before uploading, sending, or compressing.</p>
+        <span className="eyebrow">{t("eyebrow")}</span>
+        <h1>{t("heading")}</h1>
+        <p>{t("description")}</p>
       </section>
 
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Fix page order before export</span>
-            <h2>Rearrange PDF pages in the browser</h2>
-            <p>
-              Upload one PDF, type the output page order, and download a reordered document without
-              installing a desktop editor.
-            </p>
+            <span className="eyebrow eyebrow--feature">{t("heroEyebrow")}</span>
+            <h2>{t("heroHeading")}</h2>
+            <p>{t("heroIntro")}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Text-based page order</strong>
-                <span>Use formats like 3,1,2,4-6 to move pages into a new sequence.</span>
+                <strong>{t("heroPoint1Title")}</strong>
+                <span>{t("heroPoint1Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Browser-first flow</strong>
-                <span>The current version rearranges the PDF locally in your browser.</span>
+                <strong>{t("heroPoint2Title")}</strong>
+                <span>{t("heroPoint2Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Works with the tool chain</strong>
-                <span>Reorder pages, remove extras, then compress or merge the final document.</span>
+                <strong>{t("heroPoint3Title")}</strong>
+                <span>{t("heroPoint3Copy")}</span>
               </div>
             </div>
           </div>
@@ -60,4 +60,3 @@ export default function ReorderPdfPagesPage() {
     </main>
   );
 }
-

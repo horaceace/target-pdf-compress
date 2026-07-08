@@ -10,6 +10,7 @@ import {
   useState,
   useTransition
 } from "react";
+import { useTranslations } from "next-intl";
 import { downloadFilesAsZip } from "@/lib/download/download-zip";
 import {
   CompressionMode,
@@ -57,37 +58,52 @@ type SuggestedAction = {
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024;
 
-const targetSizeOptions = [
-  { label: "No target", value: 0 },
-  { label: "Under 500 KB", value: 500 * 1024 },
-  { label: "Under 1 MB", value: 1024 * 1024 },
-  { label: "Under 2 MB", value: 2 * 1024 * 1024 },
-  { label: "Under 5 MB", value: 5 * 1024 * 1024 }
-];
-
 function jobId(file: File) {
   return `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${Math.random()
     .toString(36)
     .slice(2, 10)}`;
 }
 
-function createPdfError(fileName: string) {
-  return `${fileName} is not a supported PDF file. Upload a .pdf document and try again.`;
+type TFunc = ReturnType<typeof useTranslations>;
+
+function getTranslatedModeLabel(t: TFunc, mode: CompressionMode) {
+  const keyMap: Record<CompressionMode, string> = {
+    light: "modes.light.label",
+    balanced: "modes.balanced.label",
+    strong: "modes.strong.label",
+    extreme: "modes.extreme.label",
+    scanned: "modes.scanned.label"
+  };
+  return t(keyMap[mode]);
 }
 
-function createEmptyFileError(fileName: string) {
-  return `${fileName} is empty. Upload a PDF with actual document pages and try again.`;
+function getTranslatedProfileLabel(t: TFunc, profile: string) {
+  const keyMap: Record<string, string> = {
+    "scanned-heavy": "profiles.scanned-heavy",
+    "image-heavy": "profiles.image-heavy",
+    "clean-office": "profiles.clean-office",
+    mixed: "profiles.mixed"
+  };
+  return t(keyMap[profile] || profile);
 }
 
-function createFileTooLargeError(fileName: string) {
-  return `${fileName} is larger than 50 MB. Try a smaller PDF or split the document before compressing it in the browser.`;
+function createPdfError(t: TFunc, fileName: string) {
+  return t("errors.unsupportedFile", { fileName });
 }
 
-function normalizeCompressionError(error: unknown, file: File, mode: CompressionMode) {
+function createEmptyFileError(t: TFunc, fileName: string) {
+  return t("errors.emptyFile", { fileName });
+}
+
+function createFileTooLargeError(t: TFunc, fileName: string) {
+  return t("errors.fileTooLarge", { fileName });
+}
+
+function normalizeCompressionError(t: TFunc, error: unknown, file: File, mode: CompressionMode) {
   const fallback = {
-    title: "Compression failed",
-    message: "This PDF could not be processed in the current browser flow.",
-    hint: "Try another compression mode, a smaller file, or split the document before compressing."
+    title: t("errors.compressionFailedTitle"),
+    message: t("errors.compressionFailedMessage"),
+    hint: t("errors.compressionFailedHint")
   };
 
   if (!(error instanceof Error)) {
@@ -99,41 +115,40 @@ function normalizeCompressionError(error: unknown, file: File, mode: Compression
 
   if (lowered.includes("encrypted") || lowered.includes("password")) {
     return {
-      title: "Protected PDF",
-      message: `${file.name} appears to be password-protected or restricted.`,
-      hint: "Unlock the PDF first, then upload it again for browser-side compression."
+      title: t("errors.protectedPdfTitle"),
+      message: t("errors.protectedPdfMessage", { fileName: file.name }),
+      hint: t("errors.protectedPdfHint")
     };
   }
 
   if (lowered.includes("empty")) {
     return {
-      title: "Empty PDF",
+      title: t("errors.emptyPdfTitle"),
       message,
-      hint: "Use a PDF with actual document pages before trying compression."
+      hint: t("errors.emptyPdfHint")
     };
   }
 
   if (lowered.includes("invalid") || lowered.includes("failed to parse") || lowered.includes("read")) {
     return {
-      title: "Unreadable PDF",
-      message: `${file.name} could not be read as a valid PDF.`,
-      hint: "Try opening and re-exporting the file first, or upload a cleaner PDF copy."
+      title: t("errors.unreadablePdfTitle"),
+      message: t("errors.unreadablePdfMessage", { fileName: file.name }),
+      hint: t("errors.unreadablePdfHint")
     };
   }
 
   if (file.size > 25 * 1024 * 1024 && (mode === "extreme" || mode === "scanned")) {
     return {
-      title: "Browser limit reached",
-      message: `${file.name} is large for an aggressive browser-side compression pass.`,
-      hint: "Split the PDF first, or try Strong mode before running a deeper pass."
+      title: t("errors.browserLimitTitle"),
+      message: t("errors.browserLimitMessage", { fileName: file.name }),
+      hint: t("errors.browserLimitHint")
     };
   }
 
   return {
-    title: "Compression failed",
+    title: t("errors.compressionFailedTitle"),
     message,
-    hint:
-      "Try a different mode first. If the file is scan-heavy or image-heavy, Scanned PDF mode usually gives the strongest browser-side path."
+    hint: t("errors.compressionFailedFallbackHint")
   };
 }
 
@@ -153,7 +168,7 @@ function chooseSuggestedMode(job: UploadJob) {
   return chooseStrongerMode(job.mode);
 }
 
-function getSuggestedAction(job: UploadJob): SuggestedAction | null {
+function getSuggestedAction(t: TFunc, job: UploadJob): SuggestedAction | null {
   if (!job.result) {
     return null;
   }
@@ -170,16 +185,16 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
   if (result.documentProfile === "scanned-heavy" && mode !== "scanned") {
     return {
       mode: "scanned",
-      label: `Try ${getCompressionMode("scanned").label}`,
-      reason: "This file behaves more like a scan. Scanned PDF mode is the best next step for image-heavy pages."
+      label: t("tryLabel", { mode: getTranslatedModeLabel(t, "scanned") }),
+      reason: t("suggestedAction.tryScannedScan")
     };
   }
 
   if (result.documentProfile === "image-heavy" && reductionPercent < 18 && mode === "strong") {
     return {
       mode: "scanned",
-      label: `Try ${getCompressionMode("scanned").label}`,
-      reason: "Strong mode helped, but image-heavy files usually need the scanned path for a more aggressive browser-side pass."
+      label: t("tryLabel", { mode: getTranslatedModeLabel(t, "scanned") }),
+      reason: t("suggestedAction.tryScannedImage")
     };
   }
 
@@ -189,8 +204,11 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
     if (nextMode) {
       return {
         mode: nextMode,
-        label: `Try ${getCompressionMode(nextMode).label}`,
-        reason: `This result is still above the ${formatBytes(job.targetBytes!)} target. ${getCompressionMode(nextMode).label} is the next practical retry.`
+        label: t("tryLabel", { mode: getTranslatedModeLabel(t, nextMode) }),
+        reason: t("suggestedAction.tryNextAboveTarget", {
+          target: formatBytes(job.targetBytes!),
+          mode: getTranslatedModeLabel(t, nextMode)
+        })
       };
     }
   }
@@ -198,24 +216,24 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
   if (reductionPercent < 10 && mode === "light") {
     return {
       mode: "balanced",
-      label: `Try ${getCompressionMode("balanced").label}`,
-      reason: "Light mode preserved readability, but the file barely moved. Balanced mode is the safest stronger retry."
+      label: t("tryLabel", { mode: getTranslatedModeLabel(t, "balanced") }),
+      reason: t("suggestedAction.tryBalanced")
     };
   }
 
   if (reductionPercent < 16 && mode === "balanced") {
     return {
       mode: "strong",
-      label: `Try ${getCompressionMode("strong").label}`,
-      reason: "Balanced mode did not reduce enough for tighter upload limits. Strong mode is the next practical step."
+      label: t("tryLabel", { mode: getTranslatedModeLabel(t, "strong") }),
+      reason: t("suggestedAction.tryStrong")
     };
   }
 
   if (reductionPercent < 22 && mode === "strong") {
     return {
       mode: "extreme",
-      label: `Try ${getCompressionMode("extreme").label}`,
-      reason: "This result may still miss stricter upload caps. Extreme mode pushes harder toward the smallest browser-side result."
+      label: t("tryLabel", { mode: getTranslatedModeLabel(t, "extreme") }),
+      reason: t("suggestedAction.tryExtreme")
     };
   }
 
@@ -226,8 +244,8 @@ function getSuggestedAction(job: UploadJob): SuggestedAction | null {
 
   return {
     mode: strongerMode,
-    label: `Try ${getCompressionMode(strongerMode).label}`,
-    reason: `If you still need a smaller file, ${getCompressionMode(strongerMode).label} is the next stronger mode in this compression path.`
+    label: t("tryLabel", { mode: getTranslatedModeLabel(t, strongerMode) }),
+    reason: t("suggestedAction.tryStronger", { mode: getTranslatedModeLabel(t, strongerMode) })
   };
 }
 
@@ -245,36 +263,26 @@ function getBrowserLimitActionForJob(job: UploadJob) {
   });
 }
 
-function resultSummary(mode: CompressionMode, reductionRatio: number) {
+function resultSummary(t: TFunc, mode: CompressionMode, reductionRatio: number) {
   const percent = Math.round(reductionRatio * 100);
 
   if (mode === "light") {
-    return percent > 20
-      ? "Better readability with a lighter size reduction."
-      : "Light mode favors readability over aggressive shrinking.";
+    return percent > 20 ? t("resultSummary.lightGood") : t("resultSummary.lightDefault");
   }
 
   if (mode === "balanced") {
-    return percent > 25
-      ? "Good default reduction for everyday PDF sharing."
-      : "Balanced mode keeps a safer trade-off between size and clarity.";
+    return percent > 25 ? t("resultSummary.balancedGood") : t("resultSummary.balancedDefault");
   }
 
   if (mode === "strong") {
-    return percent > 30
-      ? "Strong mode is working well for upload limits and attachments."
-      : "Strong mode is aimed at smaller uploads and tighter attachments.";
+    return percent > 30 ? t("resultSummary.strongGood") : t("resultSummary.strongDefault");
   }
 
   if (mode === "extreme") {
-    return percent > 35
-      ? "Extreme mode is pushing toward the smallest browser-side result."
-      : "Extreme mode is best when upload limits matter more than visual quality.";
+    return percent > 35 ? t("resultSummary.extremeGood") : t("resultSummary.extremeDefault");
   }
 
-  return percent > 25
-    ? "Scanned PDF mode is helping on image-heavy pages."
-    : "Scanned PDF mode is tuned for image-heavy files that resist lighter compression.";
+  return percent > 25 ? t("resultSummary.scannedGood") : t("resultSummary.scannedDefault");
 }
 
 function qualityHint(job: UploadJob) {
@@ -286,44 +294,36 @@ function qualityHint(job: UploadJob) {
 
   if (details.includes("portal limit")) {
     return {
-      tone: "target",
-      title: "Smallest upload-first result",
-      copy:
-        "This path is tuned for strict size limits and may visibly reduce scan or image detail. Open the PDF once before submitting it."
+      tone: "target" as const,
+      titleKey: "qualityHint.portalLimitTitle",
+      copyKey: "qualityHint.portalLimitCopy"
     };
   }
 
   if (details.includes("smallest scan")) {
     return {
-      tone: "neutral",
-      title: "Balanced scan reduction",
-      copy:
-        "This default scanned path keeps more detail than the portal-limit path while still shrinking image-heavy pages strongly."
+      tone: "neutral" as const,
+      titleKey: "qualityHint.balancedScanTitle",
+      copyKey: "qualityHint.balancedScanCopy"
     };
   }
 
   if (details.includes("smaller scan")) {
     return {
-      tone: "neutral",
-      title: "Moderate scan reduction",
-      copy:
-        "This path reduces image-heavy pages while keeping a safer readability margin for scans and forms."
+      tone: "neutral" as const,
+      titleKey: "qualityHint.moderateScanTitle",
+      copyKey: "qualityHint.moderateScanCopy"
     };
   }
 
   return {
-    tone: "neutral",
-    title: "Quality-aware scan path",
-    copy:
-      "This scanned path is selected from multiple browser render settings based on the smallest practical result."
+    tone: "neutral" as const,
+    titleKey: "qualityHint.qualityAwareTitle",
+    copyKey: "qualityHint.qualityAwareCopy"
   };
 }
 
-function formatPagesLabel(pageCount: number) {
-  return pageCount === 1 ? "1 page" : `${pageCount} pages`;
-}
-
-function formatTargetStatus(job: UploadJob) {
+function formatTargetStatus(t: TFunc, job: UploadJob) {
   if (!job.targetBytes || !job.result) {
     return null;
   }
@@ -333,24 +333,27 @@ function formatTargetStatus(job: UploadJob) {
   if (difference <= 0) {
     return {
       met: true,
-      title: `Under ${formatBytes(job.targetBytes)} target`,
-      copy: `This result is ${formatBytes(Math.abs(difference))} below your selected upload limit.`
+      title: t("targetStatus.underTarget", { target: formatBytes(job.targetBytes) }),
+      copy: t("targetStatus.underTargetCopy", { difference: formatBytes(Math.abs(difference)) })
     };
   }
 
   return {
     met: false,
-    title: `${formatBytes(difference)} over ${formatBytes(job.targetBytes)}`,
-    copy: "Try a stronger mode, split the PDF, or use a smaller target only when the destination portal requires it."
+    title: t("targetStatus.overTarget", {
+      difference: formatBytes(difference),
+      target: formatBytes(job.targetBytes)
+    }),
+    copy: t("targetStatus.overTargetCopy")
   };
 }
 
-function needsAction(job: UploadJob) {
+function needsAction(job: UploadJob, t: TFunc) {
   if (job.status !== "success" || !job.result) {
     return false;
   }
 
-  return Boolean(getSuggestedAction(job) || getBrowserLimitActionForJob(job));
+  return Boolean(getSuggestedAction(t, job) || getBrowserLimitActionForJob(job));
 }
 
 function getQueueModeHint(jobs: UploadJob[], selectedMode: CompressionMode, targetBytes: number) {
@@ -363,7 +366,6 @@ function getQueueModeHint(jobs: UploadJob[], selectedMode: CompressionMode, targ
     if (!largest || job.file.size > largest.file.size) {
       return job;
     }
-
     return largest;
   }, null);
   const largePdfCount = validJobs.filter((job) => job.file.size >= 2 * 1024 * 1024).length;
@@ -377,25 +379,25 @@ function getQueueModeHint(jobs: UploadJob[], selectedMode: CompressionMode, targ
 
   if (anyScannedResults && selectedMode !== "scanned") {
     return {
-      title: "Image-heavy results detected",
-      copy:
-        "At least one processed file behaves like a scan or image-heavy PDF. Use Scanned PDF mode for the strongest browser-side reduction path."
+      titleKey: "queueHint.imageHeavyTitle",
+      copyKey: "queueHint.imageHeavyCopy",
+      params: {} as Record<string, number>
     };
   }
 
   if (largePdfCount > 0 && selectedMode !== "scanned") {
     return {
-      title: `${largePdfCount} large PDF${largePdfCount === 1 ? "" : "s"} in this queue`,
-      copy:
-        "Large PDFs are often scan-heavy or image-heavy. If the first pass barely moves them, rerun the affected files with Scanned PDF mode."
+      titleKey: "queueHint.largePdfsTitle",
+      copyKey: "queueHint.largePdfsCopy",
+      params: { count: largePdfCount } as Record<string, number>
     };
   }
 
   if (strictTarget && largestJob && largestJob.file.size > targetBytes * 2 && selectedMode === "light") {
     return {
-      title: "Strict upload target selected",
-      copy:
-        "Light mode is unlikely to hit a tight size limit. Start with Balanced or Strong, then use the recommended retry for files that miss the target."
+      titleKey: "queueHint.strictTargetTitle",
+      copyKey: "queueHint.strictTargetCopy",
+      params: {} as Record<string, number>
     };
   }
 
@@ -459,13 +461,19 @@ async function renderFirstPagePreview(source: Blob | File) {
 }
 
 export function UploadCard({
-  copy = "Batch-ready PDF compression",
-  heading = "Compress PDF files",
+  copy,
+  heading,
   initialTarget
 }: UploadCardProps) {
+  const t = useTranslations("UploadCard");
+  const tc = useTranslations("Compression");
+
+  const defaultCopy = t("defaultCopy");
+  const defaultHeading = t("defaultHeading");
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const jobsRef = useRef<UploadJob[]>([]);
-  const [mode, setMode] = useState<CompressionMode>(inferCompressionMode(initialTarget || copy));
+  const [mode, setMode] = useState<CompressionMode>(inferCompressionMode(initialTarget || copy || defaultCopy));
   const [targetBytes, setTargetBytes] = useState(0);
   const [jobs, setJobs] = useState<UploadJob[]>([]);
   const [queueFilter, setQueueFilter] = useState<QueueFilter>("all");
@@ -479,11 +487,21 @@ export function UploadCard({
   const successJobs = jobs.filter((job) => job.status === "success" && job.result);
   const queuedJobs = jobs.filter((job) => job.status === "queued");
   const errorJobs = jobs.filter((job) => job.status === "error");
-  const actionJobs = jobs.filter(needsAction);
+  const actionJobs = jobs.filter((job) => needsAction(job, t));
+
+  const targetSizeOptions = useMemo(() => [
+    { label: t("targetSizes.noTarget"), value: 0 },
+    { label: t("targetSizes.under500KB"), value: 500 * 1024 },
+    { label: t("targetSizes.under1MB"), value: 1024 * 1024 },
+    { label: t("targetSizes.under2MB"), value: 2 * 1024 * 1024 },
+    { label: t("targetSizes.under5MB"), value: 5 * 1024 * 1024 }
+  ], [t]);
+
   const queueModeHint = getQueueModeHint(jobs, mode, targetBytes);
+
   const visibleJobs = jobs.filter((job) => {
     if (queueFilter === "needs-action") {
-      return needsAction(job);
+      return needsAction(job, t);
     }
 
     if (queueFilter === "done") {
@@ -532,9 +550,9 @@ export function UploadCard({
           mode,
           targetBytes,
           status: "error" as const,
-          error: createPdfError(file.name),
-          errorTitle: "Unsupported file",
-          errorHint: "Upload a real .pdf file before starting compression."
+          error: createPdfError(t, file.name),
+          errorTitle: t("errors.unsupportedFileTitle"),
+          errorHint: t("errors.unsupportedFileHint")
         };
       }
 
@@ -545,9 +563,9 @@ export function UploadCard({
           mode,
           targetBytes,
           status: "error" as const,
-          error: createEmptyFileError(file.name),
-          errorTitle: "Empty PDF",
-          errorHint: "Use a PDF that contains actual document pages."
+          error: createEmptyFileError(t, file.name),
+          errorTitle: t("errors.emptyPdfShortTitle"),
+          errorHint: t("errors.emptyPdfShortHint")
         };
       }
 
@@ -558,9 +576,9 @@ export function UploadCard({
           mode,
           targetBytes,
           status: "error" as const,
-          error: createFileTooLargeError(file.name),
-          errorTitle: "File too large",
-          errorHint: "Split the file first or try a smaller PDF in the browser flow."
+          error: createFileTooLargeError(t, file.name),
+          errorTitle: t("errors.fileTooLargeTitle"),
+          errorHint: t("errors.fileTooLargeHint")
         };
       }
 
@@ -584,10 +602,9 @@ export function UploadCard({
           mode,
           targetBytes,
           status: "error",
-          errorTitle: "Browser not supported",
-          error:
-            "This browser does not support the current PDF compression flow. Try a modern Chrome, Edge, Safari, or Firefox build.",
-          errorHint: "Switch to a modern browser with FileReader and current PDF APIs enabled."
+          errorTitle: t("errors.browserNotSupportedTitle"),
+          error: t("errors.browserNotSupportedMessage"),
+          errorHint: t("errors.browserNotSupportedHint")
         }
       ]);
       return;
@@ -600,7 +617,7 @@ export function UploadCard({
     }
 
     setQueueFilter("all");
-    setQueueNotice(`${items.length} file${items.length === 1 ? "" : "s"} added to the queue.`);
+    setQueueNotice(t("queueNoticeAdded", { count: items.length }));
     setJobs((current) => [...current, ...items]);
   }
 
@@ -721,7 +738,7 @@ export function UploadCard({
         });
       }
     } catch (error) {
-      const normalized = normalizeCompressionError(error, file, selectedMode);
+      const normalized = normalizeCompressionError(t, error, file, selectedMode);
 
       updateJob(id, (job) => ({
         ...job,
@@ -749,13 +766,19 @@ export function UploadCard({
       return;
     }
 
-    setQueueNotice(`Compressing ${queuedIds.length} file${queuedIds.length === 1 ? "" : "s"} with ${getCompressionMode(mode).label}.`);
+    setQueueNotice(t("queueNoticeCompressing", {
+      count: queuedIds.length,
+      mode: getTranslatedModeLabel(tc, mode)
+    }));
 
     startTransition(async () => {
       for (const id of queuedIds) {
         await processJob(id, mode, undefined, targetBytes);
       }
-      setQueueNotice(`${queuedIds.length} file${queuedIds.length === 1 ? "" : "s"} processed with ${getCompressionMode(mode).label}.`);
+      setQueueNotice(t("queueNoticeProcessed", {
+        count: queuedIds.length,
+        mode: getTranslatedModeLabel(tc, mode)
+      }));
     });
   }
 
@@ -783,7 +806,7 @@ export function UploadCard({
       .filter((job) => job.status === "success" && job.result)
       .map((job) => ({
         job,
-        action: getSuggestedAction(job)
+        action: getSuggestedAction(t, job)
       }))
       .filter((item): item is { job: UploadJob; action: SuggestedAction } => Boolean(item.action));
 
@@ -796,9 +819,12 @@ export function UploadCard({
     });
 
     const modeLabels = Array.from(
-      new Set(retryPlan.map((item) => getCompressionMode(item.action.mode).label))
+      new Set(retryPlan.map((item) => getTranslatedModeLabel(tc, item.action.mode)))
     ).join(", ");
-    setQueueNotice(`Retrying ${retryPlan.length} file${retryPlan.length === 1 ? "" : "s"} with ${modeLabels}.`);
+    setQueueNotice(t("queueNoticeRetrying", {
+      count: retryPlan.length,
+      modes: modeLabels
+    }));
 
     startTransition(async () => {
       for (const item of retryPlan) {
@@ -809,7 +835,10 @@ export function UploadCard({
           item.job.targetBytes ?? targetBytes
         );
       }
-      setQueueNotice(`${retryPlan.length} file${retryPlan.length === 1 ? "" : "s"} retried with ${modeLabels}.`);
+      setQueueNotice(t("queueNoticeRetried", {
+        count: retryPlan.length,
+        modes: modeLabels
+      }));
     });
   }
 
@@ -824,13 +853,13 @@ export function UploadCard({
       file_count: retryJobs.length
     });
 
-    setQueueNotice(`Retrying ${retryJobs.length} issue${retryJobs.length === 1 ? "" : "s"}.`);
+    setQueueNotice(t("queueNoticeRetryingIssues", { count: retryJobs.length }));
 
     startTransition(async () => {
       for (const job of retryJobs) {
         await processJob(job.id, job.mode, undefined, job.targetBytes ?? targetBytes);
       }
-      setQueueNotice(`${retryJobs.length} issue${retryJobs.length === 1 ? "" : "s"} retried.`);
+      setQueueNotice(t("queueNoticeRetriedIssues", { count: retryJobs.length }));
     });
   }
 
@@ -907,11 +936,11 @@ export function UploadCard({
       updateJob(job.id, (current) => ({
         ...current,
         previewStatus: "error",
-        previewError: error instanceof Error ? error.message : "Preview could not be rendered."
+        previewError: error instanceof Error ? error.message : t("errors.previewRenderFailed")
       }));
       trackEvent("preview_failed", {
         file_size: job.file.size,
-        error_message: error instanceof Error ? error.message : "Preview could not be rendered.",
+        error_message: error instanceof Error ? error.message : t("errors.previewRenderFailed"),
         ...analyticsModeParams(job.result.mode, job.targetBytes)
       });
     }
@@ -921,9 +950,9 @@ export function UploadCard({
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">{copy}</span>
-          <h2>{heading}</h2>
-          <p>Upload, compress, download.</p>
+          <span className="eyebrow">{copy || defaultCopy}</span>
+          <h2>{heading || defaultHeading}</h2>
+          <p>{t("tagline")}</p>
         </div>
 
         <div
@@ -948,9 +977,9 @@ export function UploadCard({
             }
           }}
         >
-          <strong>Drop PDF files here</strong>
-          <span>or click to choose files</span>
-          <small>PDF only. Batch upload supported. Up to 50 MB per file in the current browser flow.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -963,9 +992,9 @@ export function UploadCard({
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <span className="upload-mode__label">Compression mode</span>
+            <span className="upload-mode__label">{t("modeLabel")}</span>
           </div>
-          <div className="compression-mode-grid" role="radiogroup" aria-label="Compression mode">
+          <div className="compression-mode-grid" role="radiogroup" aria-label={t("modeAriaLabel")}>
             {compressionModes.map((item) => (
               <button
                 aria-checked={mode === item.id}
@@ -986,20 +1015,20 @@ export function UploadCard({
                 role="radio"
                 type="button"
               >
-                <strong>{item.label}</strong>
-                <span>{item.bestFor}</span>
+                <strong>{tc(`modes.${item.id}.label`)}</strong>
+                <span>{tc(`modes.${item.id}.bestFor`)}</span>
               </button>
             ))}
           </div>
           <div className="upload-mode__meta">
-            <strong>{modeMeta.bestFor}</strong>
-            <span>{modeMeta.description}</span>
+            <strong>{tc(`modes.${mode}.bestFor`)}</strong>
+            <span>{tc(`modes.${mode}.description`)}</span>
           </div>
         </div>
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="target-size">Target size</label>
+            <label htmlFor="target-size">{t("targetSizeLabel")}</label>
             <select
               id="target-size"
               value={targetBytes}
@@ -1020,11 +1049,9 @@ export function UploadCard({
             </select>
           </div>
           <div className="upload-mode__meta">
-            <strong>{targetBytes ? `Aim for ${formatBytes(targetBytes)}` : "Maximum practical reduction"}</strong>
+            <strong>{targetBytes ? t("aimForTarget", { target: formatBytes(targetBytes) }) : t("maxPracticalReduction")}</strong>
             <span>
-              {targetBytes
-                ? "The browser will show whether the result fits your selected upload limit and suggest the next stronger retry when needed."
-                : "Use this when you only need the smallest practical browser-side result, not a fixed portal limit."}
+              {targetBytes ? t("targetSizeMetaWithTarget") : t("targetSizeMetaNoTarget")}
             </span>
           </div>
         </div>
@@ -1036,7 +1063,7 @@ export function UploadCard({
             disabled={processing}
             onClick={hasJobs ? processAll : triggerFilePicker}
           >
-            {processing ? "Compressing..." : hasJobs ? "Compress files" : "Choose PDF files"}
+            {processing ? t("compressButtonProcessing") : hasJobs ? t("compressButtonFiles") : t("compressButtonChoose")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -1049,7 +1076,7 @@ export function UploadCard({
                 setJobs([]);
               }}
             >
-              Clear list
+              {t("clearList")}
             </button>
             <button
               type="button"
@@ -1057,7 +1084,7 @@ export function UploadCard({
               disabled={!successJobs.length}
               onClick={downloadAll}
             >
-              Download ZIP
+              {t("downloadZipButton")}
             </button>
           </div>
         </div>
@@ -1065,43 +1092,43 @@ export function UploadCard({
 
       {!hasJobs ? (
         <div className="upload-empty">
-          <div className="upload-empty__badge">Results will appear here</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Before</span>
+              <span>{t("emptyBefore")}</span>
               <strong>8.4 MB</strong>
             </div>
             <div>
-              <span>After</span>
+              <span>{t("emptyAfter")}</span>
               <strong>2.1 MB</strong>
             </div>
             <div>
-              <span>Saved</span>
+              <span>{t("emptySaved")}</span>
               <strong>75%</strong>
             </div>
           </div>
-          <p>Upload a PDF to see file size reduction, download actions, and stronger compression options.</p>
+          <p>{t("emptyText")}</p>
         </div>
       ) : null}
 
       {hasJobs ? (
         <div className="upload-queue-bar">
-          <div className="upload-queue-bar__stats" aria-label="Compression queue status">
+          <div className="upload-queue-bar__stats" aria-label={t("queueAriaLabel")}>
             <span>
-              <strong>{jobs.length}</strong> total
+              <strong>{jobs.length}</strong> {t("queueTotal")}
             </span>
             <span>
-              <strong>{successJobs.length}</strong> done
+              <strong>{successJobs.length}</strong> {t("queueDone")}
             </span>
             <span>
-              <strong>{actionJobs.length}</strong> need action
+              <strong>{actionJobs.length}</strong> {t("queueNeedAction")}
             </span>
             <span>
-              <strong>{queuedJobs.length}</strong> waiting
+              <strong>{queuedJobs.length}</strong> {t("queueWaiting")}
             </span>
             {errorJobs.length ? (
               <span className="upload-queue-bar__error">
-                <strong>{errorJobs.length}</strong> issue{errorJobs.length === 1 ? "" : "s"}
+                <strong>{errorJobs.length}</strong> {t("queueIssue")}
               </span>
             ) : null}
           </div>
@@ -1112,7 +1139,7 @@ export function UploadCard({
               disabled={!queuedJobs.length || processing}
               onClick={processAll}
             >
-              Compress remaining
+              {t("compressRemaining")}
             </button>
             <button
               type="button"
@@ -1120,7 +1147,7 @@ export function UploadCard({
               disabled={!successJobs.length}
               onClick={downloadAll}
             >
-              Download ZIP
+              {t("downloadZipButton")}
             </button>
             <button
               type="button"
@@ -1132,7 +1159,7 @@ export function UploadCard({
                 setJobs([]);
               }}
             >
-              Clear
+              {t("clear")}
             </button>
           </div>
           <div className="upload-queue-bar__actions upload-queue-bar__actions--secondary">
@@ -1142,7 +1169,7 @@ export function UploadCard({
               disabled={!actionJobs.some((job) => job.status === "success" && job.result) || processing}
               onClick={tryStrongerForActionJobs}
             >
-              Try recommended modes
+              {t("tryRecommendedModes")}
             </button>
             <button
               type="button"
@@ -1150,7 +1177,7 @@ export function UploadCard({
               disabled={!errorJobs.length || processing}
               onClick={retryIssueJobs}
             >
-              Retry issues
+              {t("retryIssues")}
             </button>
           </div>
           {queueNotice ? (
@@ -1160,17 +1187,17 @@ export function UploadCard({
           ) : null}
           {queueModeHint ? (
             <div className="upload-queue-hint">
-              <strong>{queueModeHint.title}</strong>
-              <span>{queueModeHint.copy}</span>
+              <strong>{t(queueModeHint.titleKey, queueModeHint.params)}</strong>
+              <span>{t(queueModeHint.copyKey, queueModeHint.params)}</span>
             </div>
           ) : null}
-          <div className="upload-queue-filter" role="tablist" aria-label="Filter compression results">
-            {[
-              { id: "all" as const, label: "All", count: jobs.length },
-              { id: "needs-action" as const, label: "Needs action", count: actionJobs.length },
-              { id: "done" as const, label: "Done", count: successJobs.length },
-              { id: "issues" as const, label: "Issues", count: errorJobs.length }
-            ].map((item) => (
+          <div className="upload-queue-filter" role="tablist" aria-label={t("filterAriaLabel")}>
+            {([
+              { id: "all" as const, labelKey: "filterAll", count: jobs.length },
+              { id: "needs-action" as const, labelKey: "filterNeedsAction", count: actionJobs.length },
+              { id: "done" as const, labelKey: "filterDone", count: successJobs.length },
+              { id: "issues" as const, labelKey: "filterIssues", count: errorJobs.length }
+            ]).map((item) => (
               <button
                 aria-selected={queueFilter === item.id}
                 className={`upload-queue-filter__button${
@@ -1188,7 +1215,7 @@ export function UploadCard({
                 role="tab"
                 type="button"
               >
-                {item.label}
+                {t(item.labelKey)}
                 <span>{item.count}</span>
               </button>
             ))}
@@ -1200,23 +1227,23 @@ export function UploadCard({
         <div className="upload-summary">
           <div>
             <strong>{successJobs.length}</strong>
-            <span>compressed files</span>
+            <span>{t("summaryCompressedFiles")}</span>
           </div>
           <div>
             <strong>{formatBytes(totals.saved)}</strong>
-            <span>total saved</span>
+            <span>{t("summaryTotalSaved")}</span>
           </div>
           <div>
             <strong>{formatBytes(totals.compressed)}</strong>
-            <span>current total size</span>
+            <span>{t("summaryCurrentSize")}</span>
           </div>
           <div>
             <strong>{totalReduction}%</strong>
-            <span>average reduction</span>
+            <span>{t("summaryAvgReduction")}</span>
           </div>
           <div>
             <strong>{totals.pages}</strong>
-            <span>processed pages</span>
+            <span>{t("summaryProcessedPages")}</span>
           </div>
         </div>
       ) : null}
@@ -1225,16 +1252,16 @@ export function UploadCard({
         <div className="upload-jobs">
           {!visibleJobs.length ? (
             <div className="upload-jobs__empty">
-              <strong>No files in this view</strong>
-              <span>Switch filters to see the rest of the compression queue.</span>
+              <strong>{t("noFilesInView")}</strong>
+              <span>{t("switchFiltersHint")}</span>
             </div>
           ) : null}
           {visibleJobs.map((job) => {
             const strongerMode = chooseStrongerMode(job.mode);
             const suggestedMode = chooseSuggestedMode(job);
-            const suggestedAction = getSuggestedAction(job);
+            const suggestedAction = getSuggestedAction(t, job);
             const browserLimitAction = getBrowserLimitActionForJob(job);
-            const targetStatus = formatTargetStatus(job);
+            const targetStatus = formatTargetStatus(t, job);
             const selectedQualityHint = qualityHint(job);
             const compactResult = jobs.length > 1 && job.status === "success" && Boolean(job.result);
             return (
@@ -1243,7 +1270,7 @@ export function UploadCard({
                   <div>
                     <strong>{job.file.name}</strong>
                     <span>
-                      {formatBytes(job.file.size)} · {getCompressionMode(job.mode).label}
+                      {formatBytes(job.file.size)} · {getTranslatedModeLabel(tc, job.mode)}
                     </span>
                   </div>
                   <span className={`upload-job__status upload-job__status--${job.status}`}>
@@ -1258,15 +1285,15 @@ export function UploadCard({
                         <div className="upload-job__compact-metrics">
                           <span>
                             <strong>{Math.round(job.result.reductionRatio * 100)}%</strong>
-                            smaller
+                            {" "}{t("resultSmaller")}
                           </span>
                           <span>
                             <strong>{formatBytes(job.result.compressedBytes)}</strong>
-                            after
+                            {" "}{t("resultAfter")}
                           </span>
                           <span>
                             <strong>{formatBytes(job.result.savedBytes)}</strong>
-                            saved
+                            {" "}{t("resultSaved")}
                           </span>
                         </div>
                         {targetStatus ? (
@@ -1282,8 +1309,8 @@ export function UploadCard({
                         ) : null}
                         {selectedQualityHint ? (
                           <div className="upload-job__compact-quality">
-                            <strong>{selectedQualityHint.title}</strong>
-                            <span>Compare before submitting this compressed file.</span>
+                            <strong>{t(selectedQualityHint.titleKey)}</strong>
+                            <span>{t("compareHint")}</span>
                           </div>
                         ) : null}
                         <div className="upload-job__compact-actions">
@@ -1292,7 +1319,7 @@ export function UploadCard({
                             className="button button--primary"
                             onClick={() => downloadJob(job)}
                           >
-                            Download
+                            {t("downloadButton")}
                           </button>
                           <button
                             type="button"
@@ -1313,7 +1340,7 @@ export function UploadCard({
                               });
                             }}
                           >
-                            {suggestedAction ? suggestedAction.label : "Strongest used"}
+                            {suggestedAction ? suggestedAction.label : t("strongestUsed")}
                           </button>
                           <button
                             type="button"
@@ -1323,7 +1350,7 @@ export function UploadCard({
                               void previewJob(job);
                             }}
                           >
-                            {job.previewStatus === "rendering" ? "Rendering" : "Compare"}
+                            {job.previewStatus === "rendering" ? t("rendering") : t("compare")}
                           </button>
                         </div>
                       </div>
@@ -1331,14 +1358,14 @@ export function UploadCard({
                       <>
                         <div className="upload-job__outcome">
                           <div>
-                            <span className="upload-job__outcome-label">Compressed result</span>
-                            <strong>{Math.round(job.result.reductionRatio * 100)}% smaller</strong>
+                            <span className="upload-job__outcome-label">{t("compressedResult")}</span>
+                            <strong>{Math.round(job.result.reductionRatio * 100)}% {t("smallerLabel")}</strong>
                             <span>
                               {formatBytes(job.result.originalBytes)} to {formatBytes(job.result.compressedBytes)}
                             </span>
                           </div>
                           <div className="upload-job__outcome-save">
-                            <span>Saved</span>
+                            <span>{t("savedLabel")}</span>
                             <strong>{formatBytes(job.result.savedBytes)}</strong>
                           </div>
                         </div>
@@ -1355,48 +1382,48 @@ export function UploadCard({
                           </div>
                         ) : (
                           <div className="upload-job__target-status upload-job__target-status--neutral">
-                            <strong>Ready to download</strong>
-                            <span>No fixed target size was selected for this compression run.</span>
+                            <strong>{t("readyToDownload")}</strong>
+                            <span>{t("noTargetSelected")}</span>
                           </div>
                         )}
                         <div className="upload-job__stats">
                           <div>
-                            <span>Before</span>
+                            <span>{t("statBefore")}</span>
                             <strong>{formatBytes(job.result.originalBytes)}</strong>
                           </div>
                           <div>
-                            <span>After</span>
+                            <span>{t("statAfter")}</span>
                             <strong>{formatBytes(job.result.compressedBytes)}</strong>
                           </div>
                           <div>
-                            <span>Saved</span>
+                            <span>{t("statSaved")}</span>
                             <strong>{formatBytes(job.result.savedBytes)}</strong>
                           </div>
                           <div>
-                            <span>Reduction</span>
+                            <span>{t("statReduction")}</span>
                             <strong>{Math.round(job.result.reductionRatio * 100)}%</strong>
                           </div>
                           <div>
-                            <span>Mode</span>
-                            <strong>{getCompressionMode(job.result.mode).label}</strong>
+                            <span>{t("statMode")}</span>
+                            <strong>{getTranslatedModeLabel(tc, job.result.mode)}</strong>
                           </div>
                           <div>
-                            <span>Pages</span>
+                            <span>{t("statPages")}</span>
                             <strong>{job.result.pageCount}</strong>
                           </div>
                           <div>
-                            <span>Profile</span>
-                            <strong>{job.result.profileLabel}</strong>
+                            <span>{t("statProfile")}</span>
+                            <strong>{getTranslatedProfileLabel(tc, job.result.documentProfile)}</strong>
                           </div>
                           {job.targetBytes ? (
                             <div>
-                              <span>Target</span>
+                              <span>{t("statTarget")}</span>
                               <strong>{formatBytes(job.targetBytes)}</strong>
                             </div>
                           ) : null}
                         </div>
                         <p className="upload-job__summary">
-                          {resultSummary(job.result.mode, job.result.reductionRatio)}
+                          {resultSummary(t, job.result.mode, job.result.reductionRatio)}
                         </p>
                         {job.result.warning ? <p className="upload-job__warning">{job.result.warning}</p> : null}
                         {job.result.recommendation ? (
@@ -1411,8 +1438,8 @@ export function UploadCard({
                             }`}
                           >
                             <div>
-                              <strong>{selectedQualityHint.title}</strong>
-                              <span>{selectedQualityHint.copy}</span>
+                              <strong>{t(selectedQualityHint.titleKey)}</strong>
+                              <span>{t(selectedQualityHint.copyKey)}</span>
                             </div>
                             <button
                               type="button"
@@ -1422,13 +1449,13 @@ export function UploadCard({
                                 void previewJob(job);
                               }}
                             >
-                              {job.previewStatus === "rendering" ? "Rendering" : "Compare first page"}
+                              {job.previewStatus === "rendering" ? t("rendering") : t("compareFirstPage")}
                             </button>
                           </div>
                         ) : null}
                         {suggestedAction ? (
                           <div className="upload-job__next-step">
-                            <strong>Recommended next step</strong>
+                            <strong>{t("recommendedNextStep")}</strong>
                             <span>{suggestedAction.reason}</span>
                           </div>
                         ) : null}
@@ -1446,7 +1473,7 @@ export function UploadCard({
                             className="button button--primary"
                             onClick={() => downloadJob(job)}
                           >
-                            Download PDF
+                            {t("downloadPdf")}
                           </button>
                           <button
                             type="button"
@@ -1467,7 +1494,7 @@ export function UploadCard({
                               });
                             }}
                           >
-                            {suggestedAction ? suggestedAction.label : "Strongest used"}
+                            {suggestedAction ? suggestedAction.label : t("strongestUsed")}
                           </button>
                           {strongerMode && suggestedMode !== strongerMode ? (
                             <button
@@ -1476,7 +1503,7 @@ export function UploadCard({
                               disabled={processing}
                               onClick={() => tryStronger(job)}
                             >
-                              Try {getCompressionMode(strongerMode).label}
+                              {t("tryLabel", { mode: getTranslatedModeLabel(tc, strongerMode) })}
                             </button>
                           ) : null}
                           <button
@@ -1487,31 +1514,27 @@ export function UploadCard({
                               void previewJob(job);
                             }}
                           >
-                            {job.previewStatus === "rendering" ? "Rendering preview" : "Compare first page"}
+                            {job.previewStatus === "rendering" ? t("renderingPreview") : t("compareFirstPage")}
                           </button>
                         </div>
                         <details className="upload-job__details">
-                          <summary>Technical details</summary>
+                          <summary>{t("technicalDetails")}</summary>
                           <div className="upload-job__details-body">
                             <div className="upload-job__hint upload-job__hint--neutral">
                               <strong>
-                                {formatPagesLabel(job.result.pageCount)} · {formatBytes(job.result.bytesPerPage)} per page
+                                {t("pageCount", { count: job.result.pageCount })} · {formatBytes(job.result.bytesPerPage)} per page
                               </strong>
-                              <span>
-                                FileSmaller is using page count and bytes-per-page signals to decide whether this PDF behaves more like a clean office file, a mixed document, or a scan.
-                              </span>
+                              <span>{t("technicalHint")}</span>
                             </div>
                             {job.result.likelyImageHeavy ? (
                               <div className="upload-job__hint">
-                                <strong>Looks like a scanned or image-heavy PDF</strong>
-                                <span>
-                                  Larger bytes per page usually means this file is driven more by images than text.
-                                </span>
+                                <strong>{t("scannedHintTitle")}</strong>
+                                <span>{t("scannedHintText")}</span>
                               </div>
                             ) : null}
                             {job.result.compressionDetails ? (
                               <div className="upload-job__hint upload-job__hint--neutral">
-                                <strong>Compression path</strong>
+                                <strong>{t("compressionPathLabel")}</strong>
                                 <span>{job.result.compressionDetails}</span>
                               </div>
                             ) : null}
@@ -1522,12 +1545,12 @@ export function UploadCard({
                     {job.originalPreviewUrl && job.compressedPreviewUrl ? (
                       <div className="upload-job__preview-grid">
                         <figure className="upload-job__preview">
-                          <img alt={`Original first-page preview of ${job.file.name}`} src={job.originalPreviewUrl} />
-                          <figcaption>Original first page</figcaption>
+                          <img alt={t("originalPreviewAlt", { name: job.file.name })} src={job.originalPreviewUrl} />
+                          <figcaption>{t("originalPreviewCaption")}</figcaption>
                         </figure>
                         <figure className="upload-job__preview">
-                          <img alt={`Compressed first-page preview of ${job.result.fileName}`} src={job.compressedPreviewUrl} />
-                          <figcaption>Compressed first page</figcaption>
+                          <img alt={t("compressedPreviewAlt", { name: job.result.fileName })} src={job.compressedPreviewUrl} />
+                          <figcaption>{t("compressedPreviewCaption")}</figcaption>
                         </figure>
                       </div>
                     ) : null}
@@ -1539,7 +1562,7 @@ export function UploadCard({
 
                 {job.status === "error" ? (
                   <div className="upload-job__error">
-                    <strong>{job.errorTitle ?? "Compression failed"}</strong>
+                    <strong>{job.errorTitle ?? t("errors.compressionFailedTitle")}</strong>
                     <span>{job.error}</span>
                     {job.errorHint ? <small>{job.errorHint}</small> : null}
                   </div>
@@ -1556,7 +1579,7 @@ export function UploadCard({
                         });
                       }}
                     >
-                      Retry compression
+                      {t("retryCompression")}
                     </button>
                   </div>
                 ) : null}

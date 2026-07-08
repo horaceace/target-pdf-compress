@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 
 export const metadata: Metadata = {
@@ -21,36 +22,35 @@ export const metadata: Metadata = {
   }
 };
 
-export default function SplitPdfPage() {
+export default async function SplitPdfPage() {
+  const t = await getTranslations("SplitPdfCard");
+
   return (
     <main className="container">
       <section className="tool-page__headline">
-        <span className="eyebrow">PDF workflow: split pages into smaller files</span>
-        <h1>Split PDF files</h1>
-        <p>Extract page ranges from one PDF and download separate PDF files in the browser.</p>
+        <span className="eyebrow">{t("eyebrow")}</span>
+        <h1>{t("heading")}</h1>
+        <p>{t("description")}</p>
       </section>
 
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Pull out only the pages you need</span>
-            <h2>Split a large PDF into smaller documents</h2>
-            <p>
-              Upload one PDF, choose page ranges, and export separate files for forms,
-              uploads, or follow-up compression.
-            </p>
+            <span className="eyebrow eyebrow--feature">{t("heroEyebrow")}</span>
+            <h2>{t("heroHeading")}</h2>
+            <p>{t("heroIntro")}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Range-based splitting</strong>
-                <span>Use formats like 1-3, 5, 7-9 to define the exact pages you want to export.</span>
+                <strong>{t("heroPoint1Title")}</strong>
+                <span>{t("heroPoint1Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Browser-first flow</strong>
-                <span>Split the document locally in the browser without a server-side queue for the MVP.</span>
+                <strong>{t("heroPoint2Title")}</strong>
+                <span>{t("heroPoint2Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Pairs naturally with compression</strong>
-                <span>Extract only the needed pages first, then compress the smaller PDFs if upload limits still matter.</span>
+                <strong>{t("heroPoint3Title")}</strong>
+                <span>{t("heroPoint3Copy")}</span>
               </div>
             </div>
           </div>

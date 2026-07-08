@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { ReorderResult, prepareReorderPdf, reorderPdfPages } from "@/lib/pdf/reorder";
 
@@ -17,6 +18,8 @@ type ReorderError = {
   hint?: string;
 };
 
+type TFunc = ReturnType<typeof useTranslations>;
+
 function downloadBlob(blob: Blob, fileName: string) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -26,12 +29,12 @@ function downloadBlob(blob: Blob, fileName: string) {
   URL.revokeObjectURL(url);
 }
 
-function normalizeReorderError(error: unknown): ReorderError {
+function normalizeReorderError(t: TFunc, error: unknown): ReorderError {
   if (!(error instanceof Error)) {
     return {
-      title: "Reorder failed",
-      message: "The PDF could not be reordered in the current browser flow.",
-      hint: "Check the file and page order, then try again."
+      title: t("errors.reorderFailed"),
+      message: t("errors.reorderFailedMessage"),
+      hint: t("errors.reorderFailedHint")
     };
   }
 
@@ -39,44 +42,46 @@ function normalizeReorderError(error: unknown): ReorderError {
 
   if (lowered.includes("not a pdf")) {
     return {
-      title: "Unsupported file",
+      title: t("errors.unsupportedFile"),
       message: error.message,
-      hint: "Upload a valid .pdf document before reordering pages."
+      hint: t("errors.unsupportedFileHint")
     };
   }
 
   if (lowered.includes("empty")) {
     return {
-      title: "Empty PDF",
+      title: t("errors.emptyPdf"),
       message: error.message,
-      hint: "Use a PDF that contains actual document pages."
+      hint: t("errors.emptyPdfHint")
     };
   }
 
   if (lowered.includes("duplicate") || lowered.includes("page") || lowered.includes("range")) {
     return {
-      title: "Invalid page order",
+      title: t("errors.invalidOrder"),
       message: error.message,
-      hint: "Use formats like 3,1,2,4-6 and list each output page only once."
+      hint: t("errors.invalidOrderHint")
     };
   }
 
   if (lowered.includes("encrypted") || lowered.includes("password")) {
     return {
-      title: "Protected PDF",
-      message: "This PDF appears to be password-protected or restricted.",
+      title: t("errors.protectedPdf"),
+      message: t("errors.protectedPdfHint"),
       hint: "Unlock the file first, then upload it again."
     };
   }
 
   return {
-    title: "Reorder failed",
+    title: t("errors.reorderFailed"),
     message: error.message,
-    hint: "Try a cleaner PDF copy or a simpler page order first."
+    hint: t("errors.reorderFailedHint")
   };
 }
 
 export function ReorderPdfCard() {
+  const t = useTranslations("ReorderPdfCard");
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<SelectedPdf | null>(null);
   const [orderInput, setOrderInput] = useState("2,1");
@@ -95,9 +100,9 @@ export function ReorderPdfCard() {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setSelected(null);
       setError({
-        title: "Unsupported file",
-        message: `${file.name} is not a supported PDF file. Upload a .pdf document and try again.`,
-        hint: "Only PDF files can be reordered in this flow."
+        title: t("errors.unsupportedFile"),
+        message: `${file.name} ${t("errors.unsupportedFileHint")}`,
+        hint: "Upload a valid .pdf document before reordering pages."
       });
       return;
     }
@@ -105,8 +110,8 @@ export function ReorderPdfCard() {
     if (file.size === 0) {
       setSelected(null);
       setError({
-        title: "Empty PDF",
-        message: `${file.name} is empty. Upload a PDF with actual document pages and try again.`,
+        title: t("errors.emptyPdf"),
+        message: `${file.name} ${t("errors.emptyPdfHint")}`,
         hint: "Use a PDF that contains actual pages before reordering."
       });
       return;
@@ -115,9 +120,9 @@ export function ReorderPdfCard() {
     if (file.size > MAX_FILE_BYTES) {
       setSelected(null);
       setError({
-        title: "File too large",
+        title: t("errors.fileTooLarge"),
         message: `${file.name} is larger than 50 MB. Try a smaller PDF or split it first.`,
-        hint: "The current browser flow is designed for smaller document tasks."
+        hint: t("errors.fileTooLargeHint")
       });
       return;
     }
@@ -132,7 +137,7 @@ export function ReorderPdfCard() {
       setError(null);
     } catch (loadError) {
       setSelected(null);
-      setError(normalizeReorderError(loadError));
+      setError(normalizeReorderError(t, loadError));
     }
   }
 
@@ -155,8 +160,8 @@ export function ReorderPdfCard() {
   function reorderPages() {
     if (!selected) {
       setError({
-        title: "No PDF selected",
-        message: "Choose a PDF before reordering pages.",
+        title: t("errors.noPdfSelected"),
+        message: t("errors.noPdfSelectedHint"),
         hint: "Upload one PDF first, then enter the output page order."
       });
       return;
@@ -169,7 +174,7 @@ export function ReorderPdfCard() {
         setError(null);
       } catch (reorderError) {
         setResult(null);
-        setError(normalizeReorderError(reorderError));
+        setError(normalizeReorderError(t, reorderError));
       }
     });
   }
@@ -178,9 +183,9 @@ export function ReorderPdfCard() {
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Rearrange pages in a PDF</span>
-          <h2>Reorder PDF pages</h2>
-          <p>Upload one PDF, type the new page order, and download a reordered PDF in the browser.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -205,9 +210,9 @@ export function ReorderPdfCard() {
             }
           }}
         >
-          <strong>Drop one PDF here</strong>
-          <span>or click to choose a file</span>
-          <small>Use page order like 3,1,2,4-6. Up to 50 MB in the browser flow.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -221,34 +226,34 @@ export function ReorderPdfCard() {
           <div className="upload-summary">
             <div>
               <strong>{selected.file.name}</strong>
-              <span>selected file</span>
+              <span>{t("selectedFile")}</span>
             </div>
             <div>
               <strong>{formatBytes(selected.file.size)}</strong>
-              <span>file size</span>
+              <span>{t("fileSize")}</span>
             </div>
             <div>
               <strong>{selected.pageCount}</strong>
-              <span>total pages</span>
+              <span>{t("totalPages")}</span>
             </div>
           </div>
         ) : null}
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="page-order">New page order</label>
+            <label htmlFor="page-order">{t("newPageOrder")}</label>
             <input
               id="page-order"
               className="upload-mode__input"
               type="text"
-              placeholder="3,1,2,4-6"
+              placeholder={t("orderPlaceholder")}
               value={orderInput}
               onChange={(event) => setOrderInput(event.target.value)}
             />
           </div>
           <div className="upload-mode__meta">
-            <strong>Output pages in this order</strong>
-            <span>Use commas for exact order. Ranges expand forward, so 4-6 means pages 4, 5, 6.</span>
+            <strong>{t("outputOrder")}</strong>
+            <span>{t("orderHint")}</span>
           </div>
         </div>
 
@@ -259,7 +264,7 @@ export function ReorderPdfCard() {
             disabled={!selected || isPending}
             onClick={reorderPages}
           >
-            {isPending ? "Reordering..." : "Reorder pages"}
+            {isPending ? t("reordering") : t("reorderButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -272,7 +277,7 @@ export function ReorderPdfCard() {
                 setError(null);
               }}
             >
-              Clear file
+              {t("clearFile")}
             </button>
             <button
               type="button"
@@ -284,7 +289,7 @@ export function ReorderPdfCard() {
                 }
               }}
             >
-              Download PDF
+              {t("downloadPdf")}
             </button>
           </div>
         </div>
@@ -292,22 +297,22 @@ export function ReorderPdfCard() {
 
       {!selected ? (
         <div className="upload-empty">
-          <div className="upload-empty__badge">Reordered PDF output</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Input</span>
-              <strong>1, 2, 3</strong>
+              <span>{t("emptyStatInput")}</span>
+              <strong>{t("emptyStatInputValue")}</strong>
             </div>
             <div>
-              <span>Order</span>
-              <strong>3, 1, 2</strong>
+              <span>{t("emptyStatOrder")}</span>
+              <strong>{t("emptyStatOrderValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>3 pages</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
           </div>
-          <p>Upload a PDF to move pages into the order needed for applications, reports, or forms.</p>
+          <p>{t("emptyText")}</p>
         </div>
       ) : null}
 
@@ -316,28 +321,28 @@ export function ReorderPdfCard() {
           <div className="upload-job__head">
             <div>
               <strong>{result.fileName}</strong>
-              <span>{formatBytes(result.blob.size)} output PDF</span>
+              <span>{formatBytes(result.blob.size)} {t("outputPdf")}</span>
             </div>
-            <span className="upload-job__status upload-job__status--success">success</span>
+            <span className="upload-job__status upload-job__status--success">{t("success")}</span>
           </div>
           <div className="upload-job__result">
             <div className="upload-job__stats">
               <div>
-                <span>Original pages</span>
+                <span>{t("originalPages")}</span>
                 <strong>{result.originalPageCount}</strong>
               </div>
               <div>
-                <span>Output pages</span>
+                <span>{t("outputPages")}</span>
                 <strong>{result.outputPageCount}</strong>
               </div>
               <div>
-                <span>New order</span>
+                <span>{t("newOrder")}</span>
                 <strong>{result.orderLabels.join(", ")}</strong>
               </div>
             </div>
             <div className="upload-job__hint upload-job__hint--success">
-              <strong>Pages reordered locally</strong>
-              <span>The reordered PDF is ready to download. Compress it next if file size still matters.</span>
+              <strong>{t("reorderedLocally")}</strong>
+              <span>{t("reorderedHint")}</span>
             </div>
             <div className="upload-job__actions">
               <button
@@ -345,7 +350,7 @@ export function ReorderPdfCard() {
                 className="button button--primary"
                 onClick={() => downloadBlob(result.blob, result.fileName)}
               >
-                Download PDF
+                {t("downloadPdf")}
               </button>
             </div>
           </div>
@@ -362,4 +367,3 @@ export function ReorderPdfCard() {
     </aside>
   );
 }
-

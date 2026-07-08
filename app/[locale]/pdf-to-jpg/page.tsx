@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { PdfToJpgCard } from "@/components/pdf-to-jpg-card";
 
 export const metadata: Metadata = {
@@ -21,36 +22,35 @@ export const metadata: Metadata = {
   }
 };
 
-export default function PdfToJpgPage() {
+export default async function PdfToJpgPage() {
+  const t = await getTranslations("PdfToJpgCard");
+
   return (
     <main className="container">
       <section className="tool-page__headline">
-        <span className="eyebrow">PDF workflow: export pages as images</span>
-        <h1>PDF to JPG</h1>
-        <p>Upload one PDF, convert each page to a JPG image, and download the output files in the browser.</p>
+        <span className="eyebrow">{t("eyebrow")}</span>
+        <h1>{t("heading")}</h1>
+        <p>{t("description")}</p>
       </section>
 
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Export one JPG image per PDF page</span>
-            <h2>Turn PDF pages into shareable image files</h2>
-            <p>
-              Upload a PDF, choose the JPG quality level, and download separate page images
-              for previews, CMS uploads, or content reuse.
-            </p>
+            <span className="eyebrow eyebrow--feature">{t("heroEyebrow")}</span>
+            <h2>{t("heroHeading")}</h2>
+            <p>{t("heroIntro")}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Page-by-page export</strong>
-                <span>Each PDF page becomes a separate JPG file for reuse outside the PDF format.</span>
+                <strong>{t("heroPoint1Title")}</strong>
+                <span>{t("heroPoint1Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Browser-first conversion</strong>
-                <span>Render the PDF locally in the browser without adding a server render queue to the MVP.</span>
+                <strong>{t("heroPoint2Title")}</strong>
+                <span>{t("heroPoint2Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Useful bridge tool</strong>
-                <span>Pairs naturally with JPG to PDF for document-image round trips and quick visual extraction.</span>
+                <strong>{t("heroPoint3Title")}</strong>
+                <span>{t("heroPoint3Copy")}</span>
               </div>
             </div>
           </div>

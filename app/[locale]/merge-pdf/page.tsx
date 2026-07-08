@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 
 export const metadata: Metadata = {
@@ -21,36 +22,35 @@ export const metadata: Metadata = {
   }
 };
 
-export default function MergePdfPage() {
+export default async function MergePdfPage() {
+  const t = await getTranslations("MergePdfCard");
+
   return (
     <main className="container">
       <section className="tool-page__headline">
-        <span className="eyebrow">PDF workflow: combine files into one</span>
-        <h1>Merge PDF files</h1>
-        <p>Combine multiple PDF documents into one merged file before download.</p>
+        <span className="eyebrow">{t("eyebrow")}</span>
+        <h1>{t("heading")}</h1>
+        <p>{t("description")}</p>
       </section>
 
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Merge multiple documents into one</span>
-            <h2>Build one merged PDF from multiple files</h2>
-            <p>
-              Upload PDF files, set the right order, and download one combined
-              document in the browser.
-            </p>
+            <span className="eyebrow eyebrow--feature">{t("heroEyebrow")}</span>
+            <h2>{t("heroHeading")}</h2>
+            <p>{t("heroIntro")}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Simple file order</strong>
-                <span>Move files up or down before creating the final merged document.</span>
+                <strong>{t("heroPoint1Title")}</strong>
+                <span>{t("heroPoint1Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Browser-first flow</strong>
-                <span>Combine documents without adding a server-side document queue to the MVP.</span>
+                <strong>{t("heroPoint2Title")}</strong>
+                <span>{t("heroPoint2Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Good first matrix tool</strong>
-                <span>Pairs naturally with compression, split, and later PDF conversion tools.</span>
+                <strong>{t("heroPoint3Title")}</strong>
+                <span>{t("heroPoint3Copy")}</span>
               </div>
             </div>
           </div>

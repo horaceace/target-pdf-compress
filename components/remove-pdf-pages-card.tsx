@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import {
   RemovePagesResult,
@@ -21,6 +22,8 @@ type RemovePagesError = {
   hint?: string;
 };
 
+type TFunc = ReturnType<typeof useTranslations>;
+
 function downloadBlob(blob: Blob, fileName: string) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -30,12 +33,12 @@ function downloadBlob(blob: Blob, fileName: string) {
   URL.revokeObjectURL(url);
 }
 
-function normalizeRemoveError(error: unknown): RemovePagesError {
+function normalizeRemoveError(t: TFunc, error: unknown): RemovePagesError {
   if (!(error instanceof Error)) {
     return {
-      title: "Remove pages failed",
-      message: "The PDF could not be edited in the current browser flow.",
-      hint: "Check the file and page numbers, then try again."
+      title: t("errors.removeFailed"),
+      message: t("errors.removeFailedMessage"),
+      hint: t("errors.removeFailedHint")
     };
   }
 
@@ -43,44 +46,46 @@ function normalizeRemoveError(error: unknown): RemovePagesError {
 
   if (lowered.includes("not a pdf")) {
     return {
-      title: "Unsupported file",
+      title: t("errors.unsupportedFile"),
       message: error.message,
-      hint: "Upload a valid .pdf document before removing pages."
+      hint: t("errors.unsupportedFileHint")
     };
   }
 
   if (lowered.includes("empty")) {
     return {
-      title: "Empty PDF",
+      title: t("errors.emptyPdf"),
       message: error.message,
-      hint: "Use a PDF that contains actual document pages."
+      hint: t("errors.emptyPdfHint")
     };
   }
 
   if (lowered.includes("page") || lowered.includes("range")) {
     return {
-      title: "Invalid page selection",
+      title: t("errors.invalidSelection"),
       message: error.message,
-      hint: "Use formats like 2, 4-6, 9 and leave at least one page in the output."
+      hint: t("errors.invalidSelectionHint")
     };
   }
 
   if (lowered.includes("encrypted") || lowered.includes("password")) {
     return {
-      title: "Protected PDF",
-      message: "This PDF appears to be password-protected or restricted.",
+      title: t("errors.protectedPdf"),
+      message: t("errors.protectedPdfHint"),
       hint: "Unlock the file first, then upload it again."
     };
   }
 
   return {
-    title: "Remove pages failed",
+    title: t("errors.removeFailed"),
     message: error.message,
-    hint: "Try a cleaner PDF copy or a simpler page selection first."
+    hint: t("errors.removeFailedHint")
   };
 }
 
 export function RemovePdfPagesCard() {
+  const t = useTranslations("RemovePdfPagesCard");
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<SelectedPdf | null>(null);
   const [pageInput, setPageInput] = useState("2");
@@ -99,9 +104,9 @@ export function RemovePdfPagesCard() {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setSelected(null);
       setError({
-        title: "Unsupported file",
-        message: `${file.name} is not a supported PDF file. Upload a .pdf document and try again.`,
-        hint: "Only PDF files can be edited in this flow."
+        title: t("errors.unsupportedFile"),
+        message: `${file.name} ${t("errors.unsupportedFileHint")}`,
+        hint: "Upload a valid .pdf document before removing pages."
       });
       return;
     }
@@ -109,8 +114,8 @@ export function RemovePdfPagesCard() {
     if (file.size === 0) {
       setSelected(null);
       setError({
-        title: "Empty PDF",
-        message: `${file.name} is empty. Upload a PDF with actual document pages and try again.`,
+        title: t("errors.emptyPdf"),
+        message: `${file.name} ${t("errors.emptyPdfHint")}`,
         hint: "Use a PDF that contains actual pages before removing pages."
       });
       return;
@@ -119,9 +124,9 @@ export function RemovePdfPagesCard() {
     if (file.size > MAX_FILE_BYTES) {
       setSelected(null);
       setError({
-        title: "File too large",
+        title: t("errors.fileTooLarge"),
         message: `${file.name} is larger than 50 MB. Try a smaller PDF or split it first.`,
-        hint: "The current browser flow is designed for smaller document tasks."
+        hint: t("errors.fileTooLargeHint")
       });
       return;
     }
@@ -136,7 +141,7 @@ export function RemovePdfPagesCard() {
       setError(null);
     } catch (loadError) {
       setSelected(null);
-      setError(normalizeRemoveError(loadError));
+      setError(normalizeRemoveError(t, loadError));
     }
   }
 
@@ -159,8 +164,8 @@ export function RemovePdfPagesCard() {
   function removePages() {
     if (!selected) {
       setError({
-        title: "No PDF selected",
-        message: "Choose a PDF before removing pages.",
+        title: t("errors.noPdfSelected"),
+        message: t("errors.noPdfSelectedHint"),
         hint: "Upload one PDF first, then enter the pages you want to remove."
       });
       return;
@@ -173,7 +178,7 @@ export function RemovePdfPagesCard() {
         setError(null);
       } catch (removeError) {
         setResult(null);
-        setError(normalizeRemoveError(removeError));
+        setError(normalizeRemoveError(t, removeError));
       }
     });
   }
@@ -182,9 +187,9 @@ export function RemovePdfPagesCard() {
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Delete pages from a PDF</span>
-          <h2>Remove PDF pages</h2>
-          <p>Upload one PDF, enter pages to remove, and download a cleaned PDF in the browser.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -209,9 +214,9 @@ export function RemovePdfPagesCard() {
             }
           }}
         >
-          <strong>Drop one PDF here</strong>
-          <span>or click to choose a file</span>
-          <small>Remove pages like 2, 4-6, 9. Up to 50 MB in the browser flow.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -225,34 +230,34 @@ export function RemovePdfPagesCard() {
           <div className="upload-summary">
             <div>
               <strong>{selected.file.name}</strong>
-              <span>selected file</span>
+              <span>{t("selectedFile")}</span>
             </div>
             <div>
               <strong>{formatBytes(selected.file.size)}</strong>
-              <span>file size</span>
+              <span>{t("fileSize")}</span>
             </div>
             <div>
               <strong>{selected.pageCount}</strong>
-              <span>total pages</span>
+              <span>{t("totalPages")}</span>
             </div>
           </div>
         ) : null}
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="remove-pages">Pages to remove</label>
+            <label htmlFor="remove-pages">{t("pagesToRemove")}</label>
             <input
               id="remove-pages"
               className="upload-mode__input"
               type="text"
-              placeholder="2, 4-6, 9"
+              placeholder={t("pagesPlaceholder")}
               value={pageInput}
               onChange={(event) => setPageInput(event.target.value)}
             />
           </div>
           <div className="upload-mode__meta">
-            <strong>Keep every page except these</strong>
-            <span>Use commas for multiple pages or ranges. The output must keep at least one page.</span>
+            <strong>{t("keepExcept")}</strong>
+            <span>{t("removeHint")}</span>
           </div>
         </div>
 
@@ -263,7 +268,7 @@ export function RemovePdfPagesCard() {
             disabled={!selected || isPending}
             onClick={removePages}
           >
-            {isPending ? "Removing pages..." : "Remove pages"}
+            {isPending ? t("removing") : t("removeButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -276,7 +281,7 @@ export function RemovePdfPagesCard() {
                 setError(null);
               }}
             >
-              Clear file
+              {t("clearFile")}
             </button>
             <button
               type="button"
@@ -288,7 +293,7 @@ export function RemovePdfPagesCard() {
                 }
               }}
             >
-              Download PDF
+              {t("downloadPdf")}
             </button>
           </div>
         </div>
@@ -296,22 +301,22 @@ export function RemovePdfPagesCard() {
 
       {!selected ? (
         <div className="upload-empty">
-          <div className="upload-empty__badge">Cleaned PDF output</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Input</span>
-              <strong>12 pages</strong>
+              <span>{t("emptyStatInput")}</span>
+              <strong>{t("emptyStatInputValue")}</strong>
             </div>
             <div>
-              <span>Remove</span>
-              <strong>2 pages</strong>
+              <span>{t("emptyStatRemove")}</span>
+              <strong>{t("emptyStatRemoveValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>10 pages</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
           </div>
-          <p>Upload a PDF to delete blank pages, extra cover sheets, or pages you do not need.</p>
+          <p>{t("emptyText")}</p>
         </div>
       ) : null}
 
@@ -320,32 +325,32 @@ export function RemovePdfPagesCard() {
           <div className="upload-job__head">
             <div>
               <strong>{result.fileName}</strong>
-              <span>{formatBytes(result.blob.size)} output PDF</span>
+              <span>{formatBytes(result.blob.size)} {t("outputPdf")}</span>
             </div>
-            <span className="upload-job__status upload-job__status--success">success</span>
+            <span className="upload-job__status upload-job__status--success">{t("success")}</span>
           </div>
           <div className="upload-job__result">
             <div className="upload-job__stats">
               <div>
-                <span>Original pages</span>
+                <span>{t("originalPages")}</span>
                 <strong>{result.originalPageCount}</strong>
               </div>
               <div>
-                <span>Removed</span>
+                <span>{t("removed")}</span>
                 <strong>{result.removedPageCount}</strong>
               </div>
               <div>
-                <span>Remaining</span>
+                <span>{t("remaining")}</span>
                 <strong>{result.remainingPageCount}</strong>
               </div>
               <div>
-                <span>Removed ranges</span>
+                <span>{t("removedRanges")}</span>
                 <strong>{result.removedLabels.join(", ")}</strong>
               </div>
             </div>
             <div className="upload-job__hint upload-job__hint--success">
-              <strong>Pages removed locally</strong>
-              <span>The cleaned PDF is ready to download. Run compression next if file size still matters.</span>
+              <strong>{t("removedLocally")}</strong>
+              <span>{t("removedHint")}</span>
             </div>
             <div className="upload-job__actions">
               <button
@@ -353,7 +358,7 @@ export function RemovePdfPagesCard() {
                 className="button button--primary"
                 onClick={() => downloadBlob(result.blob, result.fileName)}
               >
-                Download PDF
+                {t("downloadPdf")}
               </button>
             </div>
           </div>
@@ -370,4 +375,3 @@ export function RemovePdfPagesCard() {
     </aside>
   );
 }
-

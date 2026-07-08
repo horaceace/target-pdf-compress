@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 
 export const metadata: Metadata = {
@@ -21,36 +22,35 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RotatePdfPage() {
+export default async function RotatePdfPage() {
+  const t = await getTranslations("RotatePdfCard");
+
   return (
     <main className="container">
       <section className="tool-page__headline">
-        <span className="eyebrow">PDF workflow: rotate sideways pages</span>
-        <h1>Rotate PDF pages</h1>
-        <p>Fix sideways or upside-down PDF pages before uploading, sending, or compressing.</p>
+        <span className="eyebrow">{t("eyebrow")}</span>
+        <h1>{t("heading")}</h1>
+        <p>{t("description")}</p>
       </section>
 
       <section className="hero">
         <div className="hero__wrap">
           <div className="panel hero__copy hero__copy--feature">
-            <span className="eyebrow eyebrow--feature">Turn pages upright before export</span>
-            <h2>Rotate all pages or selected page ranges</h2>
-            <p>
-              Upload one PDF, choose a rotation angle, and download a corrected file directly from
-              the browser.
-            </p>
+            <span className="eyebrow eyebrow--feature">{t("heroEyebrow")}</span>
+            <h2>{t("heroHeading")}</h2>
+            <p>{t("heroIntro")}</p>
             <div className="hero-points">
               <div className="hero-point">
-                <strong>Rotate 90, 180, or 270 degrees</strong>
-                <span>Fix sideways scans, upside-down exports, or mixed-orientation documents.</span>
+                <strong>{t("heroPoint1Title")}</strong>
+                <span>{t("heroPoint1Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Optional page ranges</strong>
-                <span>Leave the range blank for all pages, or rotate only pages like 1, 3-5.</span>
+                <strong>{t("heroPoint2Title")}</strong>
+                <span>{t("heroPoint2Copy")}</span>
               </div>
               <div className="hero-point">
-                <strong>Fits the PDF workflow</strong>
-                <span>Rotate first, then remove, reorder, merge, or compress the final document.</span>
+                <strong>{t("heroPoint3Title")}</strong>
+                <span>{t("heroPoint3Copy")}</span>
               </div>
             </div>
           </div>
@@ -60,4 +60,3 @@ export default function RotatePdfPage() {
     </main>
   );
 }
-

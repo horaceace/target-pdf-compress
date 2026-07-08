@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { MergeResult, mergePdfFiles } from "@/lib/pdf/merge";
 
@@ -22,6 +23,7 @@ function fileId(file: File) {
 }
 
 export function MergePdfCard() {
+  const t = useTranslations("MergePdfCard");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [items, setItems] = useState<MergeItem[]>([]);
   const [error, setError] = useState<MergeCardError | null>(null);
@@ -32,9 +34,9 @@ export function MergePdfCard() {
   function normalizeMergeError(mergeError: unknown): MergeCardError {
     if (!(mergeError instanceof Error)) {
       return {
-        title: "Merge failed",
-        message: "The selected files could not be merged in the current browser flow.",
-        hint: "Check the files and try again with valid PDFs."
+        title: t("errors.mergeFailed"),
+        message: t("errors.mergeFailedMessage"),
+        hint: t("errors.mergeFailedHint")
       };
     }
 
@@ -42,32 +44,32 @@ export function MergePdfCard() {
 
     if (lowered.includes("at least two")) {
       return {
-        title: "Need more files",
+        title: t("errors.needMoreFiles"),
         message: mergeError.message,
-        hint: "Add at least two PDF files before starting the merge."
+        hint: t("errors.needMoreFilesHint")
       };
     }
 
     if (lowered.includes("not a pdf")) {
       return {
-        title: "Unsupported file",
+        title: t("errors.unsupportedFile"),
         message: mergeError.message,
-        hint: "Remove non-PDF files from the list and keep only .pdf documents."
+        hint: t("errors.unsupportedFileHint")
       };
     }
 
     if (lowered.includes("encrypted") || lowered.includes("password")) {
       return {
-        title: "Protected PDF",
-        message: "One of these files appears to be password-protected or restricted.",
-        hint: "Unlock the file first, then upload it again for merging."
+        title: t("errors.protectedPdf"),
+        message: t("errors.protectedPdfHint"),
+        hint: undefined
       };
     }
 
     return {
-      title: "Merge failed",
+      title: t("errors.mergeFailed"),
       message: mergeError.message,
-      hint: "Try fewer files first, or re-export the PDFs if one of them looks broken."
+      hint: t("errors.mergeFailedHint")
     };
   }
 
@@ -133,18 +135,13 @@ export function MergePdfCard() {
     });
   }
 
-  const totalPagesHint =
-    items.length > 1
-      ? "Merge the files in your chosen order, then compress the merged output if you still need a smaller upload."
-      : "Add more PDF files to build one final merged document.";
-
   return (
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Combine files into one PDF</span>
-          <h2>Merge PDF files</h2>
-          <p>Upload multiple PDFs, reorder them, and merge everything into one file.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -175,9 +172,9 @@ export function MergePdfCard() {
             }
           }}
         >
-          <strong>Drop PDF files here</strong>
-          <span>or click to choose files</span>
-          <small>Upload at least two files to merge.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -195,7 +192,7 @@ export function MergePdfCard() {
             disabled={items.length < 2 || isPending}
             onClick={mergeAll}
           >
-            {isPending ? "Merging..." : "Merge PDF files"}
+            {isPending ? t("merging") : t("mergeButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -204,7 +201,7 @@ export function MergePdfCard() {
               disabled={!items.length || isPending}
               onClick={() => setItems([])}
             >
-              Clear list
+              {t("clearList")}
             </button>
           </div>
         </div>
@@ -228,7 +225,7 @@ export function MergePdfCard() {
                   disabled={index === 0}
                   onClick={() => moveItem(index, -1)}
                 >
-                  Move up
+                  {t("moveUp")}
                 </button>
                 <button
                   type="button"
@@ -236,14 +233,14 @@ export function MergePdfCard() {
                   disabled={index === items.length - 1}
                   onClick={() => moveItem(index, 1)}
                 >
-                  Move down
+                  {t("moveDown")}
                 </button>
                 <button
                   type="button"
                   className="button button--secondary"
                   onClick={() => removeItem(item.id)}
                 >
-                  Remove
+                  {t("remove")}
                 </button>
               </div>
             </article>
@@ -251,22 +248,22 @@ export function MergePdfCard() {
         </div>
       ) : (
         <div className="upload-empty">
-          <div className="upload-empty__badge">Merge preview</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Files</span>
-              <strong>3 PDFs</strong>
+              <span>{t("emptyStatFiles")}</span>
+              <strong>{t("emptyStatFilesValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>1 merged file</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
             <div>
-              <span>Order</span>
-              <strong>Reorder before merge</strong>
+              <span>{t("emptyStatOrder")}</span>
+              <strong>{t("emptyStatOrderValue")}</strong>
             </div>
           </div>
-          <p>Upload two or more PDF files to build one merged document in your chosen order.</p>
+          <p>{t("emptyText")}</p>
         </div>
       )}
 
@@ -274,23 +271,23 @@ export function MergePdfCard() {
         <div className="upload-summary">
           <div>
             <strong>{result.totalFiles}</strong>
-            <span>merged files</span>
+            <span>{t("summaryMergedFiles")}</span>
           </div>
           <div>
             <strong>{formatBytes(result.totalBytes)}</strong>
-            <span>total input size</span>
+            <span>{t("summaryTotalInputSize")}</span>
           </div>
           <div>
             <strong>{formatBytes(result.mergedBytes)}</strong>
-            <span>merged output size</span>
+            <span>{t("summaryMergedOutputSize")}</span>
           </div>
           <div>
             <strong>{result.totalPages}</strong>
-            <span>merged pages</span>
+            <span>{t("summaryMergedPages")}</span>
           </div>
           <div>
             <strong>{result.fileName}</strong>
-            <span>output file</span>
+            <span>{t("summaryOutputFile")}</span>
           </div>
         </div>
       ) : null}
@@ -302,25 +299,25 @@ export function MergePdfCard() {
             className="button button--primary"
             onClick={() => download(result.blob, result.fileName)}
           >
-            Download merged PDF
+            {t("downloadMerged")}
           </button>
           <a className="button button--secondary" href="/compress-pdf">
-            Compress this next
+            {t("compressNext")}
           </a>
         </div>
       ) : null}
 
       {result ? (
         <div className="upload-job__next-step">
-          <strong>Recommended next step</strong>
-          <span>Download the merged file now, or open Compress PDF next if the final document still feels too large for upload limits.</span>
+          <strong>{t("recommendedNextStep")}</strong>
+          <span>{t("nextStepCopy")}</span>
         </div>
       ) : null}
 
       {items.length ? (
         <div className="upload-job__hint upload-job__hint--neutral">
-          <strong>{items.length} files in merge order</strong>
-          <span>{totalPagesHint}</span>
+          <strong>{items.length} {t("filesInMergeOrder")}</strong>
+          <span>{t("hintText")}</span>
         </div>
       ) : null}
 

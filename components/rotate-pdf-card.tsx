@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { RotateAngle, RotateResult, prepareRotatePdf, rotatePdfPages } from "@/lib/pdf/rotate";
 
@@ -26,57 +27,8 @@ function downloadBlob(blob: Blob, fileName: string) {
   URL.revokeObjectURL(url);
 }
 
-function normalizeRotateError(error: unknown): RotateError {
-  if (!(error instanceof Error)) {
-    return {
-      title: "Rotate failed",
-      message: "The PDF could not be rotated in the current browser flow.",
-      hint: "Check the file and page range, then try again."
-    };
-  }
-
-  const lowered = error.message.toLowerCase();
-
-  if (lowered.includes("not a pdf")) {
-    return {
-      title: "Unsupported file",
-      message: error.message,
-      hint: "Upload a valid .pdf document before rotating pages."
-    };
-  }
-
-  if (lowered.includes("empty")) {
-    return {
-      title: "Empty PDF",
-      message: error.message,
-      hint: "Use a PDF that contains actual document pages."
-    };
-  }
-
-  if (lowered.includes("page") || lowered.includes("range")) {
-    return {
-      title: "Invalid page range",
-      message: error.message,
-      hint: "Leave the field blank for all pages, or use formats like 1, 3-5."
-    };
-  }
-
-  if (lowered.includes("encrypted") || lowered.includes("password")) {
-    return {
-      title: "Protected PDF",
-      message: "This PDF appears to be password-protected or restricted.",
-      hint: "Unlock the file first, then upload it again."
-    };
-  }
-
-  return {
-    title: "Rotate failed",
-    message: error.message,
-    hint: "Try a cleaner PDF copy or a simpler page range first."
-  };
-}
-
 export function RotatePdfCard() {
+  const t = useTranslations("RotatePdfCard");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState<SelectedPdf | null>(null);
   const [angle, setAngle] = useState<RotateAngle>(90);
@@ -85,6 +37,56 @@ export function RotatePdfCard() {
   const [error, setError] = useState<RotateError | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  function normalizeRotateError(rotateError: unknown): RotateError {
+    if (!(rotateError instanceof Error)) {
+      return {
+        title: t("errors.rotateFailed"),
+        message: t("errors.rotateFailedMessage"),
+        hint: t("errors.rotateFailedHint")
+      };
+    }
+
+    const lowered = rotateError.message.toLowerCase();
+
+    if (lowered.includes("not a pdf")) {
+      return {
+        title: t("errors.unsupportedFile"),
+        message: rotateError.message,
+        hint: t("errors.unsupportedFileHint")
+      };
+    }
+
+    if (lowered.includes("empty")) {
+      return {
+        title: t("errors.emptyPdf"),
+        message: rotateError.message,
+        hint: t("errors.emptyPdfHint")
+      };
+    }
+
+    if (lowered.includes("page") || lowered.includes("range")) {
+      return {
+        title: t("errors.invalidRange"),
+        message: rotateError.message,
+        hint: t("errors.invalidRangeHint")
+      };
+    }
+
+    if (lowered.includes("encrypted") || lowered.includes("password")) {
+      return {
+        title: t("errors.protectedPdf"),
+        message: t("errors.protectedPdfHint"),
+        hint: undefined
+      };
+    }
+
+    return {
+      title: t("errors.rotateFailed"),
+      message: rotateError.message,
+      hint: t("errors.rotateFailedHint")
+    };
+  }
 
   function triggerPicker() {
     inputRef.current?.click();
@@ -96,9 +98,9 @@ export function RotatePdfCard() {
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setSelected(null);
       setError({
-        title: "Unsupported file",
-        message: `${file.name} is not a supported PDF file. Upload a .pdf document and try again.`,
-        hint: "Only PDF files can be rotated in this flow."
+        title: t("errors.unsupportedFile"),
+        message: `${file.name} ${t("errors.unsupportedFileHint")}`,
+        hint: undefined
       });
       return;
     }
@@ -106,9 +108,9 @@ export function RotatePdfCard() {
     if (file.size === 0) {
       setSelected(null);
       setError({
-        title: "Empty PDF",
-        message: `${file.name} is empty. Upload a PDF with actual document pages and try again.`,
-        hint: "Use a PDF that contains actual pages before rotating."
+        title: t("errors.emptyPdf"),
+        message: `${file.name} ${t("errors.emptyPdfHint")}`,
+        hint: undefined
       });
       return;
     }
@@ -116,9 +118,9 @@ export function RotatePdfCard() {
     if (file.size > MAX_FILE_BYTES) {
       setSelected(null);
       setError({
-        title: "File too large",
-        message: `${file.name} is larger than 50 MB. Try a smaller PDF or split it first.`,
-        hint: "The current browser flow is designed for smaller document tasks."
+        title: t("errors.fileTooLarge"),
+        message: `${file.name} is larger than 50 MB. ${t("errors.fileTooLargeHint")}`,
+        hint: undefined
       });
       return;
     }
@@ -156,9 +158,9 @@ export function RotatePdfCard() {
   function rotatePages() {
     if (!selected) {
       setError({
-        title: "No PDF selected",
-        message: "Choose a PDF before rotating pages.",
-        hint: "Upload one PDF first, then choose an angle and optional page range."
+        title: t("errors.noPdfSelected"),
+        message: t("errors.noPdfSelectedHint"),
+        hint: undefined
       });
       return;
     }
@@ -179,9 +181,9 @@ export function RotatePdfCard() {
     <aside className="panel upload-card">
       <div className="upload-card__top">
         <div className="upload-card__header">
-          <span className="eyebrow">Turn PDF pages upright</span>
-          <h2>Rotate PDF pages</h2>
-          <p>Upload one PDF, rotate all pages or selected pages, and download the fixed file.</p>
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
         <div
@@ -206,9 +208,9 @@ export function RotatePdfCard() {
             }
           }}
         >
-          <strong>Drop one PDF here</strong>
-          <span>or click to choose a file</span>
-          <small>Rotate all pages or selected ranges like 1, 3-5. Up to 50 MB.</small>
+          <strong>{t("dropzoneHeading")}</strong>
+          <span>{t("dropzoneSubtext")}</span>
+          <small>{t("dropzoneHint")}</small>
           <input
             ref={inputRef}
             className="upload-dropzone__input"
@@ -222,53 +224,53 @@ export function RotatePdfCard() {
           <div className="upload-summary">
             <div>
               <strong>{selected.file.name}</strong>
-              <span>selected file</span>
+              <span>{t("selectedFile")}</span>
             </div>
             <div>
               <strong>{formatBytes(selected.file.size)}</strong>
-              <span>file size</span>
+              <span>{t("fileSize")}</span>
             </div>
             <div>
               <strong>{selected.pageCount}</strong>
-              <span>total pages</span>
+              <span>{t("totalPages")}</span>
             </div>
           </div>
         ) : null}
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="rotate-angle">Rotation angle</label>
+            <label htmlFor="rotate-angle">{t("rotationAngle")}</label>
             <select
               id="rotate-angle"
               value={angle}
               onChange={(event) => setAngle(Number(event.target.value) as RotateAngle)}
             >
-              <option value={90}>90 degrees clockwise</option>
-              <option value={180}>180 degrees</option>
-              <option value={270}>270 degrees clockwise</option>
+              <option value={90}>{t("angle90")}</option>
+              <option value={180}>{t("angle180")}</option>
+              <option value={270}>{t("angle270")}</option>
             </select>
           </div>
           <div className="upload-mode__meta">
-            <strong>Choose the correction angle</strong>
-            <span>Use 90 degrees for sideways scans, 180 degrees for upside-down pages.</span>
+            <strong>{t("chooseAngle")}</strong>
+            <span>{t("angleHint")}</span>
           </div>
         </div>
 
         <div className="upload-mode">
           <div className="upload-mode__row">
-            <label htmlFor="rotate-pages">Pages to rotate</label>
+            <label htmlFor="rotate-pages">{t("pagesToRotate")}</label>
             <input
               id="rotate-pages"
               className="upload-mode__input"
               type="text"
-              placeholder="Leave blank for all pages"
+              placeholder={t("pagesPlaceholder")}
               value={rangeInput}
               onChange={(event) => setRangeInput(event.target.value)}
             />
           </div>
           <div className="upload-mode__meta">
-            <strong>{rangeInput.trim() ? "Rotate selected pages" : "Rotate all pages"}</strong>
-            <span>Leave blank to rotate the whole PDF, or use formats like 1, 3-5.</span>
+            <strong>{rangeInput.trim() ? t("rotateSelected") : t("rotateAll")}</strong>
+            <span>{t("pagesHint")}</span>
           </div>
         </div>
 
@@ -279,7 +281,7 @@ export function RotatePdfCard() {
             disabled={!selected || isPending}
             onClick={rotatePages}
           >
-            {isPending ? "Rotating..." : "Rotate PDF"}
+            {isPending ? t("rotating") : t("rotateButton")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -292,7 +294,7 @@ export function RotatePdfCard() {
                 setError(null);
               }}
             >
-              Clear file
+              {t("clearFile")}
             </button>
             <button
               type="button"
@@ -304,7 +306,7 @@ export function RotatePdfCard() {
                 }
               }}
             >
-              Download PDF
+              {t("downloadPdf")}
             </button>
           </div>
         </div>
@@ -312,22 +314,22 @@ export function RotatePdfCard() {
 
       {!selected ? (
         <div className="upload-empty">
-          <div className="upload-empty__badge">Rotated PDF output</div>
+          <div className="upload-empty__badge">{t("emptyBadge")}</div>
           <div className="upload-empty__grid">
             <div>
-              <span>Pages</span>
-              <strong>All</strong>
+              <span>{t("emptyStatPages")}</span>
+              <strong>{t("emptyStatPagesValue")}</strong>
             </div>
             <div>
-              <span>Angle</span>
-              <strong>90 deg</strong>
+              <span>{t("emptyStatAngle")}</span>
+              <strong>{t("emptyStatAngleValue")}</strong>
             </div>
             <div>
-              <span>Output</span>
-              <strong>Fixed PDF</strong>
+              <span>{t("emptyStatOutput")}</span>
+              <strong>{t("emptyStatOutputValue")}</strong>
             </div>
           </div>
-          <p>Upload a PDF to rotate sideways pages before submitting, merging, or compressing.</p>
+          <p>{t("emptyText")}</p>
         </div>
       ) : null}
 
@@ -336,32 +338,32 @@ export function RotatePdfCard() {
           <div className="upload-job__head">
             <div>
               <strong>{result.fileName}</strong>
-              <span>{formatBytes(result.blob.size)} output PDF</span>
+              <span>{formatBytes(result.blob.size)} {t("outputPdf")}</span>
             </div>
-            <span className="upload-job__status upload-job__status--success">success</span>
+            <span className="upload-job__status upload-job__status--success">{t("success")}</span>
           </div>
           <div className="upload-job__result">
             <div className="upload-job__stats">
               <div>
-                <span>Total pages</span>
+                <span>{t("totalPagesLabel")}</span>
                 <strong>{result.pageCount}</strong>
               </div>
               <div>
-                <span>Rotated</span>
+                <span>{t("rotated")}</span>
                 <strong>{result.rotatedPageCount}</strong>
               </div>
               <div>
-                <span>Angle</span>
+                <span>{t("angle")}</span>
                 <strong>{result.angle} deg</strong>
               </div>
               <div>
-                <span>Range</span>
+                <span>{t("range")}</span>
                 <strong>{result.rangeLabel}</strong>
               </div>
             </div>
             <div className="upload-job__hint upload-job__hint--success">
-              <strong>Pages rotated locally</strong>
-              <span>The fixed PDF is ready to download. Run compression next if file size still matters.</span>
+              <strong>{t("rotatedLocally")}</strong>
+              <span>{t("rotatedHint")}</span>
             </div>
             <div className="upload-job__actions">
               <button
@@ -369,7 +371,7 @@ export function RotatePdfCard() {
                 className="button button--primary"
                 onClick={() => downloadBlob(result.blob, result.fileName)}
               >
-                Download PDF
+                {t("downloadPdf")}
               </button>
             </div>
           </div>
@@ -386,4 +388,3 @@ export function RotatePdfCard() {
     </aside>
   );
 }
-
