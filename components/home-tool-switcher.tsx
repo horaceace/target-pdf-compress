@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 import { PdfToJpgCard } from "@/components/pdf-to-jpg-card";
@@ -42,69 +43,71 @@ const toolIcons: Record<ToolKey, typeof FileDown> = {
   "jpg-to-pdf": Images
 };
 
-const toolTabs: Array<{
-  key: ToolKey;
-  label: string;
-  title: string;
-  copy: string;
-}> = [
-  {
-    key: "compress",
-    label: "Compress",
-    title: "Compress PDF",
-    copy: "Reduce file size for uploads, portals, attachments, and image-heavy scans."
-  },
-  {
-    key: "merge",
-    label: "Merge",
-    title: "Merge PDF",
-    copy: "Combine multiple PDF files into one clean document before sending or compressing."
-  },
-  {
-    key: "split",
-    label: "Split",
-    title: "Split PDF",
-    copy: "Extract page ranges from one PDF and export smaller files for uploads or follow-up compression."
-  },
-  {
-    key: "rotate",
-    label: "Rotate",
-    title: "Rotate PDF",
-    copy: "Turn sideways or upside-down pages upright before submitting or merging."
-  },
-  {
-    key: "remove",
-    label: "Remove",
-    title: "Remove PDF pages",
-    copy: "Delete blank, duplicate, or unnecessary pages before uploading a cleaner PDF."
-  },
-  {
-    key: "reorder",
-    label: "Reorder",
-    title: "Reorder PDF pages",
-    copy: "Move pages into the right sequence before export, merge, or compression."
-  },
-  {
-    key: "pdf-to-jpg",
-    label: "PDF to JPG",
-    title: "PDF to JPG",
-    copy: "Export one JPG per PDF page for previews, sharing, uploads, and visual extraction."
-  },
-  {
-    key: "jpg-to-pdf",
-    label: "JPG to PDF",
-    title: "JPG to PDF",
-    copy: "Combine screenshots, scans, and image files into one PDF document in the browser."
-  }
-];
-
 export function HomeToolSwitcher() {
+  const t = useTranslations("HomeToolSwitcher");
   const [activeTool, setActiveTool] = useState<ToolKey>("compress");
+
+  const toolTabs: Array<{
+    key: ToolKey;
+    label: string;
+    title: string;
+    copy: string;
+  }> = [
+    {
+      key: "compress",
+      label: t("tabs.compress.label"),
+      title: t("tabs.compress.title"),
+      copy: t("tabs.compress.copy")
+    },
+    {
+      key: "merge",
+      label: t("tabs.merge.label"),
+      title: t("tabs.merge.title"),
+      copy: t("tabs.merge.copy")
+    },
+    {
+      key: "split",
+      label: t("tabs.split.label"),
+      title: t("tabs.split.title"),
+      copy: t("tabs.split.copy")
+    },
+    {
+      key: "rotate",
+      label: t("tabs.rotate.label"),
+      title: t("tabs.rotate.title"),
+      copy: t("tabs.rotate.copy")
+    },
+    {
+      key: "remove",
+      label: t("tabs.remove.label"),
+      title: t("tabs.remove.title"),
+      copy: t("tabs.remove.copy")
+    },
+    {
+      key: "reorder",
+      label: t("tabs.reorder.label"),
+      title: t("tabs.reorder.title"),
+      copy: t("tabs.reorder.copy")
+    },
+    {
+      key: "pdf-to-jpg",
+      label: t("tabs.pdfToJpg.label"),
+      title: t("tabs.pdfToJpg.title"),
+      copy: t("tabs.pdfToJpg.copy")
+    },
+    {
+      key: "jpg-to-pdf",
+      label: t("tabs.jpgToPdf.label"),
+      title: t("tabs.jpgToPdf.title"),
+      copy: t("tabs.jpgToPdf.copy")
+    }
+  ];
+
   const activeMeta = toolTabs.find((item) => item.key === activeTool) ?? toolTabs[0];
 
   return (
     <div className="home-tool-switcher">
-      <div className="home-tool-switcher__tabs" role="tablist" aria-label="Choose PDF tool">
+      <div className="home-tool-switcher__tabs" role="tablist" aria-label={t("ariaLabel")}>
         {toolTabs.map((item) => {
           const Icon = toolIcons[item.key];
           return (

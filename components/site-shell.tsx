@@ -1,61 +1,65 @@
-import Link from "next/link";
 import { ReactNode } from "react";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { TrackedLink } from "@/components/tracked-link";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 
-const toolNavItems = [
-  { href: "/compress-pdf", label: "Compress PDF" },
-  { href: "/merge-pdf", label: "Merge PDF" },
-  { href: "/split-pdf", label: "Split PDF" },
-  { href: "/rotate-pdf", label: "Rotate PDF" },
-  { href: "/remove-pdf-pages", label: "Remove Pages" },
-  { href: "/reorder-pdf-pages", label: "Reorder Pages" },
-  { href: "/pdf-to-jpg", label: "PDF to JPG" },
-  { href: "/jpg-to-pdf", label: "JPG to PDF" }
-];
+export async function SiteShell({ children }: { children: ReactNode }) {
+  const t = await getTranslations("SiteShell");
 
-const footerGroups = [
-  {
-    title: "Tools",
-    links: [
-      { href: "/compress-pdf", label: "Compress PDF" },
-      { href: "/merge-pdf", label: "Merge PDF" },
-      { href: "/split-pdf", label: "Split PDF" },
-      { href: "/rotate-pdf", label: "Rotate PDF" },
-      { href: "/remove-pdf-pages", label: "Remove PDF Pages" },
-      { href: "/reorder-pdf-pages", label: "Reorder PDF Pages" },
-      { href: "/pdf-to-jpg", label: "PDF to JPG" },
-      { href: "/jpg-to-pdf", label: "JPG to PDF" }
-    ]
-  },
-  {
-    title: "Use Cases",
-    links: [
-      { href: "/compress-pdf-for-upload", label: "For Uploads" },
-      { href: "/compress-pdf-for-email", label: "For Email" },
-      { href: "/split-pdf-for-upload", label: "Split for Upload" }
-    ]
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "/", label: "Home" },
-      { href: "/privacy", label: "Privacy" }
-    ]
-  }
-];
+  const toolNavItems = [
+    { href: "/compress-pdf", label: t("toolCompressPdf") },
+    { href: "/merge-pdf", label: t("toolMergePdf") },
+    { href: "/split-pdf", label: t("toolSplitPdf") },
+    { href: "/rotate-pdf", label: t("toolRotatePdf") },
+    { href: "/remove-pdf-pages", label: t("toolRemovePages") },
+    { href: "/reorder-pdf-pages", label: t("toolReorderPages") },
+    { href: "/pdf-to-jpg", label: t("toolPdfToJpg") },
+    { href: "/jpg-to-pdf", label: t("toolJpgToPdf") }
+  ];
 
-const footerHighlights = [
-  "Compress for uploads and attachments",
-  "Merge multiple PDFs into one file",
-  "Split page ranges before sending",
-  "Rotate sideways PDF pages",
-  "Remove unwanted PDF pages",
-  "Reorder pages before export",
-  "Convert PDF pages to JPG",
-  "Turn JPG images into one PDF"
-];
+  const footerGroups = [
+    {
+      title: t("footerGroupTools"),
+      links: [
+        { href: "/compress-pdf", label: t("toolCompressPdf") },
+        { href: "/merge-pdf", label: t("toolMergePdf") },
+        { href: "/split-pdf", label: t("toolSplitPdf") },
+        { href: "/rotate-pdf", label: t("toolRotatePdf") },
+        { href: "/remove-pdf-pages", label: t("toolRemovePdfPages") },
+        { href: "/reorder-pdf-pages", label: t("toolReorderPages") },
+        { href: "/pdf-to-jpg", label: t("toolPdfToJpg") },
+        { href: "/jpg-to-pdf", label: t("toolJpgToPdf") }
+      ]
+    },
+    {
+      title: t("footerGroupUseCases"),
+      links: [
+        { href: "/compress-pdf-for-upload", label: t("footerLinkForUploads") },
+        { href: "/compress-pdf-for-email", label: t("footerLinkForEmail") },
+        { href: "/split-pdf-for-upload", label: t("footerLinkSplitForUpload") }
+      ]
+    },
+    {
+      title: t("footerGroupCompany"),
+      links: [
+        { href: "/", label: t("navHome") },
+        { href: "/privacy", label: t("navPrivacy") }
+      ]
+    }
+  ];
 
-export function SiteShell({ children }: { children: ReactNode }) {
+  const footerHighlights = [
+    t("footerHighlight1"),
+    t("footerHighlight2"),
+    t("footerHighlight3"),
+    t("footerHighlight4"),
+    t("footerHighlight5"),
+    t("footerHighlight6"),
+    t("footerHighlight7"),
+    t("footerHighlight8")
+  ];
+
   return (
     <div className="shell">
       <header className="site-header">
@@ -67,10 +71,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <span>FileSmaller</span>
           </Link>
           <nav className="site-nav" aria-label="Main navigation">
-            <Link href="/">Home</Link>
+            <Link href="/">{t("navHome")}</Link>
             <div className="site-nav__menu">
               <button className="site-nav__menu-trigger" type="button">
-                Tools
+                {t("navTools")}
               </button>
               <div className="site-nav__dropdown">
                 {toolNavItems.map((item) => (
@@ -88,7 +92,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 ))}
               </div>
             </div>
-            <Link href="/privacy">Privacy</Link>
+            <Link href="/privacy">{t("navPrivacy")}</Link>
+            <LocaleSwitcher />
           </nav>
         </div>
       </header>
@@ -102,10 +107,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </span>
               <span>FileSmaller</span>
             </div>
-            <div className="site-footer__copy">
-              Browser-first PDF and image tools for compressing, merging, splitting, and converting documents before upload, sharing, and submission.
-            </div>
-            <div className="site-footer__meta">No login. No install. Built for fast document tasks.</div>
+            <div className="site-footer__copy">{t("footerIntro")}</div>
+            <div className="site-footer__meta">{t("footerMeta")}</div>
             <div className="site-footer__badges">
               {footerHighlights.map((item) => (
                 <span key={item}>{item}</span>
@@ -120,7 +123,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 <div className="site-footer__links">
                   {group.links.map((link) => (
                     <TrackedLink
-                      eventName={group.title === "Tools" ? "tool_switch_clicked" : "site_link_clicked"}
+                      eventName={group.title === t("footerGroupTools") ? "tool_switch_clicked" : "site_link_clicked"}
                       eventParams={{
                         source: `footer_${group.title.toLowerCase().replaceAll(" ", "_")}`,
                         tool: link.href.replace("/", "") || "home",
@@ -138,8 +141,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="container site-footer__bottom">
-          <span>© 2026 FileSmaller. All Rights Reserved.</span>
-          <span>Precision browser-first document tools for compression, merge, split, and conversion workflows.</span>
+          <span>{t("copyright")}</span>
+          <LocaleSwitcher />
+          <span>{t("footerTagline")}</span>
         </div>
       </footer>
     </div>

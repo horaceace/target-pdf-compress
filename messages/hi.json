@@ -1,0 +1,93 @@
+{
+  "HomePage": {},
+  "SiteShell": {
+    "navHome": "होम",
+    "navTools": "उपकरण",
+    "navPrivacy": "गोपनीयता",
+    "toolCompressPdf": "PDF संपीड़ित करें",
+    "toolMergePdf": "PDF मर्ज करें",
+    "toolSplitPdf": "PDF विभाजित करें",
+    "toolRotatePdf": "PDF घुमाएं",
+    "toolRemovePages": "पेज हटाएं",
+    "toolReorderPages": "पेज पुनर्क्रमित करें",
+    "toolPdfToJpg": "PDF से JPG",
+    "toolJpgToPdf": "JPG से PDF",
+    "toolRemovePdfPages": "PDF पेज हटाएं",
+    "footerIntro": "अपलोड, साझाकरण और सबमिशन से पहले दस्तावेज़ों को संपीड़ित, मर्ज, विभाजित और रूपांतरित करने के लिए ब्राउज़र-आधारित PDF और छवि उपकरण।",
+    "footerMeta": "कोई लॉगिन नहीं। कोई इंस्टॉल नहीं। तेज़ दस्तावेज़ कार्यों के लिए बनाया गया।",
+    "footerGroupTools": "उपकरण",
+    "footerGroupUseCases": "उपयोग के मामले",
+    "footerGroupCompany": "कंपनी",
+    "footerLinkForUploads": "अपलोड के लिए",
+    "footerLinkForEmail": "ईमेल के लिए",
+    "footerLinkSplitForUpload": "अपलोड के लिए विभाजित करें",
+    "footerHighlight1": "अपलोड और अटैचमेंट के लिए संपीड़ित करें",
+    "footerHighlight2": "कई PDF को एक फ़ाइल में मर्ज करें",
+    "footerHighlight3": "भेजने से पहले पेज रेंज विभाजित करें",
+    "footerHighlight4": "साइडवे PDF पेज घुमाएं",
+    "footerHighlight5": "अनावश्यक PDF पेज हटाएं",
+    "footerHighlight6": "निर्यात से पहले पेज पुनर्क्रमित करें",
+    "footerHighlight7": "PDF पेज को JPG में बदलें",
+    "footerHighlight8": "JPG छवियों को एक PDF में बदलें",
+    "copyright": "© 2026 FileSmaller. सर्वाधिकार सुरक्षित।",
+    "footerTagline": "संपीड़न, मर्ज, विभाजन और रूपांतरण वर्कफ़्लो के लिए सटीक ब्राउज़र-आधारित दस्तावेज़ उपकरण।"
+  },
+  "UploadCard": {},
+  "Compression": {},
+  "MergePdfCard": {},
+  "SplitPdfCard": {},
+  "RotatePdfCard": {},
+  "RemovePdfPagesCard": {},
+  "ReorderPdfCard": {},
+  "PdfToJpgCard": {},
+  "JpgToPdfCard": {},
+  "HomeToolSwitcher": {
+    "ariaLabel": "PDF उपकरण चुनें",
+    "tabs": {
+      "compress": {
+        "label": "संपीड़ित करें",
+        "title": "PDF संपीड़ित करें",
+        "copy": "अपलोड, पोर्टल, अटैचमेंट और छवि-भारी स्कैन के लिए फ़ाइल का आकार कम करें।"
+      },
+      "merge": {
+        "label": "मर्ज करें",
+        "title": "PDF मर्ज करें",
+        "copy": "भेजने या संपीड़ित करने से पहले कई PDF फ़ाइलों को एक साफ़ दस्तावेज़ में संयोजित करें।"
+      },
+      "split": {
+        "label": "विभाजित करें",
+        "title": "PDF विभाजित करें",
+        "copy": "एक PDF से पेज रेंज निकालें और अपलोड या अनुवर्ती संपीड़न के लिए छोटी फ़ाइलें निर्यात करें।"
+      },
+      "rotate": {
+        "label": "घुमाएं",
+        "title": "PDF घुमाएं",
+        "copy": "सबमिट या मर्ज करने से पहले साइडवे या उल्टे पेजों को सीधा करें।"
+      },
+      "remove": {
+        "label": "हटाएं",
+        "title": "PDF पेज हटाएं",
+        "copy": "साफ़ PDF अपलोड करने से पहले खाली, डुप्लिकेट या अनावश्यक पेज हटाएं।"
+      },
+      "reorder": {
+        "label": "पुनर्क्रमित करें",
+        "title": "PDF पेज पुनर्क्रमित करें",
+        "copy": "निर्यात, मर्ज या संपीड़न से पहले पेजों को सही क्रम में रखें।"
+      },
+      "pdfToJpg": {
+        "label": "PDF से JPG",
+        "title": "PDF से JPG",
+        "copy": "पूर्वावलोकन, साझाकरण, अपलोड और विज़ुअल निष्कर्षण के लिए प्रति PDF पेज एक JPG निर्यात करें।"
+      },
+      "jpgToPdf": {
+        "label": "JPG से PDF",
+        "title": "JPG से PDF",
+        "copy": "स्क्रीनशॉट, स्कैन और छवि फ़ाइलों को ब्राउज़र में एक PDF दस्तावेज़ में संयोजित करें।"
+      }
+    }
+  },
+  "ToolPageTemplate": {},
+  "SplitPageTemplate": {},
+  "PrivacyPage": {},
+  "Common": {}
+}

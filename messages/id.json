@@ -1,0 +1,93 @@
+{
+  "HomePage": {},
+  "SiteShell": {
+    "navHome": "Beranda",
+    "navTools": "Alat",
+    "navPrivacy": "Privasi",
+    "toolCompressPdf": "Kompres PDF",
+    "toolMergePdf": "Gabung PDF",
+    "toolSplitPdf": "Pisah PDF",
+    "toolRotatePdf": "Putar PDF",
+    "toolRemovePages": "Hapus Halaman",
+    "toolReorderPages": "Urutkan Halaman",
+    "toolPdfToJpg": "PDF ke JPG",
+    "toolJpgToPdf": "JPG ke PDF",
+    "toolRemovePdfPages": "Hapus Halaman PDF",
+    "footerIntro": "Alat PDF dan gambar berbasis browser untuk mengompres, menggabung, memisah, dan mengonversi dokumen sebelum diunggah, dibagikan, dan dikirim.",
+    "footerMeta": "Tanpa login. Tanpa instalasi. Dibuat untuk tugas dokumen yang cepat.",
+    "footerGroupTools": "Alat",
+    "footerGroupUseCases": "Kasus Penggunaan",
+    "footerGroupCompany": "Perusahaan",
+    "footerLinkForUploads": "Untuk Unggahan",
+    "footerLinkForEmail": "Untuk Email",
+    "footerLinkSplitForUpload": "Pisah untuk Unggahan",
+    "footerHighlight1": "Kompres untuk unggahan dan lampiran",
+    "footerHighlight2": "Gabung beberapa PDF menjadi satu file",
+    "footerHighlight3": "Pisah rentang halaman sebelum dikirim",
+    "footerHighlight4": "Putar halaman PDF yang miring",
+    "footerHighlight5": "Hapus halaman PDF yang tidak diinginkan",
+    "footerHighlight6": "Urutkan halaman sebelum ekspor",
+    "footerHighlight7": "Konversi halaman PDF ke JPG",
+    "footerHighlight8": "Ubah gambar JPG menjadi satu PDF",
+    "copyright": "© 2026 FileSmaller. Hak Cipta Dilindungi.",
+    "footerTagline": "Alat dokumen berbasis browser yang presisi untuk alur kerja kompresi, penggabungan, pemisahan, dan konversi."
+  },
+  "UploadCard": {},
+  "Compression": {},
+  "MergePdfCard": {},
+  "SplitPdfCard": {},
+  "RotatePdfCard": {},
+  "RemovePdfPagesCard": {},
+  "ReorderPdfCard": {},
+  "PdfToJpgCard": {},
+  "JpgToPdfCard": {},
+  "HomeToolSwitcher": {
+    "ariaLabel": "Pilih alat PDF",
+    "tabs": {
+      "compress": {
+        "label": "Kompres",
+        "title": "Kompres PDF",
+        "copy": "Kurangi ukuran file untuk unggahan, portal, lampiran, dan pindaian berbasis gambar."
+      },
+      "merge": {
+        "label": "Gabung",
+        "title": "Gabung PDF",
+        "copy": "Gabungkan beberapa file PDF menjadi satu dokumen rapi sebelum dikirim atau dikompres."
+      },
+      "split": {
+        "label": "Pisah",
+        "title": "Pisah PDF",
+        "copy": "Ekstrak rentang halaman dari satu PDF dan ekspor file yang lebih kecil untuk unggahan atau kompresi lanjutan."
+      },
+      "rotate": {
+        "label": "Putar",
+        "title": "Putar PDF",
+        "copy": "Putar halaman yang miring atau terbalik sebelum mengirim atau menggabung."
+      },
+      "remove": {
+        "label": "Hapus",
+        "title": "Hapus halaman PDF",
+        "copy": "Hapus halaman kosong, duplikat, atau tidak perlu sebelum mengunggah PDF yang lebih rapi."
+      },
+      "reorder": {
+        "label": "Urutkan",
+        "title": "Urutkan halaman PDF",
+        "copy": "Susun halaman dalam urutan yang benar sebelum ekspor, penggabungan, atau kompresi."
+      },
+      "pdfToJpg": {
+        "label": "PDF ke JPG",
+        "title": "PDF ke JPG",
+        "copy": "Ekspor satu JPG per halaman PDF untuk pratinjau, berbagi, unggahan, dan ekstraksi visual."
+      },
+      "jpgToPdf": {
+        "label": "JPG ke PDF",
+        "title": "JPG ke PDF",
+        "copy": "Gabungkan tangkapan layar, pindaian, dan file gambar menjadi satu dokumen PDF di browser."
+      }
+    }
+  },
+  "ToolPageTemplate": {},
+  "SplitPageTemplate": {},
+  "PrivacyPage": {},
+  "Common": {}
+}

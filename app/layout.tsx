@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SiteShell } from "@/components/site-shell";
 import { Analytics } from "@/components/analytics";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://filesmaller.space"),
@@ -11,14 +11,10 @@ export const metadata: Metadata = {
   },
   description:
     "Compress PDF online free, merge PDF files, split PDF pages, rotate, remove, or reorder PDF pages, convert PDF to JPG, and turn JPG to PDF in a browser-first workflow.",
-  applicationName: "FileSmaller",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
     apple: "/favicon.svg"
-  },
-  alternates: {
-    canonical: "/"
   },
   openGraph: {
     type: "website",
@@ -45,13 +41,15 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -62,7 +60,7 @@ export default function RootLayout({
         <div className="bg-orb bg-orb--2" />
         <div className="bg-orb bg-orb--3" />
         <Analytics />
-        <SiteShell>{children}</SiteShell>
+        {children}
       </body>
     </html>
   );

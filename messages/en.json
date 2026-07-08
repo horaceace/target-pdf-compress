@@ -1,0 +1,93 @@
+{
+  "HomePage": {},
+  "SiteShell": {
+    "navHome": "Home",
+    "navTools": "Tools",
+    "navPrivacy": "Privacy",
+    "toolCompressPdf": "Compress PDF",
+    "toolMergePdf": "Merge PDF",
+    "toolSplitPdf": "Split PDF",
+    "toolRotatePdf": "Rotate PDF",
+    "toolRemovePages": "Remove Pages",
+    "toolReorderPages": "Reorder Pages",
+    "toolPdfToJpg": "PDF to JPG",
+    "toolJpgToPdf": "JPG to PDF",
+    "toolRemovePdfPages": "Remove PDF Pages",
+    "footerIntro": "Browser-first PDF and image tools for compressing, merging, splitting, and converting documents before upload, sharing, and submission.",
+    "footerMeta": "No login. No install. Built for fast document tasks.",
+    "footerGroupTools": "Tools",
+    "footerGroupUseCases": "Use Cases",
+    "footerGroupCompany": "Company",
+    "footerLinkForUploads": "For Uploads",
+    "footerLinkForEmail": "For Email",
+    "footerLinkSplitForUpload": "Split for Upload",
+    "footerHighlight1": "Compress for uploads and attachments",
+    "footerHighlight2": "Merge multiple PDFs into one file",
+    "footerHighlight3": "Split page ranges before sending",
+    "footerHighlight4": "Rotate sideways PDF pages",
+    "footerHighlight5": "Remove unwanted PDF pages",
+    "footerHighlight6": "Reorder pages before export",
+    "footerHighlight7": "Convert PDF pages to JPG",
+    "footerHighlight8": "Turn JPG images into one PDF",
+    "copyright": "© 2026 FileSmaller. All Rights Reserved.",
+    "footerTagline": "Precision browser-first document tools for compression, merge, split, and conversion workflows."
+  },
+  "UploadCard": {},
+  "Compression": {},
+  "MergePdfCard": {},
+  "SplitPdfCard": {},
+  "RotatePdfCard": {},
+  "RemovePdfPagesCard": {},
+  "ReorderPdfCard": {},
+  "PdfToJpgCard": {},
+  "JpgToPdfCard": {},
+  "HomeToolSwitcher": {
+    "ariaLabel": "Choose PDF tool",
+    "tabs": {
+      "compress": {
+        "label": "Compress",
+        "title": "Compress PDF",
+        "copy": "Reduce file size for uploads, portals, attachments, and image-heavy scans."
+      },
+      "merge": {
+        "label": "Merge",
+        "title": "Merge PDF",
+        "copy": "Combine multiple PDF files into one clean document before sending or compressing."
+      },
+      "split": {
+        "label": "Split",
+        "title": "Split PDF",
+        "copy": "Extract page ranges from one PDF and export smaller files for uploads or follow-up compression."
+      },
+      "rotate": {
+        "label": "Rotate",
+        "title": "Rotate PDF",
+        "copy": "Turn sideways or upside-down pages upright before submitting or merging."
+      },
+      "remove": {
+        "label": "Remove",
+        "title": "Remove PDF pages",
+        "copy": "Delete blank, duplicate, or unnecessary pages before uploading a cleaner PDF."
+      },
+      "reorder": {
+        "label": "Reorder",
+        "title": "Reorder PDF pages",
+        "copy": "Move pages into the right sequence before export, merge, or compression."
+      },
+      "pdfToJpg": {
+        "label": "PDF to JPG",
+        "title": "PDF to JPG",
+        "copy": "Export one JPG per PDF page for previews, sharing, uploads, and visual extraction."
+      },
+      "jpgToPdf": {
+        "label": "JPG to PDF",
+        "title": "JPG to PDF",
+        "copy": "Combine screenshots, scans, and image files into one PDF document in the browser."
+      }
+    }
+  },
+  "ToolPageTemplate": {},
+  "SplitPageTemplate": {},
+  "PrivacyPage": {},
+  "Common": {}
+}
