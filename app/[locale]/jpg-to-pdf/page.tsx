@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
 
-export const metadata: Metadata = {
-  title: "JPG to PDF Online Free",
-  description:
-    "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG files into one PDF document for sharing and submission.",
-  alternates: {
-    canonical: "/jpg-to-pdf"
-  },
-  openGraph: {
-    title: "JPG to PDF Online Free",
-    description:
-      "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG files into one PDF document for sharing and submission.",
-    url: "https://filesmaller.space/jpg-to-pdf"
-  },
-  twitter: {
-    title: "JPG to PDF Online Free",
-    description:
-      "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG files into one PDF document for sharing and submission."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("JpgToPdfCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/jpg-to-pdf" },
+    openGraph: { title, description, url: "https://filesmaller.space/jpg-to-pdf" },
+    twitter: { title, description }
+  };
+}
 
 export default async function JpgToPdfPage() {
   const t = await getTranslations("JpgToPdfCard");

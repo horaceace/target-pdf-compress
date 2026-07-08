@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { UploadCard } from "@/components/upload-card";
 
-export const metadata: Metadata = {
-  title: "Compress PDF Online Free",
-  description:
-    "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits.",
-  alternates: {
-    canonical: "/compress-pdf"
-  },
-  openGraph: {
-    title: "Compress PDF Online Free",
-    description:
-      "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits.",
-    url: "https://filesmaller.space/compress-pdf"
-  },
-  twitter: {
-    title: "Compress PDF Online Free",
-    description:
-      "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("UploadCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/compress-pdf" },
+    openGraph: { title, description, url: "https://filesmaller.space/compress-pdf" },
+    twitter: { title, description }
+  };
+}
 
 export default async function CompressPdfPage() {
   const t = await getTranslations("UploadCard");

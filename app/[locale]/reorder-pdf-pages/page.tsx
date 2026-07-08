@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ReorderPdfCard } from "@/components/reorder-pdf-card";
 
-export const metadata: Metadata = {
-  title: "Reorder PDF Pages Online Free",
-  description:
-    "Reorder PDF pages online free in your browser. Type a new page order, rearrange PDF pages, and download the reordered file.",
-  alternates: {
-    canonical: "/reorder-pdf-pages"
-  },
-  openGraph: {
-    title: "Reorder PDF Pages Online Free",
-    description:
-      "Reorder PDF pages online free in your browser. Type a new page order, rearrange PDF pages, and download the reordered file.",
-    url: "https://filesmaller.space/reorder-pdf-pages"
-  },
-  twitter: {
-    title: "Reorder PDF Pages Online Free",
-    description:
-      "Reorder PDF pages online free in your browser. Type a new page order, rearrange PDF pages, and download the reordered file."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("ReorderPdfCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/reorder-pdf-pages" },
+    openGraph: { title, description, url: "https://filesmaller.space/reorder-pdf-pages" },
+    twitter: { title, description }
+  };
+}
 
 export default async function ReorderPdfPagesPage() {
   const t = await getTranslations("ReorderPdfCard");

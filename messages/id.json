@@ -338,7 +338,9 @@
     "compressedPreviewAlt": "Pratinjau halaman pertama terkompresi dari {name}",
     "compressedPreviewCaption": "Halaman pertama terkompresi",
     "downloadZipButton": "Unduh ZIP",
-    "tryLabel": "Coba {mode}"
+    "tryLabel": "Coba {mode}",
+    "metaTitle": "Compress PDF Online Free",
+    "metaDescription": "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits."
   },
   "Compression": {
     "modes": {
@@ -445,7 +447,9 @@
       "protectedPdf": "PDF Terproteksi",
       "protectedPdfHint": "tampaknya diproteksi kata sandi atau dibatasi. Buka kunci PDF terlebih dahulu.",
       "mergeFailedFallback": "Penggabungan gagal"
-    }
+    },
+    "metaTitle": "Merge PDF Files Online Free",
+    "metaDescription": "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly."
   },
   "SplitPdfCard": {
     "heroEyebrow": "Ambil hanya halaman yang Anda butuhkan",
@@ -513,7 +517,9 @@
       "fileTooLargeHint": "Pisahkan file terlebih dahulu atau coba PDF yang lebih kecil dalam alur browser.",
       "noPdfSelected": "Tidak ada PDF yang dipilih",
       "noPdfSelectedHint": "Unggah file PDF sebelum mencoba memisahkan halaman."
-    }
+    },
+    "metaTitle": "Split PDF Files Online Free",
+    "metaDescription": "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly."
   },
   "RotatePdfCard": {
     "heroEyebrow": "Tegakkan halaman sebelum ekspor",
@@ -581,7 +587,9 @@
       "fileTooLargeHint": "Pisahkan file terlebih dahulu atau coba PDF yang lebih kecil dalam alur browser.",
       "noPdfSelected": "Tidak ada PDF yang dipilih",
       "noPdfSelectedHint": "Unggah file PDF sebelum mencoba memutar halaman."
-    }
+    },
+    "metaTitle": "Rotate PDF Online Free",
+    "metaDescription": "Rotate PDF pages online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF."
   },
   "RemovePdfPagesCard": {
     "heroEyebrow": "Simpan hanya halaman yang penting",
@@ -642,7 +650,9 @@
       "fileTooLargeHint": "Pisahkan file terlebih dahulu atau coba PDF yang lebih kecil dalam alur browser.",
       "noPdfSelected": "Tidak ada PDF yang dipilih",
       "noPdfSelectedHint": "Unggah file PDF sebelum mencoba menghapus halaman."
-    }
+    },
+    "metaTitle": "Remove PDF Pages Online Free",
+    "metaDescription": "Remove pages from a PDF online free in your browser. Delete blank, duplicate, or unwanted pages and download a cleaned PDF."
   },
   "ReorderPdfCard": {
     "heroEyebrow": "Perbaiki urutan halaman sebelum ekspor",
@@ -702,7 +712,9 @@
       "fileTooLargeHint": "Pisahkan file terlebih dahulu atau coba PDF yang lebih kecil dalam alur browser.",
       "noPdfSelected": "Tidak ada PDF yang dipilih",
       "noPdfSelectedHint": "Unggah file PDF sebelum mencoba mengurutkan ulang halaman."
-    }
+    },
+    "metaTitle": "Reorder PDF Pages Online Free",
+    "metaDescription": "Reorder PDF pages online free in your browser. Type a new page order, rearrange PDF pages, and download the reordered file."
   },
   "PdfToJpgCard": {
     "heroEyebrow": "Ekspor satu gambar JPG per halaman PDF",
@@ -772,7 +784,9 @@
       "noPdfSelectedHint": "Unggah file PDF sebelum mengonversi.",
       "pageExportFailed": "Browser tidak dapat mengekspor salah satu halaman PDF sebagai JPG.",
       "canvasNotAvailable": "Render kanvas tidak tersedia di browser ini."
-    }
+    },
+    "metaTitle": "PDF to JPG Online Free",
+    "metaDescription": "Convert PDF to JPG online free in your browser. Export one JPG per page for previews, uploads, sharing, and content workflows."
   },
   "JpgToPdfCard": {
     "heroEyebrow": "Ubah kumpulan gambar menjadi satu PDF",
@@ -825,7 +839,9 @@
       "jpgToPdfFailedHint": "Periksa apakah semua file adalah gambar JPG atau PNG yang valid dan coba lagi.",
       "unsupportedImage": "Gambar tidak didukung",
       "unsupportedImageHint": "bukan file JPG atau PNG yang didukung."
-    }
+    },
+    "metaTitle": "JPG to PDF Online Free",
+    "metaDescription": "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG files into one PDF document for sharing and submission."
   },
   "HomeToolSwitcher": {
     "ariaLabel": "Pilih alat PDF",

@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 
-export const metadata: Metadata = {
-  title: "Split PDF Files Online Free",
-  description:
-    "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
-  alternates: {
-    canonical: "/split-pdf"
-  },
-  openGraph: {
-    title: "Split PDF Files Online Free",
-    description:
-      "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
-    url: "https://filesmaller.space/split-pdf"
-  },
-  twitter: {
-    title: "Split PDF Files Online Free",
-    description:
-      "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("SplitPdfCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/split-pdf" },
+    openGraph: { title, description, url: "https://filesmaller.space/split-pdf" },
+    twitter: { title, description }
+  };
+}
 
 export default async function SplitPdfPage() {
   const t = await getTranslations("SplitPdfCard");

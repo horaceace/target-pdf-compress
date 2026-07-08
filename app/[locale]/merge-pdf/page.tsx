@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 
-export const metadata: Metadata = {
-  title: "Merge PDF Files Online Free",
-  description:
-    "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
-  alternates: {
-    canonical: "/merge-pdf"
-  },
-  openGraph: {
-    title: "Merge PDF Files Online Free",
-    description:
-      "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
-    url: "https://filesmaller.space/merge-pdf"
-  },
-  twitter: {
-    title: "Merge PDF Files Online Free",
-    description:
-      "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("MergePdfCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/merge-pdf" },
+    openGraph: { title, description, url: "https://filesmaller.space/merge-pdf" },
+    twitter: { title, description }
+  };
+}
 
 export default async function MergePdfPage() {
   const t = await getTranslations("MergePdfCard");

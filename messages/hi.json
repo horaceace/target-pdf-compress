@@ -338,7 +338,9 @@
     "compressedPreviewAlt": "{name} का संपीड़ित पहले पेज का पूर्वावलोकन",
     "compressedPreviewCaption": "संपीड़ित पहला पेज",
     "downloadZipButton": "ZIP डाउनलोड करें",
-    "tryLabel": "{mode} आज़माएँ"
+    "tryLabel": "{mode} आज़माएँ",
+    "metaTitle": "Compress PDF Online Free",
+    "metaDescription": "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits."
   },
   "Compression": {
     "modes": {
@@ -445,7 +447,9 @@
       "protectedPdf": "संरक्षित PDF",
       "protectedPdfHint": "पासवर्ड-संरक्षित या प्रतिबंधित प्रतीत होती है। पहले PDF को अनलॉक करें।",
       "mergeFailedFallback": "मर्ज विफल"
-    }
+    },
+    "metaTitle": "Merge PDF Files Online Free",
+    "metaDescription": "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly."
   },
   "SplitPdfCard": {
     "heroEyebrow": "केवल वही पेज निकालें जिनकी आपको आवश्यकता है",
@@ -513,7 +517,9 @@
       "fileTooLargeHint": "पहले फ़ाइल को विभाजित करें या ब्राउज़र फ़्लो में कोई छोटी PDF आज़माएँ।",
       "noPdfSelected": "कोई PDF चयनित नहीं",
       "noPdfSelectedHint": "पेज विभाजित करने का प्रयास करने से पहले एक PDF फ़ाइल अपलोड करें।"
-    }
+    },
+    "metaTitle": "Split PDF Files Online Free",
+    "metaDescription": "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly."
   },
   "RotatePdfCard": {
     "heroEyebrow": "निर्यात से पहले पेजों को सीधा करें",
@@ -581,7 +587,9 @@
       "fileTooLargeHint": "पहले फ़ाइल को विभाजित करें या ब्राउज़र फ़्लो में कोई छोटी PDF आज़माएँ।",
       "noPdfSelected": "कोई PDF चयनित नहीं",
       "noPdfSelectedHint": "पेज घुमाने का प्रयास करने से पहले एक PDF फ़ाइल अपलोड करें।"
-    }
+    },
+    "metaTitle": "Rotate PDF Online Free",
+    "metaDescription": "Rotate PDF pages online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF."
   },
   "RemovePdfPagesCard": {
     "heroEyebrow": "केवल महत्वपूर्ण पेज रखें",
@@ -642,7 +650,9 @@
       "fileTooLargeHint": "पहले फ़ाइल को विभाजित करें या ब्राउज़र फ़्लो में कोई छोटी PDF आज़माएँ।",
       "noPdfSelected": "कोई PDF चयनित नहीं",
       "noPdfSelectedHint": "पेज हटाने का प्रयास करने से पहले एक PDF फ़ाइल अपलोड करें।"
-    }
+    },
+    "metaTitle": "Remove PDF Pages Online Free",
+    "metaDescription": "Remove pages from a PDF online free in your browser. Delete blank, duplicate, or unwanted pages and download a cleaned PDF."
   },
   "ReorderPdfCard": {
     "heroEyebrow": "निर्यात से पहले पेज क्रम ठीक करें",
@@ -702,7 +712,9 @@
       "fileTooLargeHint": "पहले फ़ाइल को विभाजित करें या ब्राउज़र फ़्लो में कोई छोटी PDF आज़माएँ।",
       "noPdfSelected": "कोई PDF चयनित नहीं",
       "noPdfSelectedHint": "पेज पुनर्क्रमित करने का प्रयास करने से पहले एक PDF फ़ाइल अपलोड करें।"
-    }
+    },
+    "metaTitle": "Reorder PDF Pages Online Free",
+    "metaDescription": "Reorder PDF pages online free in your browser. Type a new page order, rearrange PDF pages, and download the reordered file."
   },
   "PdfToJpgCard": {
     "heroEyebrow": "प्रति PDF पेज एक JPG छवि निर्यात करें",
@@ -772,7 +784,9 @@
       "noPdfSelectedHint": "रूपांतरित करने से पहले एक PDF फ़ाइल अपलोड करें।",
       "pageExportFailed": "ब्राउज़र PDF के किसी एक पेज को JPG के रूप में निर्यात नहीं कर सका।",
       "canvasNotAvailable": "इस ब्राउज़र में Canvas रेंडरिंग उपलब्ध नहीं है।"
-    }
+    },
+    "metaTitle": "PDF to JPG Online Free",
+    "metaDescription": "Convert PDF to JPG online free in your browser. Export one JPG per page for previews, uploads, sharing, and content workflows."
   },
   "JpgToPdfCard": {
     "heroEyebrow": "छवि बैचों को एक PDF में बदलें",
@@ -825,7 +839,9 @@
       "jpgToPdfFailedHint": "जाँचें कि सभी फ़ाइलें मान्य JPG या PNG छवियाँ हैं और पुनः प्रयास करें।",
       "unsupportedImage": "असमर्थित छवि",
       "unsupportedImageHint": "समर्थित JPG या PNG फ़ाइल नहीं है।"
-    }
+    },
+    "metaTitle": "JPG to PDF Online Free",
+    "metaDescription": "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG files into one PDF document for sharing and submission."
   },
   "HomeToolSwitcher": {
     "ariaLabel": "PDF उपकरण चुनें",

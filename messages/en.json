@@ -165,6 +165,8 @@
     "heroPoint2Title": "Strong and extreme",
     "heroPoint2Copy": "Best for upload portals, attachments, and tighter document size limits.",
     "heroPoint3Title": "Scanned PDF mode",
+    "metaTitle": "Compress PDF Online Free",
+    "metaDescription": "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits.",
     "defaultCopy": "Batch-ready PDF compression",
     "defaultHeading": "Compress PDF files",
     "tagline": "Upload, compress, download.",
@@ -394,6 +396,8 @@
     }
   },
   "MergePdfCard": {
+    "metaTitle": "Merge PDF Files Online Free",
+    "metaDescription": "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
     "heroEyebrow": "Merge multiple documents into one",
     "heroHeading": "Build one merged PDF from multiple files",
     "heroIntro": "Upload PDF files, set the right order, and download one combined document in the browser.",
@@ -448,6 +452,8 @@
     }
   },
   "SplitPdfCard": {
+    "metaTitle": "Split PDF Files Online Free",
+    "metaDescription": "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
     "heroEyebrow": "Pull out only the pages you need",
     "heroHeading": "Split a large PDF into smaller documents",
     "heroIntro": "Upload one PDF, choose page ranges, and export separate files for forms, uploads, or follow-up compression.",
@@ -516,6 +522,8 @@
     }
   },
   "RotatePdfCard": {
+    "metaTitle": "Rotate PDF Online Free",
+    "metaDescription": "Rotate PDF pages online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF.",
     "heroEyebrow": "Turn pages upright before export",
     "heroHeading": "Rotate all pages or selected page ranges",
     "heroIntro": "Upload one PDF, choose a rotation angle, and download a corrected file directly from the browser.",
@@ -584,6 +592,8 @@
     }
   },
   "RemovePdfPagesCard": {
+    "metaTitle": "Remove PDF Pages Online Free",
+    "metaDescription": "Remove pages from a PDF online free in your browser. Delete blank, duplicate, or unwanted pages and download a cleaned PDF.",
     "heroEyebrow": "Keep only the pages that matter",
     "heroHeading": "Remove pages before uploading or sending a PDF",
     "heroIntro": "Upload one PDF, enter the pages you want to remove, and export a cleaner file directly in the browser.",
@@ -645,6 +655,8 @@
     }
   },
   "ReorderPdfCard": {
+    "metaTitle": "Reorder PDF Pages Online Free",
+    "metaDescription": "Reorder PDF pages online free in your browser. Type a new page order, rearrange PDF pages, and download the reordered file.",
     "heroEyebrow": "Fix page order before export",
     "heroHeading": "Rearrange PDF pages in the browser",
     "heroIntro": "Upload one PDF, type the output page order, and download a reordered document without installing a desktop editor.",
@@ -705,6 +717,8 @@
     }
   },
   "PdfToJpgCard": {
+    "metaTitle": "PDF to JPG Online Free",
+    "metaDescription": "Convert PDF to JPG online free in your browser. Export one JPG per page for previews, uploads, sharing, and content workflows.",
     "heroEyebrow": "Export one JPG image per PDF page",
     "heroHeading": "Turn PDF pages into shareable image files",
     "heroIntro": "Upload a PDF, choose the JPG quality level, and download separate page images for previews, CMS uploads, or content reuse.",
@@ -775,6 +789,8 @@
     }
   },
   "JpgToPdfCard": {
+    "metaTitle": "JPG to PDF Online Free",
+    "metaDescription": "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG files into one PDF document for sharing and submission.",
     "heroEyebrow": "Turn image batches into one PDF",
     "heroHeading": "Combine screenshots, scans, and photos into a single document",
     "heroIntro": "Upload the images in the order you want, create one PDF, and then compress that document later if the final file still needs to shrink.",

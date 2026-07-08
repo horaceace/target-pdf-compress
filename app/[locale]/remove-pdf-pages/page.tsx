@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
 
-export const metadata: Metadata = {
-  title: "Remove PDF Pages Online Free",
-  description:
-    "Remove pages from a PDF online free in your browser. Delete blank, duplicate, or unwanted pages and download a cleaned PDF.",
-  alternates: {
-    canonical: "/remove-pdf-pages"
-  },
-  openGraph: {
-    title: "Remove PDF Pages Online Free",
-    description:
-      "Remove pages from a PDF online free in your browser. Delete blank, duplicate, or unwanted pages and download a cleaned PDF.",
-    url: "https://filesmaller.space/remove-pdf-pages"
-  },
-  twitter: {
-    title: "Remove PDF Pages Online Free",
-    description:
-      "Remove pages from a PDF online free in your browser. Delete blank, duplicate, or unwanted pages and download a cleaned PDF."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RemovePdfPagesCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/remove-pdf-pages" },
+    openGraph: { title, description, url: "https://filesmaller.space/remove-pdf-pages" },
+    twitter: { title, description }
+  };
+}
 
 export default async function RemovePdfPagesPage() {
   const t = await getTranslations("RemovePdfPagesCard");

@@ -2,25 +2,18 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 
-export const metadata: Metadata = {
-  title: "Rotate PDF Online Free",
-  description:
-    "Rotate PDF pages online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF.",
-  alternates: {
-    canonical: "/rotate-pdf"
-  },
-  openGraph: {
-    title: "Rotate PDF Online Free",
-    description:
-      "Rotate PDF pages online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF.",
-    url: "https://filesmaller.space/rotate-pdf"
-  },
-  twitter: {
-    title: "Rotate PDF Online Free",
-    description:
-      "Rotate PDF pages online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF."
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RotatePdfCard");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    alternates: { canonical: "/rotate-pdf" },
+    openGraph: { title, description, url: "https://filesmaller.space/rotate-pdf" },
+    twitter: { title, description }
+  };
+}
 
 export default async function RotatePdfPage() {
   const t = await getTranslations("RotatePdfCard");
