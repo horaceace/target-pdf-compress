@@ -270,7 +270,7 @@ export default async function HomePage() {
   const heroStats = [
     { value: String(coreTools.length), label: t("heroStatCoreTools"), icon: Wrench },
     { value: "50+", label: t("heroStatScenarioPages"), icon: FileText },
-    { value: "Browser-first", label: t("heroStatNoInstall"), icon: Zap }
+    { value: t("heroStatBrowserFirst"), label: t("heroStatNoInstall"), icon: Zap }
   ];
 
   const workflowColumns = [
