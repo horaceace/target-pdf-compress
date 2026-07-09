@@ -113,7 +113,11 @@ function normalizeCompressionError(t: TFunc, error: unknown, file: File, mode: C
   const message = error.message || "";
   const lowered = message.toLowerCase();
 
-  if (lowered.includes("encrypted") || lowered.includes("password")) {
+  if (
+    lowered.includes("encrypted") ||
+    lowered.includes("password") ||
+    message.includes("ENCRYPTED_PDF_PASSWORD_REQUIRED")
+  ) {
     return {
       title: t("errors.protectedPdfTitle"),
       message: t("errors.protectedPdfMessage", { fileName: file.name }),
@@ -344,7 +348,12 @@ function formatTargetStatus(t: TFunc, job: UploadJob) {
       difference: formatBytes(difference),
       target: formatBytes(job.targetBytes)
     }),
-    copy: t("targetStatus.overTargetCopy")
+    copy: t("targetStatus.overTargetCopy"),
+    nextSteps: [
+      t("targetStatus.nextTryStronger"),
+      t("targetStatus.nextSplit"),
+      t("targetStatus.nextBrowserLimit")
+    ]
   };
 }
 
@@ -1304,7 +1313,12 @@ export function UploadCard({
                                 : "upload-job__compact-target--missed"
                             }`}
                           >
-                            {targetStatus.title}
+                            <strong>{targetStatus.title}</strong>
+                            {!targetStatus.met ? (
+                              <span className="upload-job__compact-target-copy">
+                                {targetStatus.copy}
+                              </span>
+                            ) : null}
                           </div>
                         ) : null}
                         {selectedQualityHint ? (
@@ -1379,6 +1393,35 @@ export function UploadCard({
                           >
                             <strong>{targetStatus.title}</strong>
                             <span>{targetStatus.copy}</span>
+                            {!targetStatus.met && targetStatus.nextSteps?.length ? (
+                              <div className="upload-job__target-next">
+                                <strong>{t("targetStatus.nextTitle")}</strong>
+                                <ol>
+                                  {targetStatus.nextSteps.map((step) => (
+                                    <li key={step}>{step}</li>
+                                  ))}
+                                </ol>
+                                {suggestedAction ? (
+                                  <button
+                                    type="button"
+                                    className="button button--primary button--sm"
+                                    disabled={processing}
+                                    onClick={() => {
+                                      startTransition(async () => {
+                                        await processJob(
+                                          job.id,
+                                          suggestedAction.mode,
+                                          undefined,
+                                          job.targetBytes ?? targetBytes
+                                        );
+                                      });
+                                    }}
+                                  >
+                                    {suggestedAction.label}
+                                  </button>
+                                ) : null}
+                              </div>
+                            ) : null}
                           </div>
                         ) : (
                           <div className="upload-job__target-status upload-job__target-status--neutral">

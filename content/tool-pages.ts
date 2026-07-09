@@ -582,28 +582,28 @@ export const toolPages: ToolPageConfig[] = [
     slug: "compress-pdf-to-500kb",
     title: "Compress PDF to 500KB",
     description:
-      "Compress PDF to 500KB online for forms, uploads, applications, and attachment limits in your browser.",
-    h1: "Compress PDF to 500KB",
+      "Try to compress a PDF toward 500KB in your browser for forms and portals. Best-effort—not guaranteed for scans or large files.",
+    h1: "Compress PDF toward 500KB",
     subheading:
-      "Reduce a PDF toward 500KB when a form, portal, or attachment workflow needs a much smaller file.",
-    targetLabel: "Compression goal: around 500KB",
+      "Aim for about 500KB when a form needs a small file. Browser compression is best-effort and often fails on heavy scans.",
+    targetLabel: "Compression goal: around 500KB (best-effort)",
     intro:
-      "Use this page when you need to compress a PDF toward 500KB for uploads, job applications, school forms, or smaller attachment limits.",
+      "Use this page when a portal asks for roughly 500KB. FileSmaller will try stronger browser modes, but many image-heavy PDFs will still miss this target—split the file or use a desktop tool if you must hit it.",
     steps: [
       "Upload the PDF you need to shrink",
-      "Run a stronger compression path for a smaller result",
-      "Download the reduced PDF and check whether it is close enough for the limit"
+      "Run Strong or Scanned PDF mode for a smaller result",
+      "If still over 500KB, split the PDF or use another tool for stricter limits"
     ],
     faq: [
       {
         question: "Can I always compress a PDF to 500KB?",
         answer:
-          "Not always. Text-heavy PDFs often get closer than scanned or image-heavy files, which are harder to shrink that far."
+          "No. 500KB is a strict goal. Text-heavy PDFs sometimes get close; scanned or image-heavy files often cannot reach it in a browser-only flow."
       },
       {
         question: "What if the PDF is still larger than 500KB?",
         answer:
-          "Try a stronger compression path, split the PDF first, or reduce image-heavy content if possible."
+          "Try Scanned PDF mode, split the document, or use a desktop optimizer. Password-protected PDFs must be opened with the password first."
       },
       {
         question: "Is 500KB a common upload target?",
@@ -674,23 +674,28 @@ export const toolPages: ToolPageConfig[] = [
     slug: "compress-pdf-to-1mb",
     title: "Compress PDF to 1MB",
     description:
-      "Compress PDF to 1MB online for attachments, portal uploads, resumes, and everyday document sharing.",
-    h1: "Compress PDF to 1MB",
+      "Try to compress a PDF toward 1MB in your browser for attachments and uploads. Best-effort—not guaranteed for every file.",
+    h1: "Compress PDF toward 1MB",
     subheading:
-      "Reduce PDF size toward 1MB for upload-ready files, recruiter emails, and general sharing.",
-    targetLabel: "Compression goal: around 1MB",
+      "Aim for about 1MB for uploads and email. Browser compression is best-effort; scanned or already-small files may not hit the target.",
+    targetLabel: "Compression goal: around 1MB (best-effort)",
     intro:
-      "Use this page when your PDF only needs a moderate size reduction and a target around 1MB is enough for the upload, email, or sharing task.",
+      "Use this page when you want a practical ~1MB goal for sharing. FileSmaller runs in the browser and will try stronger modes when needed, but it cannot guarantee every PDF reaches 1MB—especially heavy scans.",
     steps: [
       "Upload the PDF you want near 1MB",
-      "Run compression with the right balance of size and readability",
-      "Download the smaller PDF and send or upload it"
+      "Run compression (try Strong or Scanned PDF if the first pass misses)",
+      "If still over 1MB, split the file or accept the smallest browser result"
     ],
     faq: [
       {
+        question: "Is 1MB guaranteed?",
+        answer:
+          "No. 1MB is a target goal. Many text-heavy office PDFs can get close; image-heavy or scanned PDFs often cannot reach 1MB with browser-only tools."
+      },
+      {
         question: "Is 1MB a realistic target for many PDFs?",
         answer:
-          "Yes. Many normal office PDFs, resumes, forms, and reports can often get closer to 1MB than to much smaller targets like 200KB."
+          "Often yes for normal office PDFs, resumes, forms, and reports. It is more realistic than 200KB, but still not guaranteed."
       },
       {
         question: "Why aim for 1MB?",
@@ -698,14 +703,14 @@ export const toolPages: ToolPageConfig[] = [
           "Because it is a practical size for many uploads, email attachments, and document sharing tasks."
       },
       {
-        question: "Will a PDF compressed toward 1MB stay readable?",
+        question: "What if compression still misses 1MB?",
         answer:
-          "Usually yes for text-heavy files. Image-heavy PDFs may still show some quality trade-offs."
+          "Try Scanned PDF mode for image-heavy files, split the document, or use a desktop optimizer. Password-protected PDFs must be opened with the password before compression."
       },
       {
-        question: "What if the file is already under 1MB?",
+        question: "Will a PDF compressed toward 1MB stay readable?",
         answer:
-          "Then you may not need stronger compression unless you want an even smaller file for a stricter limit."
+          "Usually yes for text-heavy files. Image-heavy PDFs may still show quality trade-offs, especially on stronger modes."
       }
     ],
     relatedSlugs: [

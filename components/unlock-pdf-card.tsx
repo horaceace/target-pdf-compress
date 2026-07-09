@@ -117,6 +117,10 @@ export function UnlockPdfCard() {
   return (
     <div className="panel tool-card">
       <div>
+        <aside className="capability-callout capability-callout--inline" role="note">
+          <strong>{t("heading")}</strong>
+          <span>{t("capabilityNote")}</span>
+        </aside>
         <div
           className={`dropzone ${isDragging ? "dropzone--dragging" : ""} ${pdfFile ? "dropzone--filled" : ""}`}
           onDragOver={onDragOver}

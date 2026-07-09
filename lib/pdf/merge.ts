@@ -1,4 +1,5 @@
 import { PDFDocument } from "pdf-lib";
+import { ENCRYPTED_PASSWORD_REQUIRED, loadPdfStrict } from "./encryption";
 
 export type MergeResult = {
   blob: Blob;
@@ -26,10 +27,17 @@ export async function mergePdfFiles(files: File[]): Promise<MergeResult> {
     totalBytes += file.size;
 
     const bytes = new Uint8Array(await file.arrayBuffer());
-    const source = await PDFDocument.load(bytes, {
-      updateMetadata: false,
-      ignoreEncryption: true
-    });
+    let source: PDFDocument;
+    try {
+      source = await loadPdfStrict(bytes, { updateMetadata: false });
+    } catch (error) {
+      if (error instanceof Error && error.message === ENCRYPTED_PASSWORD_REQUIRED) {
+        throw new Error(
+          `${file.name} is password-protected. Remove the open password first, then merge.`
+        );
+      }
+      throw error;
+    }
     totalPages += source.getPageCount();
 
     const copiedPages = await merged.copyPages(source, source.getPageIndices());

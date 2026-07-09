@@ -4,6 +4,7 @@ import {
   type DocumentProfile,
   type RenderCandidate
 } from "./scanned-candidates.mjs";
+import { loadPdfStrict } from "./encryption";
 
 export type CompressionMode =
   | "light"
@@ -486,10 +487,8 @@ export async function compressPdfFile(
   }
 
   const sourceBytes = new Uint8Array(await file.arrayBuffer());
-  const source = await PDFDocument.load(sourceBytes, {
-    updateMetadata: false,
-    ignoreEncryption: true
-  });
+  // Fail closed on password-protected PDFs — do not silently ignoreEncryption.
+  const source = await loadPdfStrict(sourceBytes, { updateMetadata: false });
   const pageCount = source.getPageCount();
   const bytesPerPage = pageCount > 0 ? file.size / pageCount : file.size;
   const profile = classifyDocumentProfile(bytesPerPage, pageCount);

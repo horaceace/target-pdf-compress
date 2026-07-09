@@ -163,6 +163,12 @@ export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
         <span className="eyebrow">{page.targetLabel}</span>
         <h1>{page.h1}</h1>
         <p>{page.subheading}</p>
+        {page.tool === "compress-pdf" ? (
+          <aside className="capability-callout" role="note">
+            <strong>{t("capabilityTitle")}</strong>
+            <span>{t("capabilityBody")}</span>
+          </aside>
+        ) : null}
       </section>
 
       <section className="hero">
