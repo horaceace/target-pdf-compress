@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SplitPdfCard } from "@/components/split-pdf-card";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("SplitPdfCard");
@@ -9,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/split-pdf" },
-    openGraph: { title, description, url: "https://filesmaller.space/split-pdf" },
-    twitter: { title, description }
+    alternates: buildAlternates("/split-pdf"),
+    openGraph: buildOpenGraph(title, description, "/split-pdf"),
+    twitter: buildTwitter(title, description),
   };
 }
 

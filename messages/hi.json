@@ -379,7 +379,8 @@
     "warnings": {
       "didNotShrink": "यह PDF ब्राउज़र में अधिक सिकुड़ी नहीं। छवि-भारी फ़ाइलों को अधिक मज़बूत सर्वर-साइड कंप्रेसर की आवश्यकता हो सकती है।",
       "scannedHeavyNotScanned": "यह फ़ाइल टेक्स्ट PDF से अधिक स्कैन जैसी लगती है। मानक मोड इसे पर्याप्त रूप से सिकोड़ नहीं सकते।",
-      "aggressiveQuality": "आक्रामक ब्राउज़र-साइड संपीड़न छवि-भारी PDF पर दृश्य गुणवत्ता कम कर सकता है।"
+      "aggressiveQuality": "आक्रामक ब्राउज़र-साइड संपीड़न छवि-भारी PDF पर दृश्य गुणवत्ता कम कर सकता है।",
+      "scannedModeSkipped": "Scanned PDF मोड छोड़ दिया गया क्योंकि यह फ़ाइल {profileLabel} जैसी लगती है। FileSmaller ने इसके बजाय {effectiveModeLabel} का उपयोग किया।"
     },
     "recommendations": {
       "tryScannedForImageHeavy": "यह PDF छवि-भारी लगती है। मज़बूत ब्राउज़र-साइड कमी पथ के लिए Scanned PDF मोड आज़माएँ।",

@@ -379,7 +379,8 @@
     "warnings": {
       "didNotShrink": "This PDF did not shrink much in the browser. Image-heavy files may need a stronger server-side compressor.",
       "scannedHeavyNotScanned": "This file looks closer to a scan than a text PDF. Standard modes may not shrink it enough.",
-      "aggressiveQuality": "Aggressive browser-side compression can reduce visual quality on image-heavy PDFs."
+      "aggressiveQuality": "Aggressive browser-side compression can reduce visual quality on image-heavy PDFs.",
+      "scannedModeSkipped": "Scanned PDF mode was skipped because this file looks more like a {profileLabel}. FileSmaller used {effectiveModeLabel} instead."
     },
     "recommendations": {
       "tryScannedForImageHeavy": "This PDF looks image-heavy. Try Scanned PDF mode for a stronger browser-side reduction path.",

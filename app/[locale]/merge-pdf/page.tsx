@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { MergePdfCard } from "@/components/merge-pdf-card";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("MergePdfCard");
@@ -9,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/merge-pdf" },
-    openGraph: { title, description, url: "https://filesmaller.space/merge-pdf" },
-    twitter: { title, description }
+    alternates: buildAlternates("/merge-pdf"),
+    openGraph: buildOpenGraph(title, description, "/merge-pdf"),
+    twitter: buildTwitter(title, description),
   };
 }
 

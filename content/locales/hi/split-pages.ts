@@ -1,0 +1,61 @@
+import type { SplitPageConfig } from "../../split-pages";
+
+const splitToolPages: Partial<SplitPageConfig>[] = [
+  {
+    slug: "split-pdf-online",
+    title: "PDF मुफ्त में ऑनलाइन विभाजित करें",
+    description: "PDF विभाजित करें online आपके ब्राउज़र में. निकालें page ranges, create smaller PDF parts, and download them instantly.",
+    h1: "PDF ऑनलाइन विभाजित करें",
+    subheading: "Break one PDF into smaller files by page range अपलोड से पहले, email, or दस्तावेज़ sharing.",
+    targetLabel: "विभाजित करें वर्कफ़्लो: online PDF page ranges",
+    intro: "इस पेज का उपयोग करें when you need to split a PDF online and export only the pages you actually need फॉर्म के लिए, अटैचमेंटs, or follow-up संपीड़न.",
+    steps: ["एक PDF अपलोड करें file", "Enter page ranges like 1-3, 5, 7-9", "प्रत्येक डाउनलोड करें split PDF result"],
+    faq: [{"question": "Can I split a PDF online मुफ्त में?", "answer": "Yes. This tool lets you upload one PDF in the browser, define page ranges, and export smaller PDF files without a paid plan."}, {"question": "What is this split PDF page best for?", "answer": "It is best for extracting just the pages you need भेजने से पहले, uploading, or संपीड़ितing a smaller दस्तावेज़."}, {"question": "Can I split one page or multiple ranges?", "answer": "Yes. You can split a single page like 6 or multiple ranges like 1-3, 5, 7-9."}, {"question": "Does this run in the browser?", "answer": "Yes. The first version is ब्राउज़र-फ़र्स्ट and does not depend on a server-side split queue."}],
+  },
+  {
+    slug: "extract-pdf-pages",
+    title: "PDF पेज ऑनलाइन निकालें",
+    description: "निकालें PDF pages online by page range and download smaller PDF files फॉर्म के लिए, signatures, and supporting दस्तावेज़.",
+    h1: "PDF पेज निकालें",
+    subheading: "Pull out only the pages you need from a larger PDF भेजने से पहले or uploading the file.",
+    targetLabel: "विभाजित करें वर्कफ़्लो: extract selected pages",
+    intro: "This page is for users who need to extract only specific pages from a larger PDF, such as signature pages, certificates, forms, or selected report sections.",
+    steps: ["अपलोड the full PDF", "Enter the page or page ranges you want to extract", "छोटा परिणाम डाउनलोड करें PDF parts"],
+    faq: [{"question": "How do I extract pages from a PDF?", "answer": "अपलोड the file, enter the page numbers or ranges you want to keep, and export smaller PDF files for those pages."}, {"question": "Can I extract a signature page only?", "answer": "Yes. This is one of the most common उपयोग का मामलाs for page-range splitting."}, {"question": "Can I extract multiple ranges at once?", "answer": "Yes. Use a format like 1-2, 5, 8-10 to create multiple split outputs from one PDF."}, {"question": "Why extract pages before संपीड़न?", "answer": "A smaller page set is often easier to upload and may need less follow-up संपीड़न."}],
+  },
+  {
+    slug: "split-pdf-for-upload",
+    title: "PDF विभाजित करें for अपलोड",
+    description: "PDF विभाजित करें अपलोड के लिए by extracting only the required pages भेजने से पहले files to forms, पोर्टलs, and दस्तावेज़ systems.",
+    h1: "PDF विभाजित करें for अपलोड",
+    subheading: "Create smaller upload-ready PDF parts by splitting out just the pages required by the form or पोर्टल.",
+    targetLabel: "विभाजित करें वर्कफ़्लो: upload-ready page groups",
+    intro: "इस पेज का उपयोग करें when a पोर्टल asks for only part of a दस्तावेज़, or when uploading a smaller extracted section is easier than sending the full PDF.",
+    steps: ["अपलोड the original PDF", "Choose the exact pages required for the upload", "छोटा परिणाम डाउनलोड करें split file and submit it"],
+    faq: [{"question": "Why split a PDF अपलोड से पहले?", "answer": "Many systems only need a few pages. निकालेंing those pages creates a smaller file and avoids uploading unnecessary content."}, {"question": "Is this useful for job पोर्टलs and forms?", "answer": "Yes. It is useful for नौकरी का आवेदनs, visa forms, claims, and दस्तावेज़ पोर्टलs that request only part of a larger file."}, {"question": "Should I split first or संपीड़ित first?", "answer": "If you only need part of the दस्तावेज़, split first. Then संपीड़ित the smaller result if फ़ाइल का आकार is still a problem."}, {"question": "Can I export multiple upload-ready parts?", "answer": "Yes. Enter multiple ranges to generate several separate PDFs from one source file."}],
+  },
+  {
+    slug: "split-pdf-by-page-ranges",
+    title: "PDF विभाजित करें by पेज Ranges",
+    description: "PDF विभाजित करें by page ranges online. Use formats like 1-3, 5, 7-9 to export separate PDF files from one दस्तावेज़.",
+    h1: "PDF विभाजित करें by पेज Ranges",
+    subheading: "Define exact page ranges and turn one PDF into multiple smaller PDF files in the browser.",
+    targetLabel: "विभाजित करें वर्कफ़्लो: exact page-range exports",
+    intro: "This page is for users who want precise control over how a PDF is split, especially when exporting multiple sections from one larger दस्तावेज़.",
+    steps: ["एक PDF अपलोड करें file", "Enter page ranges like 1-3, 5, 7-9", "डाउनलोड a separate PDF for each range"],
+    faq: [{"question": "What page range formats can I use?", "answer": "The first version supports single pages like 6 and ranges like 3-5, plus multiple ranges separated by commas."}, {"question": "Can I create several split files from one PDF?", "answer": "Yes. Each valid page range becomes its own exported PDF file."}, {"question": "Does this work for large स्कैन की गई PDFs too?", "answer": "It can split them, but very large स्कैन की गई PDFs may still be heavy and may need संपीड़न after splitting."}, {"question": "What if my range is invalid?", "answer": "The tool shows a specific error so you can fix the page numbers before exporting."}],
+  },
+  {
+    slug: "split-large-pdf",
+    title: "विभाजित करें Large PDF ऑनलाइन",
+    description: "विभाजित करें बड़ी PDF files online by extracting smaller sections अपलोड से पहले, email, or follow-up संपीड़न.",
+    h1: "विभाजित करें Large PDF",
+    subheading: "Break one बड़ी PDF into smaller parts when the original file is too heavy to send or upload comfortably.",
+    targetLabel: "विभाजित करें वर्कफ़्लो: large दस्तावेज़ into smaller parts",
+    intro: "इस पेज का उपयोग करें when one PDF feels too large to work with and you need to break it into smaller sections भेजने से पहले, submitting, or संपीड़ितing each part.",
+    steps: ["अपलोड the बड़ी PDF", "Select the smaller page groups you want to create", "प्रत्येक डाउनलोड करें split file for the next step"],
+    faq: [{"question": "Why split a बड़ी PDF?", "answer": "विभाजित करेंting a बड़ी PDF can make the दस्तावेज़ easier to upload, easier to send, and easier to संपीड़ित in smaller parts."}, {"question": "Should I संपीड़ित or split first?", "answer": "If you only need part of the PDF, split first. If you need the whole दस्तावेज़, संपीड़न may be the better first step."}, {"question": "Can I split a large स्कैन की गई PDF?", "answer": "Yes. विभाजित करेंting first is often a good way to reduce the scope of a large scanned file before trying संपीड़न."}, {"question": "Can this create several smaller PDFs from one big file?", "answer": "Yes. Each page range becomes its own output file."}],
+  },
+];
+
+export default { splitToolPages };

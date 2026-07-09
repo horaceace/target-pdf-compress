@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { PdfToJpgCard } from "@/components/pdf-to-jpg-card";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("PdfToJpgCard");
@@ -9,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/pdf-to-jpg" },
-    openGraph: { title, description, url: "https://filesmaller.space/pdf-to-jpg" },
-    twitter: { title, description }
+    alternates: buildAlternates("/pdf-to-jpg"),
+    openGraph: buildOpenGraph(title, description, "/pdf-to-jpg"),
+    twitter: buildTwitter(title, description),
   };
 }
 

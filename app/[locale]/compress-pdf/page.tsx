@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { UploadCard } from "@/components/upload-card";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("UploadCard");
@@ -9,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/compress-pdf" },
-    openGraph: { title, description, url: "https://filesmaller.space/compress-pdf" },
-    twitter: { title, description }
+    alternates: buildAlternates("/compress-pdf"),
+    openGraph: buildOpenGraph(title, description, "/compress-pdf"),
+    twitter: buildTwitter(title, description),
   };
 }
 

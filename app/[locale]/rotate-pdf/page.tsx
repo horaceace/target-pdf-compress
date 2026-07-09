@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RotatePdfCard");
@@ -9,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/rotate-pdf" },
-    openGraph: { title, description, url: "https://filesmaller.space/rotate-pdf" },
-    twitter: { title, description }
+    alternates: buildAlternates("/rotate-pdf"),
+    openGraph: buildOpenGraph(title, description, "/rotate-pdf"),
+    twitter: buildTwitter(title, description),
   };
 }
 

@@ -19,6 +19,11 @@ export type CompressionModeOption = {
   bestFor: string;
 };
 
+export type CompressionMessage = {
+  key: string;
+  params?: Record<string, string | number>;
+};
+
 export type CompressionResult = {
   blob: Blob;
   fileName: string;
@@ -32,8 +37,8 @@ export type CompressionResult = {
   compressedBytes: number;
   savedBytes: number;
   reductionRatio: number;
-  warning?: string;
-  recommendation?: string;
+  warning?: CompressionMessage;
+  recommendation?: CompressionMessage;
   compressionDetails?: string;
 };
 
@@ -179,17 +184,17 @@ function buildWarning(
   originalBytes: number,
   compressedBytes: number,
   documentProfile: CompressionResult["documentProfile"]
-) {
+): CompressionMessage | undefined {
   if (compressedBytes >= originalBytes) {
-    return "This PDF did not shrink much in the browser. Image-heavy files may need a stronger server-side compressor.";
+    return { key: "warnings.didNotShrink" };
   }
 
   if (documentProfile === "scanned-heavy" && mode !== "scanned") {
-    return "This file looks closer to a scan than a text PDF. Standard modes may not shrink it enough.";
+    return { key: "warnings.scannedHeavyNotScanned" };
   }
 
   if (mode === "extreme" || mode === "scanned") {
-    return "Aggressive browser-side compression can reduce visual quality on image-heavy PDFs.";
+    return { key: "warnings.aggressiveQuality" };
   }
 
   return undefined;
@@ -202,7 +207,7 @@ function buildRecommendation(
   pageCount: number,
   likelyImageHeavy: boolean,
   documentProfile: CompressionResult["documentProfile"]
-) {
+): CompressionMessage | undefined {
   const reduction = originalBytes > 0 ? (originalBytes - compressedBytes) / originalBytes : 0;
 
   if (
@@ -210,23 +215,23 @@ function buildRecommendation(
     (documentProfile === "image-heavy" || documentProfile === "scanned-heavy") &&
     mode !== "scanned"
   ) {
-    return "This PDF looks image-heavy. Try Scanned PDF mode for a stronger browser-side reduction path.";
+    return { key: "recommendations.tryScannedForImageHeavy" };
   }
 
   if (reduction < 0.08 && (mode === "extreme" || mode === "scanned")) {
-    return "This file is resisting browser-side compression. A server-side compressor may be needed for a much smaller result.";
+    return { key: "recommendations.resistingBrowserCompression" };
   }
 
   if (documentProfile === "clean-office" && reduction < 0.1 && mode === "light") {
-    return "This PDF already looks structurally light. Try Balanced or Strong mode only if upload limits still block you.";
+    return { key: "recommendations.alreadyLightClean" };
   }
 
   if (pageCount > 30 && reduction < 0.18 && likelyImageHeavy && mode === "strong") {
-    return "Long image-heavy PDFs often need Extreme or Scanned PDF mode to get under stricter upload caps.";
+    return { key: "recommendations.longImageHeavyNeedsStronger" };
   }
 
   if (reduction > 0.55 && mode === "light") {
-    return "This file shrank well even on Light mode. You may not need a stronger compression setting.";
+    return { key: "recommendations.shrankWellOnLight" };
   }
 
   return undefined;
@@ -574,7 +579,7 @@ export async function compressPdfFile(
   const skippedScannedPath = requestedScannedMode && !shouldRunRenderedScannedPath;
   const warning =
     skippedScannedPath && !selectedRenderedCandidate
-      ? `Scanned PDF mode was skipped because this file looks more like a ${profile.label.toLowerCase()}. FileSmaller used ${getCompressionMode(effectiveMode).label} instead.`
+      ? { key: "warnings.scannedModeSkipped", params: { profileLabel: profile.label, effectiveModeLabel: getCompressionMode(effectiveMode).label } }
       : buildWarning(effectiveMode, originalBytes, compressedBytes, profile.id);
 
   return {

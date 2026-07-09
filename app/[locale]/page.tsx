@@ -5,6 +5,7 @@ import { HomeToolSwitcher } from "@/components/home-tool-switcher";
 import { TrackedLink } from "@/components/tracked-link";
 import { homepage, toolPageMap } from "@/content/tool-pages";
 import { Wrench, FileText, Zap } from "lucide-react";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("HomePage");
@@ -13,28 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: {
-      canonical: "/"
-    },
-    openGraph: {
-      title,
-      description,
-      url: "https://filesmaller.space",
-      images: [
-        {
-          url: "https://filesmaller.space/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: title
-        }
-      ]
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["https://filesmaller.space/og-image.png"]
-    }
+    alternates: buildAlternates("/"),
+    openGraph: buildOpenGraph(title, description, "/", {
+      url: "https://filesmaller.space/og-image.png",
+      width: 1200,
+      height: 630,
+      alt: title,
+    }),
+    twitter: buildTwitter(title, description, "https://filesmaller.space/og-image.png"),
   };
 }
 

@@ -4,6 +4,7 @@ import { SplitPageTemplate } from "@/components/split-page-template";
 import { ToolPageTemplate } from "@/components/tool-page-template";
 import { toolPages, toolPageMap } from "@/content/tool-pages";
 import { splitToolPages, splitToolPageMap } from "@/content/split-pages";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return [...toolPages, ...splitToolPages].map((page) => ({ slug: page.slug }));
@@ -26,36 +27,18 @@ export function generateMetadata({
       return {
         title: splitPage.title,
         description: splitPage.description,
-        alternates: {
-          canonical: `/${splitPage.slug}`
-        },
-        openGraph: {
-          title: splitPage.title,
-          description: splitPage.description,
-          url: `https://filesmaller.space/${splitPage.slug}`
-        },
-        twitter: {
-          title: splitPage.title,
-          description: splitPage.description
-        }
+        alternates: buildAlternates(`/${splitPage.slug}`),
+        openGraph: buildOpenGraph(splitPage.title, splitPage.description, `/${splitPage.slug}`),
+        twitter: buildTwitter(splitPage.title, splitPage.description),
       };
     }
 
     return {
       title: page.title,
       description: page.description,
-      alternates: {
-        canonical: `/${page.slug}`
-      },
-      openGraph: {
-        title: page.title,
-        description: page.description,
-        url: `https://filesmaller.space/${page.slug}`
-      },
-      twitter: {
-        title: page.title,
-        description: page.description
-      }
+      alternates: buildAlternates(`/${page.slug}`),
+      openGraph: buildOpenGraph(page.title, page.description, `/${page.slug}`),
+      twitter: buildTwitter(page.title, page.description),
     };
   });
 }

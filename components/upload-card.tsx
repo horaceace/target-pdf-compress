@@ -1425,9 +1425,9 @@ export function UploadCard({
                         <p className="upload-job__summary">
                           {resultSummary(t, job.result.mode, job.result.reductionRatio)}
                         </p>
-                        {job.result.warning ? <p className="upload-job__warning">{job.result.warning}</p> : null}
+                        {job.result.warning ? <p className="upload-job__warning">{tc(job.result.warning.key, job.result.warning.params as Record<string, string | number>)}</p> : null}
                         {job.result.recommendation ? (
-                          <p className="upload-job__recommendation">{job.result.recommendation}</p>
+                          <p className="upload-job__recommendation">{tc(job.result.recommendation.key, job.result.recommendation.params as Record<string, string | number>)}</p>
                         ) : null}
                         {selectedQualityHint ? (
                           <div

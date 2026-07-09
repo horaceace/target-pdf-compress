@@ -1,11 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+import { buildAlternates } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("PrivacyPage");
   return {
     title: t("seoTitle"),
-    description: t("seoDescription")
+    description: t("seoDescription"),
+    alternates: buildAlternates("/privacy"),
   };
 }
 

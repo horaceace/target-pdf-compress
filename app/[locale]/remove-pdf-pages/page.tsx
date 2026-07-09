@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
+import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RemovePdfPagesCard");
@@ -9,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/remove-pdf-pages" },
-    openGraph: { title, description, url: "https://filesmaller.space/remove-pdf-pages" },
-    twitter: { title, description }
+    alternates: buildAlternates("/remove-pdf-pages"),
+    openGraph: buildOpenGraph(title, description, "/remove-pdf-pages"),
+    twitter: buildTwitter(title, description),
   };
 }
 

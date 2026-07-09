@@ -1,0 +1,61 @@
+import type { SplitPageConfig } from "../../split-pages";
+
+const splitToolPages: Partial<SplitPageConfig>[] = [
+  {
+    slug: "split-pdf-online",
+    title: "Pisah PDF Online Gratis",
+    description: "Pisah PDF online di browser Anda. Ekstrak page ranges, create smaller PDF parts, and download them instantly.",
+    h1: "Pisah PDF Online",
+    subheading: "Break one PDF into smaller files by page range sebelum mengunggah, email, or dokumen sharing.",
+    targetLabel: "Pisah alur kerja: online PDF page ranges",
+    intro: "Gunakan halaman ini when you need to split a PDF online and export only the pages you actually need untuk formulir, lampirans, or follow-up kompresi.",
+    steps: ["Unggah satu PDF file", "Enter page ranges like 1-3, 5, 7-9", "Unduh setiap split PDF result"],
+    faq: [{"question": "Can I split a PDF online gratis?", "answer": "Yes. This tool lets you upload one PDF in the browser, define page ranges, and export smaller PDF files without a paid plan."}, {"question": "What is this split PDF page best for?", "answer": "It is best for extracting just the pages you need sebelum mengirim, uploading, or kompresing a smaller dokumen."}, {"question": "Can I split one page or multiple ranges?", "answer": "Yes. You can split a single page like 6 or multiple ranges like 1-3, 5, 7-9."}, {"question": "Does this run in the browser?", "answer": "Yes. The first version is berbasis browser and does not depend on a server-side split queue."}],
+  },
+  {
+    slug: "extract-pdf-pages",
+    title: "Ekstrak Halaman PDF Online",
+    description: "Ekstrak PDF pages online by page range and download smaller PDF files untuk formulir, signatures, and supporting dokumen.",
+    h1: "Ekstrak Halaman PDF",
+    subheading: "Pull out only the pages you need from a larger PDF sebelum mengirim or uploading the file.",
+    targetLabel: "Pisah alur kerja: extract selected pages",
+    intro: "This page is for users who need to extract only specific pages from a larger PDF, such as signature pages, certificates, forms, or selected report sections.",
+    steps: ["Unggah the full PDF", "Enter the page or page ranges you want to extract", "Unduh hasil yang lebih kecil PDF parts"],
+    faq: [{"question": "How do I extract pages from a PDF?", "answer": "Unggah the file, enter the page numbers or ranges you want to keep, and export smaller PDF files for those pages."}, {"question": "Can I extract a signature page only?", "answer": "Yes. This is one of the most common kasus penggunaans for page-range splitting."}, {"question": "Can I extract multiple ranges at once?", "answer": "Yes. Use a format like 1-2, 5, 8-10 to create multiple split outputs from one PDF."}, {"question": "Why extract pages before kompresi?", "answer": "A smaller page set is often easier to upload and may need less follow-up kompresi."}],
+  },
+  {
+    slug: "split-pdf-for-upload",
+    title: "Pisah PDF for Unggah",
+    description: "Pisah PDF untuk unggahan by extracting only the required pages sebelum mengirim files to forms, portals, and dokumen systems.",
+    h1: "Pisah PDF for Unggah",
+    subheading: "Create smaller upload-ready PDF parts by splitting out just the pages required by the form or portal.",
+    targetLabel: "Pisah alur kerja: upload-ready page groups",
+    intro: "Gunakan halaman ini when a portal asks for only part of a dokumen, or when uploading a smaller extracted section is easier than sending the full PDF.",
+    steps: ["Unggah the original PDF", "Choose the exact pages required for the upload", "Unduh hasil yang lebih kecil split file and submit it"],
+    faq: [{"question": "Why split a PDF sebelum mengunggah?", "answer": "Many systems only need a few pages. Ekstraking those pages creates a smaller file and avoids uploading unnecessary content."}, {"question": "Is this useful for job portals and forms?", "answer": "Yes. It is useful for lamaran pekerjaans, visa forms, claims, and dokumen portals that request only part of a larger file."}, {"question": "Should I split first or kompres first?", "answer": "If you only need part of the dokumen, split first. Then kompres the smaller result if ukuran file is still a problem."}, {"question": "Can I export multiple upload-ready parts?", "answer": "Yes. Enter multiple ranges to generate several separate PDFs from one source file."}],
+  },
+  {
+    slug: "split-pdf-by-page-ranges",
+    title: "Pisah PDF by Halaman Ranges",
+    description: "Pisah PDF by page ranges online. Use formats like 1-3, 5, 7-9 to export separate PDF files from one dokumen.",
+    h1: "Pisah PDF by Halaman Ranges",
+    subheading: "Define exact page ranges and turn one PDF into multiple smaller PDF files in the browser.",
+    targetLabel: "Pisah alur kerja: exact page-range exports",
+    intro: "This page is for users who want precise control over how a PDF is split, especially when exporting multiple sections from one larger dokumen.",
+    steps: ["Unggah PDF file", "Enter page ranges like 1-3, 5, 7-9", "Unduh a separate PDF for each range"],
+    faq: [{"question": "What page range formats can I use?", "answer": "The first version supports single pages like 6 and ranges like 3-5, plus multiple ranges separated by commas."}, {"question": "Can I create several split files from one PDF?", "answer": "Yes. Each valid page range becomes its own exported PDF file."}, {"question": "Does this work for PDF besar pindaians too?", "answer": "It can split them, but very PDF besar pindaians may still be heavy and may need kompresi after splitting."}, {"question": "What if my range is invalid?", "answer": "The tool shows a specific error so you can fix the page numbers before exporting."}],
+  },
+  {
+    slug: "split-large-pdf",
+    title: "Pisah Large PDF Online",
+    description: "Pisah PDF besar files online by extracting smaller sections sebelum mengunggah, email, or follow-up kompresi.",
+    h1: "Pisah Large PDF",
+    subheading: "Break one PDF besar into smaller parts when the original file is too heavy to send or upload comfortably.",
+    targetLabel: "Pisah alur kerja: large dokumen into smaller parts",
+    intro: "Gunakan halaman ini when one PDF feels too large to work with and you need to break it into smaller sections sebelum mengirim, submitting, or kompresing each part.",
+    steps: ["Unggah the PDF besar", "Select the smaller page groups you want to create", "Unduh setiap split file for the next step"],
+    faq: [{"question": "Why split a PDF besar?", "answer": "Pisahting a PDF besar can make the dokumen easier to upload, easier to send, and easier to kompres in smaller parts."}, {"question": "Should I kompres or split first?", "answer": "If you only need part of the PDF, split first. If you need the whole dokumen, kompresi may be the better first step."}, {"question": "Can I split a PDF besar pindaian?", "answer": "Yes. Pisahting first is often a good way to reduce the scope of a large scanned file before trying kompresi."}, {"question": "Can this create several smaller PDFs from one big file?", "answer": "Yes. Each page range becomes its own output file."}],
+  },
+];
+
+export default { splitToolPages };

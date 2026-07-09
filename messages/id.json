@@ -379,7 +379,8 @@
     "warnings": {
       "didNotShrink": "PDF ini tidak banyak mengecil di browser. File berbasis gambar mungkin memerlukan kompresor sisi server yang lebih kuat.",
       "scannedHeavyNotScanned": "File ini lebih mirip pindaian daripada PDF teks. Mode standar mungkin tidak cukup mengecilkannya.",
-      "aggressiveQuality": "Kompresi sisi browser yang agresif dapat mengurangi kualitas visual pada PDF berbasis gambar."
+      "aggressiveQuality": "Kompresi sisi browser yang agresif dapat mengurangi kualitas visual pada PDF berbasis gambar.",
+      "scannedModeSkipped": "Mode PDF Pindaian dilewati karena file ini lebih mirip {profileLabel}. FileSmaller menggunakan {effectiveModeLabel} sebagai gantinya."
     },
     "recommendations": {
       "tryScannedForImageHeavy": "PDF ini terlihat berbasis gambar. Coba mode PDF Pindaian untuk jalur pengurangan sisi browser yang lebih kuat.",
