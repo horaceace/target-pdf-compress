@@ -236,6 +236,111 @@ export const splitToolPages: SplitPageConfig[] = [
       "split-pdf-by-page-ranges",
       "extract-pdf-pages"
     ]
+  },
+  {
+    slug: "merge-pdf-for-forms",
+    title: "Merge PDF for Forms Online",
+    description:
+      "Merge PDF for forms by combining application pages, signed documents, and supporting files into one submission-ready PDF.",
+    h1: "Merge PDF for Forms",
+    subheading:
+      "Combine separate PDF pages into one form-ready document before submitting to portals and systems.",
+    targetLabel: "Merge workflow: form submission PDF",
+    intro:
+      "Use this page when you need to combine several PDF form pages or supporting documents into one file for a single form submission.",
+    steps: [
+      "Upload the PDF pages or documents for the form",
+      "Arrange them in submission order",
+      "Download the merged form-ready PDF"
+    ],
+    faq: [
+      {
+        question: "Can I merge PDF forms with supporting documents?",
+        answer:
+          "Yes. Combine filled forms, signed pages, and supporting documents into one submission PDF."
+      },
+      {
+        question: "Will form fields still work after merging?",
+        answer:
+          "Browser-based merging keeps the visual pages but may not preserve interactive form fields."
+      },
+      {
+        question: "Should I merge or compress first for forms?",
+        answer:
+          "Merge first to get the complete document, then compress if the file is too large for the form upload limit."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "merge-pdf-for-upload", "combine-pdf-files", "merge-multiple-pdf-into-one"]
+  },
+  {
+    slug: "merge-pdf-documents-online",
+    title: "Merge PDF Documents Online",
+    description:
+      "Merge PDF documents online by combining reports, contracts, invoices, and official files into one organized PDF.",
+    h1: "Merge PDF Documents",
+    subheading:
+      "Combine business and official PDF documents into one organized file for sharing or archiving.",
+    targetLabel: "Merge workflow: document bundling",
+    intro:
+      "Use this page when you need to bundle several official PDF documents into one organized file for clients, archives, or submissions.",
+    steps: [
+      "Upload the PDF documents you want to bundle",
+      "Arrange them into a logical document order",
+      "Download the bundled PDF"
+    ],
+    faq: [
+      {
+        question: "Can I merge business documents into one PDF?",
+        answer:
+          "Yes. Contracts, reports, invoices, and other official documents can all be merged into one file."
+      },
+      {
+        question: "Will page numbering stay consistent?",
+        answer:
+          "Pages keep their original content. Use the Page Numbers tool afterward if you need continuous page numbering across the merged document."
+      },
+      {
+        question: "Is this good for client document packages?",
+        answer:
+          "Yes. Merging documents into one PDF makes client handoffs cleaner and easier to track."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "pdf-combiner", "merge-pdf-for-email"]
+  },
+  {
+    slug: "merge-scanned-pdf",
+    title: "Merge Scanned PDF Files Online",
+    description:
+      "Merge scanned PDF files online by combining scanned pages, receipts, certificates, and image-based documents into one PDF.",
+    h1: "Merge Scanned PDF",
+    subheading:
+      "Combine scanned pages and image-based PDFs into one document for uploads, forms, and sharing.",
+    targetLabel: "Merge workflow: scanned document combining",
+    intro:
+      "Use this page when your PDFs are scanned or image-based and you need to merge them into one file before uploading or sharing.",
+    steps: [
+      "Upload the scanned PDF files",
+      "Set the merge order for the scanned pages",
+      "Download the merged scan"
+    ],
+    faq: [
+      {
+        question: "Can I merge scanned PDFs?",
+        answer:
+          "Yes. Scanned and image-based PDFs merge the same way as text PDFs in the browser."
+      },
+      {
+        question: "Will merging scanned PDFs make the file very large?",
+        answer:
+          "It can. Scanned files are image-heavy. Use Compress PDF after merging if the combined file is too large."
+      },
+      {
+        question: "Should I compress scanned PDFs before or after merging?",
+        answer:
+          "Usually after. Merge first to get the complete scanned document, then compress the combined result."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "compress-scanned-pdf", "merge-pdf-for-upload"]
   }
 ];
 

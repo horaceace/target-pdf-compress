@@ -15,7 +15,11 @@ export async function SiteShell({ children }: { children: ReactNode }) {
     { href: "/remove-pdf-pages", label: t("toolRemovePages") },
     { href: "/reorder-pdf-pages", label: t("toolReorderPages") },
     { href: "/pdf-to-jpg", label: t("toolPdfToJpg") },
-    { href: "/jpg-to-pdf", label: t("toolJpgToPdf") }
+    { href: "/jpg-to-pdf", label: t("toolJpgToPdf") },
+    { href: "/watermark-pdf", label: t("toolWatermarkPdf") },
+    { href: "/page-numbers-pdf", label: t("toolPageNumbersPdf") },
+    { href: "/unlock-pdf", label: t("toolUnlockPdf") },
+    { href: "/protect-pdf", label: t("toolProtectPdf") }
   ];
 
   const footerGroups = [
@@ -29,7 +33,11 @@ export async function SiteShell({ children }: { children: ReactNode }) {
         { href: "/remove-pdf-pages", label: t("toolRemovePdfPages") },
         { href: "/reorder-pdf-pages", label: t("toolReorderPages") },
         { href: "/pdf-to-jpg", label: t("toolPdfToJpg") },
-        { href: "/jpg-to-pdf", label: t("toolJpgToPdf") }
+        { href: "/jpg-to-pdf", label: t("toolJpgToPdf") },
+        { href: "/watermark-pdf", label: t("toolWatermarkPdf") },
+        { href: "/page-numbers-pdf", label: t("toolPageNumbersPdf") },
+        { href: "/unlock-pdf", label: t("toolUnlockPdf") },
+        { href: "/protect-pdf", label: t("toolProtectPdf") }
       ]
     },
     {

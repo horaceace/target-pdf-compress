@@ -6,7 +6,11 @@ export type ToolPageConfig = {
     | "jpg-to-pdf"
     | "rotate-pdf"
     | "remove-pdf-pages"
-    | "reorder-pdf-pages";
+    | "reorder-pdf-pages"
+    | "watermark-pdf"
+    | "page-numbers-pdf"
+    | "unlock-pdf"
+    | "protect-pdf";
   slug: string;
   title: string;
   description: string;
@@ -38,6 +42,16 @@ export const homepage = {
     "compress-resume-pdf",
     "compress-pdf-for-email",
     "compress-scanned-pdf",
+    "merge-pdf-online",
+    "combine-pdf-files",
+    "pdf-joiner",
+    "pdf-combiner",
+    "watermark-pdf",
+    "add-watermark-to-pdf",
+    "add-text-to-pdf",
+    "protect-pdf",
+    "password-protect-pdf",
+    "add-password-to-pdf",
     "compress-pdf-without-losing-readability",
     "compress-pdf-without-losing-quality",
     "reduce-pdf-size-for-job-application",
@@ -2175,6 +2189,835 @@ export const toolPages: ToolPageConfig[] = [
       }
     ],
     relatedSlugs: ["reorder-pdf-pages-online", "rearrange-pdf-pages", "compress-pdf-for-upload"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "merge-pdf-online",
+    title: "Merge PDF Online Free",
+    description:
+      "Merge PDF online free in your browser. Combine multiple PDF files into one document and download the merged result instantly.",
+    h1: "Merge PDF Online",
+    subheading:
+      "Combine PDF files online for free before sending, uploading, or sharing a single merged document.",
+    targetLabel: "Merge workflow: online PDF combiner",
+    intro:
+      "Use this page when you need to merge PDF files online and export one combined document for forms, applications, or attachments.",
+    steps: [
+      "Upload two or more PDF files",
+      "Arrange them into the order you want",
+      "Download the merged PDF"
+    ],
+    faq: [
+      {
+        question: "Can I merge PDF online for free?",
+        answer:
+          "Yes. This tool lets you combine multiple PDF files in the browser and download a single merged document without a paid plan."
+      },
+      {
+        question: "How many PDFs can I merge at once?",
+        answer:
+          "You can merge as many PDFs as your browser can handle comfortably in one session."
+      },
+      {
+        question: "Will the merged PDF keep the original page order?",
+        answer:
+          "Yes. You control the order of the uploaded files before merging, so the final PDF reflects the sequence you choose."
+      },
+      {
+        question: "Can I compress the merged PDF afterward?",
+        answer:
+          "Yes. After merging, you can use Compress PDF if the combined file is too large."
+      }
+    ],
+    relatedSlugs: ["combine-pdf-files", "pdf-joiner", "pdf-combiner", "merge-two-pdf"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "combine-pdf-files",
+    title: "Combine PDF Files Online Free",
+    description:
+      "Combine PDF files online free. Merge multiple documents, reports, or forms into one PDF before sending or uploading.",
+    h1: "Combine PDF Files",
+    subheading:
+      "Join several PDF files into one document for easier sharing, archiving, and submission.",
+    targetLabel: "Merge workflow: combine multiple files",
+    intro:
+      "Use this page when you have several separate PDF files that need to become one document for a portal, email, or application package.",
+    steps: [
+      "Upload all the PDF files you want to combine",
+      "Set the page order for the combined result",
+      "Download one merged PDF"
+    ],
+    faq: [
+      {
+        question: "How do I combine PDF files into one?",
+        answer:
+          "Upload the files, arrange them in the order you want, and download the single combined PDF."
+      },
+      {
+        question: "Can I combine scanned PDFs with regular PDFs?",
+        answer:
+          "Yes. The tool merges all uploaded PDFs regardless of whether they are text or scan-based."
+      },
+      {
+        question: "Is there a file size limit for combining?",
+        answer:
+          "The browser may slow down with very large files, but there is no hard limit in the tool itself."
+      },
+      {
+        question: "Should I compress before or after combining?",
+        answer:
+          "Usually after. Combine first so you know the final page count, then compress if the merged file is too large."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "pdf-combiner", "combine-multiple-pdf", "merge-pdf-for-upload"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "merge-pdf-for-upload",
+    title: "Merge PDF for Upload",
+    description:
+      "Merge PDF for upload by combining multiple documents into one upload-ready PDF before submitting to forms, portals, and systems.",
+    h1: "Merge PDF for Upload",
+    subheading:
+      "Turn several PDFs into one upload-ready file for portals that accept only a single document.",
+    targetLabel: "Merge workflow: upload-ready combined PDF",
+    intro:
+      "Use this page when a form, portal, or application system asks for one PDF file and your documents are currently spread across several separate files.",
+    steps: [
+      "Upload the documents required for the submission",
+      "Arrange them in the order the portal expects",
+      "Download one merged PDF and upload it"
+    ],
+    faq: [
+      {
+        question: "Why merge PDFs for upload?",
+        answer:
+          "Many portals and form systems only accept one PDF. Merging lets you submit a complete document package as a single file."
+      },
+      {
+        question: "Is this useful for job applications?",
+        answer:
+          "Yes. You can merge your resume, cover letter, and certificates into one upload-ready PDF."
+      },
+      {
+        question: "Can I merge and compress in one step?",
+        answer:
+          "Not in the current version. Merge first, then compress the result if the file is too large for the upload limit."
+      },
+      {
+        question: "What if I need to split the merged file later?",
+        answer:
+          "You can use the Split PDF tool to extract specific pages from the merged document."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "merge-multiple-pdf-into-one", "compress-pdf-for-upload"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "merge-pdf-for-email",
+    title: "Merge PDF for Email",
+    description:
+      "Merge PDF for email by combining multiple attachments into one PDF before sending documents, reports, or forms.",
+    h1: "Merge PDF for Email",
+    subheading:
+      "Combine several PDFs into one attachment so recipients get a single file instead of many.",
+    targetLabel: "Merge workflow: email-ready combined PDF",
+    intro:
+      "Use this page when you need to email multiple PDFs as one attachment instead of sending several separate files.",
+    steps: [
+      "Upload the PDFs you want to send together",
+      "Arrange them into a logical order",
+      "Download one merged PDF and attach it to your email"
+    ],
+    faq: [
+      {
+        question: "Why merge PDFs before emailing?",
+        answer:
+          "One merged attachment is easier for recipients to open and review than several separate files."
+      },
+      {
+        question: "Can I merge and shrink the file for email?",
+        answer:
+          "Yes. Merge first, then use Compress PDF if the combined file is too large for email attachment limits."
+      },
+      {
+        question: "Is this useful for invoices and reports?",
+        answer:
+          "Yes. Combining multiple invoices or reports into one PDF makes email communication cleaner."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "merge-pdf-for-upload", "compress-pdf-for-email"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "merge-pdf-without-software",
+    title: "Merge PDF Without Software",
+    description:
+      "Merge PDF without installing software. Combine PDF files online in your browser without downloading desktop tools or apps.",
+    h1: "Merge PDF Without Software",
+    subheading:
+      "Combine PDF files in the browser without installing any desktop tools or apps.",
+    targetLabel: "Merge workflow: no-install browser combiner",
+    intro:
+      "Use this page when you need to merge PDFs quickly and do not want to install desktop PDF software just for one task.",
+    steps: [
+      "Upload your PDF files to the browser",
+      "Set the merge order",
+      "Download the combined PDF"
+    ],
+    faq: [
+      {
+        question: "Can I merge PDFs without installing anything?",
+        answer:
+          "Yes. This tool runs entirely in the browser, so no download or install is required."
+      },
+      {
+        question: "Is this as good as desktop PDF software?",
+        answer:
+          "For basic merging, yes. Desktop tools may offer more advanced features, but this browser tool covers the most common merge needs."
+      },
+      {
+        question: "Does this work on mobile?",
+        answer:
+          "Yes. The browser-based merge tool works on phones and tablets as well as desktop browsers."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "pdf-joiner", "merge-two-pdf"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "combine-multiple-pdf",
+    title: "Combine Multiple PDF Files Into One",
+    description:
+      "Combine multiple PDF files into one document online. Merge several reports, forms, or scanned files into a single PDF.",
+    h1: "Combine Multiple PDF Into One",
+    subheading:
+      "Join several separate PDF documents into one file for easier sharing and submission.",
+    targetLabel: "Merge workflow: many PDFs into one",
+    intro:
+      "Use this page when you have several PDFs from different sources and need to turn them into one complete document.",
+    steps: [
+      "Upload all the PDF files",
+      "Arrange them into the sequence you want",
+      "Download the combined result"
+    ],
+    faq: [
+      {
+        question: "Can I combine many PDFs into one file?",
+        answer:
+          "Yes. Upload all the PDFs you need, arrange the page order, and export one combined document."
+      },
+      {
+        question: "Will the formatting stay the same?",
+        answer:
+          "Yes. Each PDF keeps its original formatting inside the combined document."
+      },
+      {
+        question: "Can I combine PDFs of different page sizes?",
+        answer:
+          "Yes. Different page sizes within the combined PDF stay as they were in the original files."
+      }
+    ],
+    relatedSlugs: ["combine-pdf-files", "merge-pdf-online", "pdf-combiner", "merge-multiple-pdf-into-one"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "pdf-joiner",
+    title: "PDF Joiner Online Free",
+    description:
+      "Use a free PDF joiner online to connect PDF files into one document. Join multiple PDFs before uploading, sharing, or archiving.",
+    h1: "PDF Joiner",
+    subheading:
+      "Join PDF files together online to create one complete document from several parts.",
+    targetLabel: "Merge workflow: join PDF files",
+    intro:
+      "This page is for users who search for a PDF joiner to connect separate files into one document before sending, uploading, or storing.",
+    steps: [
+      "Upload the PDF files you want to join",
+      "Set the order for the joined result",
+      "Download the joined PDF"
+    ],
+    faq: [
+      {
+        question: "What is a PDF joiner?",
+        answer:
+          "A PDF joiner connects multiple PDF files into one document. It is the same action as merging or combining PDFs."
+      },
+      {
+        question: "Is this PDF joiner free?",
+        answer:
+          "Yes. This browser-based PDF joiner is free to use without a paid account."
+      },
+      {
+        question: "Can I join PDFs and then compress the result?",
+        answer:
+          "Yes. After joining, use Compress PDF if the combined file needs to be smaller."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "pdf-combiner", "combine-pdf-files", "merge-two-pdf"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "pdf-combiner",
+    title: "PDF Combiner Online Free",
+    description:
+      "Use a free PDF combiner online to merge PDF documents into one file. Combine reports, forms, and scans before sharing.",
+    h1: "PDF Combiner",
+    subheading:
+      "Combine separate PDF documents into one complete file for uploads, sharing, and archiving.",
+    targetLabel: "Merge workflow: PDF combiner tool",
+    intro:
+      "This page is for users who search for a PDF combiner when they need to merge multiple documents into one file.",
+    steps: [
+      "Upload the PDFs you want to combine",
+      "Arrange the order of documents",
+      "Download the combined PDF"
+    ],
+    faq: [
+      {
+        question: "What is a PDF combiner?",
+        answer:
+          "A PDF combiner is a tool that merges several PDF files into one document. It is the same action as a PDF joiner or merge tool."
+      },
+      {
+        question: "Is this PDF combiner free to use?",
+        answer:
+          "Yes. This browser-based PDF combiner is free and runs without a paid plan."
+      },
+      {
+        question: "Can I combine PDFs of different types?",
+        answer:
+          "Yes. You can combine scanned PDFs, text PDFs, forms, and reports all in one merged document."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "pdf-joiner", "combine-pdf-files", "combine-multiple-pdf"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "merge-two-pdf",
+    title: "Merge Two PDF Files Online",
+    description:
+      "Merge two PDF files into one online. Combine a pair of documents, forms, or scanned pages into a single PDF.",
+    h1: "Merge Two PDF",
+    subheading:
+      "Combine exactly two PDF files into one document for forms, applications, or document pairs.",
+    targetLabel: "Merge workflow: two PDFs into one",
+    intro:
+      "Use this page when you only need to merge two PDF files into one document, such as a form and a supporting document.",
+    steps: [
+      "Upload the two PDF files",
+      "Choose which file comes first",
+      "Download the merged two-page-set PDF"
+    ],
+    faq: [
+      {
+        question: "Can I merge exactly two PDFs?",
+        answer:
+          "Yes. This page is focused on the simple case of merging two PDF files into one."
+      },
+      {
+        question: "Can I merge more than two PDFs?",
+        answer:
+          "Yes. The main Merge PDF tool supports any number of files. This page is focused on the two-file use case."
+      },
+      {
+        question: "Is this useful for form-plus-attachment workflows?",
+        answer:
+          "Yes. Merging a form with its supporting document is one of the most common two-PDF use cases."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "pdf-joiner", "merge-multiple-pdf-into-one"]
+  },
+  {
+    tool: "merge-pdf",
+    slug: "merge-multiple-pdf-into-one",
+    title: "Merge Multiple PDF Into One",
+    description:
+      "Merge multiple PDF files into one document online. Combine several reports, scanned pages, or forms into a single PDF file.",
+    h1: "Merge Multiple PDF Into One",
+    subheading:
+      "Turn several separate PDFs into one combined file for easier submission and sharing.",
+    targetLabel: "Merge workflow: multiple files into one PDF",
+    intro:
+      "Use this page when you have more than two PDFs that need to become one document for a portal, application, or email attachment.",
+    steps: [
+      "Upload all the PDFs you need to merge",
+      "Arrange them in the right sequence",
+      "Download one merged PDF"
+    ],
+    faq: [
+      {
+        question: "How many PDFs can I merge into one?",
+        answer:
+          "There is no hard limit. Upload as many as your browser can handle in one session."
+      },
+      {
+        question: "Will the merged PDF be too large?",
+        answer:
+          "It can be. If the combined file is too large, compress it afterward using the Compress PDF tool."
+      },
+      {
+        question: "Can I reorder pages after merging?",
+        answer:
+          "Yes. Use the Reorder PDF Pages tool if you need to adjust the page sequence after merging."
+      }
+    ],
+    relatedSlugs: ["merge-pdf-online", "combine-multiple-pdf", "combine-pdf-files", "merge-pdf-for-upload"]
+  },
+  {
+    tool: "watermark-pdf",
+    slug: "watermark-pdf",
+    title: "Add Watermark to PDF Online Free",
+    description:
+      "Add watermark to PDF online free. Stamp text or image watermarks on PDF pages for branding, confidentiality, and document protection.",
+    h1: "Watermark PDF",
+    subheading:
+      "Add text or image watermarks to PDF pages for branding, copyright, confidentiality, and document sharing.",
+    targetLabel: "Watermark workflow: add text or image to PDF",
+    intro:
+      "Use this page to add a watermark to your PDF before sharing, uploading, or distributing documents. Add text like CONFIDENTIAL or DRAFT, or overlay a logo image.",
+    steps: [
+      "Upload your PDF file",
+      "Choose text watermark or upload a logo image",
+      "Adjust placement, opacity, and size",
+      "Download the watermarked PDF"
+    ],
+    faq: [
+      {
+        question: "Can I add a watermark to a PDF online for free?",
+        answer:
+          "Yes. Upload your PDF, type your watermark text or upload a logo image, and download the watermarked PDF — all in your browser."
+      },
+      {
+        question: "What kind of watermarks can I add?",
+        answer:
+          "You can add diagonal text watermarks like CONFIDENTIAL or DRAFT with adjustable size and opacity, or overlay a logo or image as a center watermark."
+      },
+      {
+        question: "Will the watermark appear on every page?",
+        answer:
+          "Yes. The text or image watermark is applied to all pages of the PDF."
+      },
+      {
+        question: "Can I adjust the watermark opacity?",
+        answer:
+          "Yes. You can control how visible the watermark is by adjusting the opacity slider."
+      }
+    ],
+    relatedSlugs: ["add-watermark-to-pdf", "add-text-to-pdf", "compress-pdf-for-upload"]
+  },
+  {
+    tool: "watermark-pdf",
+    slug: "add-watermark-to-pdf",
+    title: "Add Watermark to PDF Online",
+    description:
+      "Add watermark to PDF pages before sharing. Stamp CONFIDENTIAL, DRAFT, or a custom text on every page for document protection.",
+    h1: "Add Watermark to PDF",
+    subheading:
+      "Stamp a text or logo watermark across PDF pages before sharing, sending, or publishing documents online.",
+    targetLabel: "Watermark workflow: stamp PDF pages",
+    intro:
+      "Use this page when you need to mark a PDF as confidential, add a draft label, or stamp a company logo before distributing the document.",
+    steps: [
+      "Upload the PDF you want to watermark",
+      "Enter your watermark text or upload a logo",
+      "Download the stamped PDF"
+    ],
+    faq: [
+      {
+        question: "Why add a watermark to a PDF?",
+        answer:
+          "Watermarks help mark documents as confidential, drafts, or for internal use. They also add branding and make unauthorized sharing easier to trace."
+      },
+      {
+        question: "Can I add a company logo as a watermark?",
+        answer:
+          "Yes. Upload a PNG or JPG logo and it will be overlaid as a semi-transparent watermark on every page."
+      },
+      {
+        question: "Is a watermark the same as password protection?",
+        answer:
+          "No. A watermark is a visible mark on the page, while password protection restricts who can open the file. Use both for stronger document security."
+      }
+    ],
+    relatedSlugs: ["watermark-pdf", "add-text-to-pdf", "merge-pdf-for-upload"]
+  },
+  {
+    tool: "watermark-pdf",
+    slug: "add-text-to-pdf",
+    title: "Add Text to PDF Online Free",
+    description:
+      "Add text to PDF pages online free. Overlay labels, stamps, or notes on PDF documents before sharing or uploading.",
+    h1: "Add Text to PDF",
+    subheading:
+      "Overlay text labels, stamps, or markers on PDF pages for review, identification, or document workflows.",
+    targetLabel: "Watermark workflow: add text overlay to PDF",
+    intro:
+      "Use this page when you need to add text labels like CONFIDENTIAL, DRAFT, FOR REVIEW, or custom text to your PDF pages before sharing.",
+    steps: [
+      "Upload your PDF",
+      "Type the text you want to overlay",
+      "Adjust size, opacity, rotation, and color",
+      "Download the PDF with text overlay"
+    ],
+    faq: [
+      {
+        question: "Can I add custom text to a PDF?",
+        answer:
+          "Yes. Type any text and it will appear as a diagonal watermark across every page. You can adjust the size, color, opacity, and angle."
+      },
+      {
+        question: "Is this good for marking drafts and reviews?",
+        answer:
+          "Yes. Adding DRAFT, FOR REVIEW, or similar labels is one of the most common text overlay use cases."
+      },
+      {
+        question: "Can I add text to specific pages only?",
+        answer:
+          "The current version applies text to all pages. For page-specific edits, use the page range tools."
+      }
+    ],
+    relatedSlugs: ["watermark-pdf", "add-watermark-to-pdf", "rotate-pdf-online"]
+  },
+  {
+    tool: "page-numbers-pdf",
+    slug: "add-page-numbers-to-pdf",
+    title: "Add Page Numbers to PDF Online Free",
+    description:
+      "Add page numbers to PDF online free. Number every page with adjustable position, font, starting number, and prefix — right in your browser.",
+    h1: "Add Page Numbers to PDF",
+    subheading:
+      "Number PDF pages online for reports, contracts, manuals, and any document that needs visible page numbering.",
+    targetLabel: "Page numbers workflow: add numbering to PDF",
+    intro:
+      "Use this page when you need to add page numbers to a PDF before printing, sharing, or submitting. Choose the position, starting number, font, and optional prefix.",
+    steps: [
+      "Upload your PDF file",
+      "Choose the page number position and style",
+      "Download the numbered PDF"
+    ],
+    faq: [
+      {
+        question: "Can I add page numbers to a PDF online for free?",
+        answer:
+          "Yes. Upload your PDF, choose your page number settings, and download the numbered PDF — all in your browser."
+      },
+      {
+        question: "Where can I place the page numbers?",
+        answer:
+          "You can place page numbers at the bottom or top of the page, aligned left, center, or right — six position options total."
+      },
+      {
+        question: "Can I start numbering from a specific number?",
+        answer:
+          "Yes. Set any starting number and optionally add a prefix like Page or Chapter before the number."
+      },
+      {
+        question: "What fonts are available?",
+        answer:
+          "Helvetica, Times Roman, and Courier — each with regular and bold variants. These standard fonts work on every device."
+      }
+    ],
+    relatedSlugs: ["number-pdf-pages", "add-page-number-to-pdf", "merge-pdf-online"]
+  },
+  {
+    tool: "page-numbers-pdf",
+    slug: "number-pdf-pages",
+    title: "Number PDF Pages Online",
+    description:
+      "Number PDF pages online with customizable position, font, and starting number. Add visible page numbers before printing or sharing.",
+    h1: "Number PDF Pages",
+    subheading:
+      "Add sequential page numbers to every page of your PDF for easier navigation and professional presentation.",
+    targetLabel: "Page numbers workflow: sequential numbering",
+    intro:
+      "Use this page when you need to number the pages of a PDF document for navigation, printing, or to make the document order clearer for recipients.",
+    steps: [
+      "Upload the PDF you want to number",
+      "Set the numbering style and start position",
+      "Download the numbered PDF"
+    ],
+    faq: [
+      {
+        question: "Why number PDF pages?",
+        answer:
+          "Page numbers make documents easier to navigate, reference, and print. They are essential for reports, manuals, contracts, and multi-page forms."
+      },
+      {
+        question: "Can I add Roman numerals or special formats?",
+        answer:
+          "The current version supports regular numbers with an optional text prefix. Roman numerals are not yet supported."
+      },
+      {
+        question: "Will existing page numbers be overwritten?",
+        answer:
+          "New page numbers are added on top of existing content. If your PDF already has page numbers, they may overlap."
+      }
+    ],
+    relatedSlugs: ["add-page-numbers-to-pdf", "add-page-number-to-pdf", "merge-pdf-documents-online"]
+  },
+  {
+    tool: "page-numbers-pdf",
+    slug: "add-page-number-to-pdf",
+    title: "Add Page Number to PDF Online",
+    description:
+      "Add page number to PDF documents online. Insert sequential numbers at the bottom or top of each page for reports and forms.",
+    h1: "Add Page Number to PDF",
+    subheading:
+      "Insert page numbers into your PDF so every page is clearly labeled for readers and reviewers.",
+    targetLabel: "Page numbers workflow: insert page numbers",
+    intro:
+      "Use this page when you need a quick way to add page numbers to a PDF before sending it to a client, employer, or reviewer.",
+    steps: [
+      "Upload your PDF",
+      "Pick the number position and starting value",
+      "Download the PDF with page numbers"
+    ],
+    faq: [
+      {
+        question: "Can I add page numbers without installing software?",
+        answer:
+          "Yes. This tool runs entirely in the browser — no download or install required."
+      },
+      {
+        question: "Is this good for legal and business documents?",
+        answer:
+          "Yes. Page numbers are important for contracts, proposals, and any document where pages need to be referenced by number."
+      },
+      {
+        question: "Can I add page numbers to a scanned PDF?",
+        answer:
+          "Yes. The page numbers are drawn on each page regardless of whether the content is text or scanned images."
+      }
+    ],
+    relatedSlugs: ["add-page-numbers-to-pdf", "number-pdf-pages", "watermark-pdf"]
+  },
+  {
+    tool: "unlock-pdf",
+    slug: "unlock-pdf",
+    title: "Unlock PDF Online Free",
+    description:
+      "Unlock PDF online free. Remove password protection and download an unrestricted copy of your PDF — all in your browser.",
+    h1: "Unlock PDF",
+    subheading:
+      "Remove password restrictions from PDF files so you can open, edit, merge, or compress them freely.",
+    targetLabel: "Unlock workflow: remove PDF restrictions",
+    intro:
+      "Use this page when you have a password-protected PDF that you need to edit, merge, compress, or share without restrictions.",
+    steps: [
+      "Upload the protected PDF file",
+      "Click unlock to remove restrictions",
+      "Download the unlocked PDF"
+    ],
+    faq: [
+      {
+        question: "Can I unlock a PDF online for free?",
+        answer:
+          "Yes. Upload a PDF with owner-level restrictions and download an unlocked copy — all in your browser with no paid plan."
+      },
+      {
+        question: "Does this work for all password-protected PDFs?",
+        answer:
+          "It works for PDFs with owner passwords that restrict editing, printing, or copying. PDFs with a user/open password that you do not know cannot be unlocked."
+      },
+      {
+        question: "Is unlocking a PDF legal?",
+        answer:
+          "Unlocking a PDF you own or have permission to modify is generally fine. Do not unlock documents you do not have rights to."
+      },
+      {
+        question: "Can I compress or merge the unlocked PDF afterward?",
+        answer:
+          "Yes. Once unlocked, the PDF can be compressed, merged, split, or processed by any other tool on this site."
+      }
+    ],
+    relatedSlugs: ["remove-pdf-password", "unlock-pdf-for-editing", "compress-pdf-online"]
+  },
+  {
+    tool: "unlock-pdf",
+    slug: "remove-pdf-password",
+    title: "Remove PDF Password Online",
+    description:
+      "Remove PDF password online free. Delete owner-level password restrictions so you can edit, print, and share your PDF without limits.",
+    h1: "Remove PDF Password",
+    subheading:
+      "Delete password restrictions from your PDF so you can edit, merge, compress, and share it without limits.",
+    targetLabel: "Unlock workflow: remove password",
+    intro:
+      "Use this page when a PDF has an owner password that prevents editing, printing, or copying and you want to remove those restrictions.",
+    steps: [
+      "Upload the password-protected PDF",
+      "Remove the restrictions in one click",
+      "Download the unrestricted PDF"
+    ],
+    faq: [
+      {
+        question: "How do I remove a password from a PDF?",
+        answer:
+          "Upload the protected PDF and the tool removes owner-level restrictions. Download the resulting copy which no longer has those limits."
+      },
+      {
+        question: "What is the difference between owner and user passwords?",
+        answer:
+          "An owner password restricts editing/printing/copying. A user password prevents opening the file entirely. This tool handles owner-level restrictions."
+      },
+      {
+        question: "Can I remove a PDF password I forgot?",
+        answer:
+          "If it is an owner password and you can still open the file, this tool may help. If it is a user/open password and you cannot open the file at all, this tool cannot help."
+      }
+    ],
+    relatedSlugs: ["unlock-pdf", "unlock-pdf-for-editing", "merge-pdf-online"]
+  },
+  {
+    tool: "unlock-pdf",
+    slug: "unlock-pdf-for-editing",
+    title: "Unlock PDF for Editing Online",
+    description:
+      "Unlock PDF for editing online free. Remove restrictions so you can edit, merge, annotate, or compress a protected PDF file.",
+    h1: "Unlock PDF for Editing",
+    subheading:
+      "Remove PDF restrictions that block editing, merging, or compressing so you can work with the document freely.",
+    targetLabel: "Unlock workflow: enable editing",
+    intro:
+      "Use this page when a PDF is locked against editing and you need to merge, compress, annotate, or otherwise modify the document.",
+    steps: [
+      "Upload the restricted PDF",
+      "Remove the editing restrictions",
+      "Download the editable PDF"
+    ],
+    faq: [
+      {
+        question: "Why is my PDF locked for editing?",
+        answer:
+          "The document author may have set an owner password to restrict editing, printing, or copying. This tool removes those owner-level restrictions."
+      },
+      {
+        question: "Can I edit the PDF after unlocking?",
+        answer:
+          "Yes. Once unlocked, you can edit, merge, compress, or annotate the PDF using any PDF tool."
+      },
+      {
+        question: "Does this work with Adobe LiveCycle or certificate-based restrictions?",
+        answer:
+          "The browser-based tool works best with standard owner password protection. Certificate or DRM-based restrictions may need different tools."
+      }
+    ],
+    relatedSlugs: ["unlock-pdf", "remove-pdf-password", "compress-pdf-online"]
+  },
+  {
+    tool: "protect-pdf",
+    slug: "protect-pdf",
+    title: "Protect PDF with Password Online Free — FileSmaller",
+    description:
+      "Protect PDF with password online free. Add password protection to PDF files for secure sharing and download an encrypted copy — all in your browser.",
+    h1: "Protect PDF with Password",
+    subheading:
+      "Add password protection to PDF files so only people with the password can open them — all in your browser.",
+    targetLabel: "Password protect PDF",
+    intro:
+      "Upload a PDF, set a password, and download a password-protected copy. Your file stays on your device — no upload to any server. Use RC4 128-bit encryption compatible with all major PDF readers.",
+    steps: [
+      "Drop your PDF file into the upload area above.",
+      "Enter a password and confirm it.",
+      "Click Protect PDF and download the password-protected copy."
+    ],
+    faq: [
+      {
+        question: "What happens when I protect a PDF with a password?",
+        answer:
+          "The PDF is encrypted with a password. Anyone who tries to open it will be prompted to enter the password. Without the password, the file cannot be read."
+      },
+      {
+        question: "How strong is the password protection?",
+        answer:
+          "The tool uses RC4 128-bit encryption, which is compatible with all major PDF readers including Adobe Acrobat, Preview, and browser-based PDF viewers."
+      },
+      {
+        question: "Can I remove the password later?",
+        answer:
+          "Yes. If you know the password, you can use our Unlock PDF tool to remove the password protection and restore an unrestricted copy."
+      },
+      {
+        question: "Are uploaded PDFs sent to any server?",
+        answer:
+          "No. Everything happens in your browser. Your PDF never leaves your device and is never uploaded anywhere."
+      }
+    ],
+    relatedSlugs: ["unlock-pdf", "watermark-pdf", "compress-pdf-online"]
+  },
+  {
+    tool: "protect-pdf",
+    slug: "password-protect-pdf",
+    title: "Password Protect PDF Online Free — FileSmaller",
+    description:
+      "Password protect PDF online free. Add a password to your PDF files so only authorized people can open them — all in your browser with no install.",
+    h1: "Password Protect PDF",
+    subheading:
+      "Add a password to your PDF so only people who know the password can open and read the file.",
+    targetLabel: "Password protect PDF",
+    intro:
+      "Upload a PDF, set a strong password, and download a password-protected copy. Perfect for sensitive documents, contracts, and personal files you need to share securely.",
+    steps: [
+      "Drop your PDF file into the upload area.",
+      "Create and confirm a strong password.",
+      "Download your password-protected PDF ready for secure sharing."
+    ],
+    faq: [
+      {
+        question: "How do I password protect a PDF?",
+        answer:
+          "Upload your PDF, enter a password, type it again to confirm, and click Protect PDF. Download the encrypted copy that requires the password to open."
+      },
+      {
+        question: "Can the password be removed from a protected PDF?",
+        answer:
+          "Not without knowing the password. If you know the password, you can use our Unlock PDF tool to remove it and restore an unprotected copy."
+      },
+      {
+        question: "Are my files safe during password protection?",
+        answer:
+          "Yes. The entire process runs in your browser. Your PDF is never uploaded to any server, and the password is used locally to encrypt the file."
+      }
+    ],
+    relatedSlugs: ["protect-pdf", "add-password-to-pdf", "unlock-pdf"]
+  },
+  {
+    tool: "protect-pdf",
+    slug: "add-password-to-pdf",
+    title: "Add Password to PDF Online Free — FileSmaller",
+    description:
+      "Add password to PDF online free. Secure your PDF documents with password protection for safe sharing via email or cloud — all in your browser.",
+    h1: "Add Password to PDF",
+    subheading:
+      "Secure a PDF by adding a password that must be entered before anyone can open or view the file.",
+    targetLabel: "Add password to PDF",
+    intro:
+      "Upload your PDF, create a password, and download the secured copy. It works entirely in your browser — your document never leaves your device.",
+    steps: [
+      "Drop your PDF into the upload area.",
+      "Create a password and confirm it.",
+      "Download your password-secured PDF."
+    ],
+    faq: [
+      {
+        question: "How do I add a password to a PDF for free?",
+        answer:
+          "Upload your PDF to this page, enter your desired password, confirm it, and download the protected file. No account, no install, no upload to any server."
+      },
+      {
+        question: "What kind of password should I use?",
+        answer:
+          "Use a mix of letters, numbers, and symbols. Avoid common words. Make it long enough that others can't guess it but easy enough that the intended recipient can remember it."
+      },
+      {
+        question: "Does this work on mobile?",
+        answer:
+          "Yes. The tool works on any device with a modern browser — desktop, tablet, or phone. Your files are processed locally on your device."
+      }
+    ],
+    relatedSlugs: ["protect-pdf", "password-protect-pdf", "unlock-pdf"]
   }
 ];
 

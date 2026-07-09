@@ -9,6 +9,10 @@ import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
 import { ReorderPdfCard } from "@/components/reorder-pdf-card";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { UploadCard } from "@/components/upload-card";
+import { WatermarkCard } from "@/components/watermark-card";
+import { PageNumbersCard } from "@/components/page-numbers-card";
+import { UnlockPdfCard } from "@/components/unlock-pdf-card";
+import { ProtectPdfCard } from "@/components/protect-pdf-card";
 
 export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
   const t = await getTranslations("ToolPageTemplate");
@@ -63,7 +67,11 @@ export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
     "jpg-to-pdf": t("scenarioJpgToPdf"),
     "rotate-pdf": t("scenarioRotate"),
     "remove-pdf-pages": t("scenarioRemove"),
-    "reorder-pdf-pages": t("scenarioReorder")
+    "reorder-pdf-pages": t("scenarioReorder"),
+    "watermark-pdf": t("scenarioWatermark"),
+    "page-numbers-pdf": t("scenarioPageNumbers"),
+    "unlock-pdf": t("scenarioUnlock"),
+    "protect-pdf": t("scenarioProtect")
   };
   const relatedTitleMap: Record<ToolPageConfig["tool"], string> = {
     "compress-pdf": t("relatedCompress"),
@@ -72,7 +80,11 @@ export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
     "jpg-to-pdf": t("relatedJpgToPdf"),
     "rotate-pdf": t("relatedRotate"),
     "remove-pdf-pages": t("relatedRemove"),
-    "reorder-pdf-pages": t("relatedReorder")
+    "reorder-pdf-pages": t("relatedReorder"),
+    "watermark-pdf": t("relatedWatermark"),
+    "page-numbers-pdf": t("relatedPageNumbers"),
+    "unlock-pdf": t("relatedUnlock"),
+    "protect-pdf": t("relatedProtect")
   };
 
   function renderToolCard() {
@@ -107,6 +119,22 @@ export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
 
     if (page.tool === "reorder-pdf-pages") {
       return <ReorderPdfCard />;
+    }
+
+    if (page.tool === "watermark-pdf") {
+      return <WatermarkCard />;
+    }
+
+    if (page.tool === "page-numbers-pdf") {
+      return <PageNumbersCard />;
+    }
+
+    if (page.tool === "unlock-pdf") {
+      return <UnlockPdfCard />;
+    }
+
+    if (page.tool === "protect-pdf") {
+      return <ProtectPdfCard />;
     }
 
     return <JpgToPdfCard />;

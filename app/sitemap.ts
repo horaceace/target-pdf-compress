@@ -24,7 +24,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Core pages (English + hi/id variants)
   const corePages = ["", "/privacy", "/compress-pdf", "/merge-pdf", "/split-pdf",
-    "/rotate-pdf", "/remove-pdf-pages", "/reorder-pdf-pages", "/pdf-to-jpg", "/jpg-to-pdf"];
+    "/rotate-pdf", "/remove-pdf-pages", "/reorder-pdf-pages", "/pdf-to-jpg", "/jpg-to-pdf",
+    "/watermark-pdf",
+    "/page-numbers-pdf",
+    "/unlock-pdf",
+    "/protect-pdf"];
 
   const corePriorities: Record<string, number> = {
     "": 1,
@@ -37,6 +41,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/reorder-pdf-pages": 0.85,
     "/pdf-to-jpg": 0.85,
     "/jpg-to-pdf": 0.85,
+    "/watermark-pdf": 0.85,
+    "/page-numbers-pdf": 0.85,
+    "/unlock-pdf": 0.85,
+    "/protect-pdf": 0.85,
   };
 
   const entries: MetadataRoute.Sitemap = [];

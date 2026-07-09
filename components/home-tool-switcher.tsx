@@ -10,6 +10,10 @@ import { ReorderPdfCard } from "@/components/reorder-pdf-card";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { UploadCard } from "@/components/upload-card";
+import { WatermarkCard } from "@/components/watermark-card";
+import { PageNumbersCard } from "@/components/page-numbers-card";
+import { UnlockPdfCard } from "@/components/unlock-pdf-card";
+import { ProtectPdfCard } from "@/components/protect-pdf-card";
 import { trackEvent } from "@/lib/analytics/events";
 import {
   FileDown,
@@ -19,7 +23,11 @@ import {
   Trash2,
   ArrowLeftRight,
   FileImage,
-  Images
+  Images,
+  Type,
+  Hash,
+  LockOpen,
+  Lock
 } from "lucide-react";
 
 type ToolKey =
@@ -30,7 +38,11 @@ type ToolKey =
   | "remove"
   | "reorder"
   | "pdf-to-jpg"
-  | "jpg-to-pdf";
+  | "jpg-to-pdf"
+  | "watermark"
+  | "page-numbers"
+  | "unlock"
+  | "protect";
 
 const toolIcons: Record<ToolKey, typeof FileDown> = {
   compress: FileDown,
@@ -40,7 +52,11 @@ const toolIcons: Record<ToolKey, typeof FileDown> = {
   remove: Trash2,
   reorder: ArrowLeftRight,
   "pdf-to-jpg": FileImage,
-  "jpg-to-pdf": Images
+  "jpg-to-pdf": Images,
+  watermark: Type,
+  "page-numbers": Hash,
+  unlock: LockOpen,
+  protect: Lock
 };
 
 export function HomeToolSwitcher() {
@@ -100,6 +116,30 @@ export function HomeToolSwitcher() {
       label: t("tabs.jpgToPdf.label"),
       title: t("tabs.jpgToPdf.title"),
       copy: t("tabs.jpgToPdf.copy")
+    },
+    {
+      key: "watermark",
+      label: t("tabs.watermark.label"),
+      title: t("tabs.watermark.title"),
+      copy: t("tabs.watermark.copy")
+    },
+    {
+      key: "page-numbers",
+      label: t("tabs.pageNumbers.label"),
+      title: t("tabs.pageNumbers.title"),
+      copy: t("tabs.pageNumbers.copy")
+    },
+    {
+      key: "unlock",
+      label: t("tabs.unlock.label"),
+      title: t("tabs.unlock.title"),
+      copy: t("tabs.unlock.copy")
+    },
+    {
+      key: "protect",
+      label: t("tabs.protect.label"),
+      title: t("tabs.protect.title"),
+      copy: t("tabs.protect.copy")
     }
   ];
 
@@ -147,6 +187,10 @@ export function HomeToolSwitcher() {
       {activeTool === "reorder" ? <ReorderPdfCard /> : null}
       {activeTool === "pdf-to-jpg" ? <PdfToJpgCard /> : null}
       {activeTool === "jpg-to-pdf" ? <JpgToPdfCard /> : null}
+      {activeTool === "watermark" ? <WatermarkCard /> : null}
+      {activeTool === "page-numbers" ? <PageNumbersCard /> : null}
+      {activeTool === "unlock" ? <UnlockPdfCard /> : null}
+      {activeTool === "protect" ? <ProtectPdfCard /> : null}
     </div>
   );
 }
