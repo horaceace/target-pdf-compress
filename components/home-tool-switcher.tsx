@@ -137,9 +137,11 @@ export function HomeToolSwitcher() {
                       setActiveTool(key);
                     }}
                   >
-                    <Icon className="home-tool-tab__icon" aria-hidden="true" />
-                    <strong>{item.label}</strong>
-                    {isFeatured ? <span>{item.title}</span> : null}
+                    <Icon className="home-tool-tab__icon" aria-hidden="true" strokeWidth={2.25} />
+                    <span className="home-tool-tab__text">
+                      <strong>{item.label}</strong>
+                      {isFeatured ? <span className="home-tool-tab__sub">{item.title}</span> : null}
+                    </span>
                   </button>
                 );
               })}
