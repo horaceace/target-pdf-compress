@@ -44,6 +44,8 @@ type ToolKey =
   | "unlock"
   | "protect";
 
+type ToolGroupId = "optimize" | "organize" | "convert" | "secure";
+
 const toolIcons: Record<ToolKey, typeof FileDown> = {
   compress: FileDown,
   merge: Combine,
@@ -59,119 +61,91 @@ const toolIcons: Record<ToolKey, typeof FileDown> = {
   protect: Lock
 };
 
+const toolGroups: Array<{ id: ToolGroupId; tools: ToolKey[] }> = [
+  { id: "optimize", tools: ["compress"] },
+  { id: "organize", tools: ["merge", "split", "rotate", "remove", "reorder"] },
+  { id: "convert", tools: ["pdf-to-jpg", "jpg-to-pdf"] },
+  { id: "secure", tools: ["watermark", "page-numbers", "unlock", "protect"] }
+];
+
+const tabKeyMap: Record<ToolKey, string> = {
+  compress: "compress",
+  merge: "merge",
+  split: "split",
+  rotate: "rotate",
+  remove: "remove",
+  reorder: "reorder",
+  "pdf-to-jpg": "pdfToJpg",
+  "jpg-to-pdf": "jpgToPdf",
+  watermark: "watermark",
+  "page-numbers": "pageNumbers",
+  unlock: "unlock",
+  protect: "protect"
+};
+
 export function HomeToolSwitcher() {
   const t = useTranslations("HomeToolSwitcher");
   const [activeTool, setActiveTool] = useState<ToolKey>("compress");
 
-  const toolTabs: Array<{
-    key: ToolKey;
-    label: string;
-    title: string;
-    copy: string;
-  }> = [
-    {
-      key: "compress",
-      label: t("tabs.compress.label"),
-      title: t("tabs.compress.title"),
-      copy: t("tabs.compress.copy")
-    },
-    {
-      key: "merge",
-      label: t("tabs.merge.label"),
-      title: t("tabs.merge.title"),
-      copy: t("tabs.merge.copy")
-    },
-    {
-      key: "split",
-      label: t("tabs.split.label"),
-      title: t("tabs.split.title"),
-      copy: t("tabs.split.copy")
-    },
-    {
-      key: "rotate",
-      label: t("tabs.rotate.label"),
-      title: t("tabs.rotate.title"),
-      copy: t("tabs.rotate.copy")
-    },
-    {
-      key: "remove",
-      label: t("tabs.remove.label"),
-      title: t("tabs.remove.title"),
-      copy: t("tabs.remove.copy")
-    },
-    {
-      key: "reorder",
-      label: t("tabs.reorder.label"),
-      title: t("tabs.reorder.title"),
-      copy: t("tabs.reorder.copy")
-    },
-    {
-      key: "pdf-to-jpg",
-      label: t("tabs.pdfToJpg.label"),
-      title: t("tabs.pdfToJpg.title"),
-      copy: t("tabs.pdfToJpg.copy")
-    },
-    {
-      key: "jpg-to-pdf",
-      label: t("tabs.jpgToPdf.label"),
-      title: t("tabs.jpgToPdf.title"),
-      copy: t("tabs.jpgToPdf.copy")
-    },
-    {
-      key: "watermark",
-      label: t("tabs.watermark.label"),
-      title: t("tabs.watermark.title"),
-      copy: t("tabs.watermark.copy")
-    },
-    {
-      key: "page-numbers",
-      label: t("tabs.pageNumbers.label"),
-      title: t("tabs.pageNumbers.title"),
-      copy: t("tabs.pageNumbers.copy")
-    },
-    {
-      key: "unlock",
-      label: t("tabs.unlock.label"),
-      title: t("tabs.unlock.title"),
-      copy: t("tabs.unlock.copy")
-    },
-    {
-      key: "protect",
-      label: t("tabs.protect.label"),
-      title: t("tabs.protect.title"),
-      copy: t("tabs.protect.copy")
-    }
-  ];
+  const toolMeta = (key: ToolKey) => {
+    const tab = tabKeyMap[key];
+    return {
+      key,
+      label: t(`tabs.${tab}.label`),
+      title: t(`tabs.${tab}.title`),
+      copy: t(`tabs.${tab}.copy`)
+    };
+  };
 
-  const activeMeta = toolTabs.find((item) => item.key === activeTool) ?? toolTabs[0];
+  const activeMeta = toolMeta(activeTool);
 
   return (
     <div className="home-tool-switcher">
-      <div className="home-tool-switcher__tabs" role="tablist" aria-label={t("ariaLabel")}>
-        {toolTabs.map((item) => {
-          const Icon = toolIcons[item.key];
-          return (
-            <button
-              key={item.key}
-              type="button"
-              role="tab"
-              aria-selected={activeTool === item.key}
-              className={`home-tool-tab${activeTool === item.key ? " home-tool-tab--active" : ""}`}
-              onClick={() => {
-                trackEvent("tool_switch_clicked", {
-                  source: "home_tool_switcher_tab",
-                  tool: item.key,
-                  label: item.title
-                });
-                setActiveTool(item.key);
-              }}
+      <div className="home-tool-grid" role="tablist" aria-label={t("ariaLabel")}>
+        {toolGroups.map((group) => (
+          <section className="home-tool-group" key={group.id}>
+            <div className="home-tool-group__label">{t(`groups.${group.id}`)}</div>
+            <div
+              className={`home-tool-group__items${
+                group.id === "optimize" ? " home-tool-group__items--featured" : ""
+              }`}
             >
-              <Icon className="home-tool-tab__icon" />
-              <strong>{item.label}</strong>
-              <span>{item.title}</span>
-            </button>
-          );
-        })}
+              {group.tools.map((key) => {
+                const item = toolMeta(key);
+                const Icon = toolIcons[key];
+                const isActive = activeTool === key;
+                const isFeatured = key === "compress";
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    className={[
+                      "home-tool-tab",
+                      isActive ? "home-tool-tab--active" : "",
+                      isFeatured ? "home-tool-tab--featured" : ""
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    onClick={() => {
+                      trackEvent("tool_switch_clicked", {
+                        source: "home_tool_switcher_tab",
+                        tool: key,
+                        label: item.title
+                      });
+                      setActiveTool(key);
+                    }}
+                  >
+                    <Icon className="home-tool-tab__icon" aria-hidden="true" />
+                    <strong>{item.label}</strong>
+                    {isFeatured ? <span>{item.title}</span> : null}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        ))}
       </div>
 
       <div className="home-tool-switcher__meta">

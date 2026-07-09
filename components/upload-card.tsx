@@ -488,6 +488,7 @@ export function UploadCard({
   const [queueFilter, setQueueFilter] = useState<QueueFilter>("all");
   const [queueNotice, setQueueNotice] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const modeMeta = useMemo(() => getCompressionMode(mode), [mode]);
@@ -999,72 +1000,6 @@ export function UploadCard({
           />
         </div>
 
-        <div className="upload-mode">
-          <div className="upload-mode__row">
-            <span className="upload-mode__label">{t("modeLabel")}</span>
-          </div>
-          <div className="compression-mode-grid" role="radiogroup" aria-label={t("modeAriaLabel")}>
-            {compressionModes.map((item) => (
-              <button
-                aria-checked={mode === item.id}
-                className={`compression-mode-pill${
-                  mode === item.id ? " compression-mode-pill--active" : ""
-                }`}
-                key={item.id}
-                onClick={() => {
-                  if (item.id !== mode) {
-                    trackEvent("compression_mode_changed", {
-                      from_mode: mode,
-                      to_mode: item.id,
-                      ...analyticsModeParams(item.id, targetBytes)
-                    });
-                  }
-                  setMode(item.id);
-                }}
-                role="radio"
-                type="button"
-              >
-                <strong>{tc(`modes.${item.id}.label`)}</strong>
-                <span>{tc(`modes.${item.id}.bestFor`)}</span>
-              </button>
-            ))}
-          </div>
-          <div className="upload-mode__meta">
-            <strong>{tc(`modes.${mode}.bestFor`)}</strong>
-            <span>{tc(`modes.${mode}.description`)}</span>
-          </div>
-        </div>
-
-        <div className="upload-mode">
-          <div className="upload-mode__row">
-            <label htmlFor="target-size">{t("targetSizeLabel")}</label>
-            <select
-              id="target-size"
-              value={targetBytes}
-              onChange={(event) => {
-                const nextTargetBytes = Number(event.target.value);
-                setTargetBytes(nextTargetBytes);
-                trackEvent("target_size_changed", {
-                  target_size: nextTargetBytes ? formatBytes(nextTargetBytes) : "none",
-                  target_bytes: nextTargetBytes
-                });
-              }}
-            >
-              {targetSizeOptions.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="upload-mode__meta">
-            <strong>{targetBytes ? t("aimForTarget", { target: formatBytes(targetBytes) }) : t("maxPracticalReduction")}</strong>
-            <span>
-              {targetBytes ? t("targetSizeMetaWithTarget") : t("targetSizeMetaNoTarget")}
-            </span>
-          </div>
-        </div>
-
         <div className="upload-actions">
           <button
             type="button"
@@ -1072,7 +1007,11 @@ export function UploadCard({
             disabled={processing}
             onClick={hasJobs ? processAll : triggerFilePicker}
           >
-            {processing ? t("compressButtonProcessing") : hasJobs ? t("compressButtonFiles") : t("compressButtonChoose")}
+            {processing
+              ? t("compressButtonProcessing")
+              : hasJobs
+                ? t("compressButtonFiles")
+                : t("compressButtonChoose")}
           </button>
           <div className="upload-actions__secondary">
             <button
@@ -1096,6 +1035,107 @@ export function UploadCard({
               {t("downloadZipButton")}
             </button>
           </div>
+        </div>
+
+        <div className="upload-advanced">
+          <button
+            type="button"
+            className="upload-advanced__toggle"
+            aria-expanded={showAdvanced}
+            onClick={() => {
+              const next = !showAdvanced;
+              setShowAdvanced(next);
+              trackEvent("site_link_clicked", {
+                source: "upload_advanced_toggle",
+                tool: "compress",
+                label: next ? "open" : "close"
+              });
+            }}
+          >
+            <span>{t("advancedToggle")}</span>
+            <span className="upload-advanced__summary">
+              {tc(`modes.${mode}.label`)}
+              {" · "}
+              {targetBytes ? formatBytes(targetBytes) : t("targetSizes.noTarget")}
+            </span>
+            <span className="upload-advanced__chevron" aria-hidden="true">
+              {showAdvanced ? "−" : "+"}
+            </span>
+          </button>
+
+          {showAdvanced ? (
+            <div className="upload-advanced__panel">
+              <div className="upload-mode">
+                <div className="upload-mode__row">
+                  <span className="upload-mode__label">{t("modeLabel")}</span>
+                </div>
+                <div className="compression-mode-grid" role="radiogroup" aria-label={t("modeAriaLabel")}>
+                  {compressionModes.map((item) => (
+                    <button
+                      aria-checked={mode === item.id}
+                      className={`compression-mode-pill${
+                        mode === item.id ? " compression-mode-pill--active" : ""
+                      }`}
+                      key={item.id}
+                      onClick={() => {
+                        if (item.id !== mode) {
+                          trackEvent("compression_mode_changed", {
+                            from_mode: mode,
+                            to_mode: item.id,
+                            ...analyticsModeParams(item.id, targetBytes)
+                          });
+                        }
+                        setMode(item.id);
+                      }}
+                      role="radio"
+                      type="button"
+                    >
+                      <strong>{tc(`modes.${item.id}.label`)}</strong>
+                      <span>{tc(`modes.${item.id}.bestFor`)}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="upload-mode__meta">
+                  <strong>{tc(`modes.${mode}.bestFor`)}</strong>
+                  <span>{tc(`modes.${mode}.description`)}</span>
+                </div>
+              </div>
+
+              <div className="upload-mode">
+                <div className="upload-mode__row">
+                  <label htmlFor="target-size">{t("targetSizeLabel")}</label>
+                  <select
+                    id="target-size"
+                    value={targetBytes}
+                    onChange={(event) => {
+                      const nextTargetBytes = Number(event.target.value);
+                      setTargetBytes(nextTargetBytes);
+                      trackEvent("target_size_changed", {
+                        target_size: nextTargetBytes ? formatBytes(nextTargetBytes) : "none",
+                        target_bytes: nextTargetBytes
+                      });
+                    }}
+                  >
+                    {targetSizeOptions.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="upload-mode__meta">
+                  <strong>
+                    {targetBytes
+                      ? t("aimForTarget", { target: formatBytes(targetBytes) })
+                      : t("maxPracticalReduction")}
+                  </strong>
+                  <span>
+                    {targetBytes ? t("targetSizeMetaWithTarget") : t("targetSizeMetaNoTarget")}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
 

@@ -127,6 +127,10 @@
     "navHome": "होम",
     "navTools": "उपकरण",
     "navPrivacy": "गोपनीयता",
+    "toolGroupOptimize": "अनुकूलित करें",
+    "toolGroupOrganize": "व्यवस्थित करें",
+    "toolGroupConvert": "रूपांतरित करें",
+    "toolGroupSecure": "सुरक्षा और चिह्न",
     "toolCompressPdf": "PDF संपीड़ित करें",
     "toolMergePdf": "PDF मर्ज करें",
     "toolSplitPdf": "PDF विभाजित करें",
@@ -175,6 +179,7 @@
     "dropzoneHeading": "PDF फ़ाइलें यहाँ छोड़ें",
     "dropzoneSubtext": "या फ़ाइलें चुनने के लिए क्लिक करें",
     "dropzoneHint": "केवल PDF। बैच अपलोड समर्थित। वर्तमान ब्राउज़र फ़्लो में प्रति फ़ाइल 50 MB तक।",
+    "advancedToggle": "उन्नत विकल्प",
     "modeLabel": "संपीड़न मोड",
     "modeAriaLabel": "संपीड़न मोड",
     "targetSizeLabel": "लक्ष्य आकार",
@@ -850,6 +855,12 @@
   },
   "HomeToolSwitcher": {
     "ariaLabel": "PDF उपकरण चुनें",
+    "groups": {
+      "optimize": "अनुकूलित करें",
+      "organize": "व्यवस्थित करें",
+      "convert": "रूपांतरित करें",
+      "secure": "सुरक्षा और चिह्न"
+    },
     "tabs": {
       "compress": {
         "label": "संपीड़ित करें",

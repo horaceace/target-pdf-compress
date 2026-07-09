@@ -7,19 +7,37 @@ import { LocaleSwitcher } from "@/components/locale-switcher";
 export async function SiteShell({ children }: { children: ReactNode }) {
   const t = await getTranslations("SiteShell");
 
-  const toolNavItems = [
-    { href: "/compress-pdf", label: t("toolCompressPdf") },
-    { href: "/merge-pdf", label: t("toolMergePdf") },
-    { href: "/split-pdf", label: t("toolSplitPdf") },
-    { href: "/rotate-pdf", label: t("toolRotatePdf") },
-    { href: "/remove-pdf-pages", label: t("toolRemovePages") },
-    { href: "/reorder-pdf-pages", label: t("toolReorderPages") },
-    { href: "/pdf-to-jpg", label: t("toolPdfToJpg") },
-    { href: "/jpg-to-pdf", label: t("toolJpgToPdf") },
-    { href: "/watermark-pdf", label: t("toolWatermarkPdf") },
-    { href: "/page-numbers-pdf", label: t("toolPageNumbersPdf") },
-    { href: "/unlock-pdf", label: t("toolUnlockPdf") },
-    { href: "/protect-pdf", label: t("toolProtectPdf") }
+  const toolNavGroups = [
+    {
+      title: t("toolGroupOptimize"),
+      items: [{ href: "/compress-pdf", label: t("toolCompressPdf") }]
+    },
+    {
+      title: t("toolGroupOrganize"),
+      items: [
+        { href: "/merge-pdf", label: t("toolMergePdf") },
+        { href: "/split-pdf", label: t("toolSplitPdf") },
+        { href: "/rotate-pdf", label: t("toolRotatePdf") },
+        { href: "/remove-pdf-pages", label: t("toolRemovePages") },
+        { href: "/reorder-pdf-pages", label: t("toolReorderPages") }
+      ]
+    },
+    {
+      title: t("toolGroupConvert"),
+      items: [
+        { href: "/pdf-to-jpg", label: t("toolPdfToJpg") },
+        { href: "/jpg-to-pdf", label: t("toolJpgToPdf") }
+      ]
+    },
+    {
+      title: t("toolGroupSecure"),
+      items: [
+        { href: "/watermark-pdf", label: t("toolWatermarkPdf") },
+        { href: "/page-numbers-pdf", label: t("toolPageNumbersPdf") },
+        { href: "/unlock-pdf", label: t("toolUnlockPdf") },
+        { href: "/protect-pdf", label: t("toolProtectPdf") }
+      ]
+    }
   ];
 
   const footerGroups = [
@@ -84,19 +102,26 @@ export async function SiteShell({ children }: { children: ReactNode }) {
               <button className="site-nav__menu-trigger" type="button">
                 {t("navTools")}
               </button>
-              <div className="site-nav__dropdown">
-                {toolNavItems.map((item) => (
-                  <TrackedLink
-                    eventParams={{
-                      source: "header_tools_dropdown",
-                      tool: item.href.replace("/", ""),
-                      label: item.label
-                    }}
-                    key={item.href}
-                    href={item.href}
-                  >
-                    {item.label}
-                  </TrackedLink>
+              <div className="site-nav__dropdown site-nav__dropdown--mega" role="menu">
+                {toolNavGroups.map((group) => (
+                  <div className="site-nav__mega-group" key={group.title}>
+                    <strong className="site-nav__mega-title">{group.title}</strong>
+                    <div className="site-nav__mega-links">
+                      {group.items.map((item) => (
+                        <TrackedLink
+                          eventParams={{
+                            source: "header_tools_dropdown",
+                            tool: item.href.replace("/", ""),
+                            label: item.label
+                          }}
+                          key={item.href}
+                          href={item.href}
+                        >
+                          {item.label}
+                        </TrackedLink>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>

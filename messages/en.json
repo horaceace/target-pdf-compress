@@ -127,6 +127,10 @@
     "navHome": "Home",
     "navTools": "Tools",
     "navPrivacy": "Privacy",
+    "toolGroupOptimize": "Optimize",
+    "toolGroupOrganize": "Organize",
+    "toolGroupConvert": "Convert",
+    "toolGroupSecure": "Secure & mark",
     "toolCompressPdf": "Compress PDF",
     "toolMergePdf": "Merge PDF",
     "toolSplitPdf": "Split PDF",
@@ -177,6 +181,7 @@
     "dropzoneHeading": "Drop PDF files here",
     "dropzoneSubtext": "or click to choose files",
     "dropzoneHint": "PDF only. Batch upload supported. Up to 50 MB per file in the current browser flow.",
+    "advancedToggle": "Advanced options",
     "modeLabel": "Compression mode",
     "modeAriaLabel": "Compression mode",
     "targetSizeLabel": "Target size",
@@ -854,6 +859,12 @@
   },
   "HomeToolSwitcher": {
     "ariaLabel": "Choose PDF tool",
+    "groups": {
+      "optimize": "Optimize",
+      "organize": "Organize",
+      "convert": "Convert",
+      "secure": "Secure & mark"
+    },
     "tabs": {
       "compress": {
         "label": "Compress",

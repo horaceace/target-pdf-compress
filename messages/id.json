@@ -127,6 +127,10 @@
     "navHome": "Beranda",
     "navTools": "Alat",
     "navPrivacy": "Privasi",
+    "toolGroupOptimize": "Optimasi",
+    "toolGroupOrganize": "Organisasi",
+    "toolGroupConvert": "Konversi",
+    "toolGroupSecure": "Keamanan & tanda",
     "toolCompressPdf": "Kompres PDF",
     "toolMergePdf": "Gabung PDF",
     "toolSplitPdf": "Pisah PDF",
@@ -175,6 +179,7 @@
     "dropzoneHeading": "Letakkan file PDF di sini",
     "dropzoneSubtext": "atau klik untuk memilih file",
     "dropzoneHint": "Hanya PDF. Unggahan batch didukung. Maksimal 50 MB per file dalam alur browser saat ini.",
+    "advancedToggle": "Opsi lanjutan",
     "modeLabel": "Mode kompresi",
     "modeAriaLabel": "Mode kompresi",
     "targetSizeLabel": "Ukuran target",
@@ -850,6 +855,12 @@
   },
   "HomeToolSwitcher": {
     "ariaLabel": "Pilih alat PDF",
+    "groups": {
+      "optimize": "Optimasi",
+      "organize": "Organisasi",
+      "convert": "Konversi",
+      "secure": "Keamanan & tanda"
+    },
     "tabs": {
       "compress": {
         "label": "Kompres",
