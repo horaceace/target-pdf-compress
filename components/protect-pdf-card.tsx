@@ -75,12 +75,7 @@ export function ProtectPdfCard() {
   return (
     <aside className="panel upload-card">
       <div className="upload-card__top">
-        <div className="upload-card__header">
-          <span className="eyebrow">{t("eyebrow")}</span>
-          <h2>{t("heading")}</h2>
-          <p>{t("description")}</p>
-        </div>
-
+        {/* Title lives in home switcher under Secure & mark */}
         <div
           className={`upload-dropzone${isDragging ? " upload-dropzone--active" : ""}`}
           onDragEnter={(event) => {
@@ -129,47 +124,34 @@ export function ProtectPdfCard() {
         </div>
 
         {pdfFile ? (
-          <>
-            <div className="upload-summary">
-              <div>
-                <strong>{pdfFile.name}</strong>
-                <span>PDF</span>
-              </div>
-              <div>
-                <strong>{formatBytes(pdfFile.size)}</strong>
-                <span>PDF</span>
-              </div>
+          <div className="upload-mode">
+            <div className="upload-mode__row">
+              <label htmlFor="protect-password">{t("passwordLabel")}</label>
+              <input
+                id="protect-password"
+                className="upload-mode__input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={t("passwordPlaceholder")}
+              />
             </div>
-
-            <div className="upload-mode">
-              <div className="upload-mode__row">
-                <label htmlFor="protect-password">{t("passwordLabel")}</label>
-                <input
-                  id="protect-password"
-                  className="upload-mode__input"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t("passwordPlaceholder")}
-                />
-              </div>
-              <div className="upload-mode__row">
-                <label htmlFor="protect-confirm">{t("confirmPasswordLabel")}</label>
-                <input
-                  id="protect-confirm"
-                  className="upload-mode__input"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder={t("confirmPasswordPlaceholder")}
-                />
-              </div>
-              <div className="upload-mode__meta">
-                <strong>{t("passwordLabel")}</strong>
-                <span>{t("passwordHint")}</span>
-              </div>
+            <div className="upload-mode__row">
+              <label htmlFor="protect-confirm">{t("confirmPasswordLabel")}</label>
+              <input
+                id="protect-confirm"
+                className="upload-mode__input"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder={t("confirmPasswordPlaceholder")}
+              />
             </div>
-          </>
+            <div className="upload-mode__meta">
+              <strong>{t("passwordLabel")}</strong>
+              <span>{t("passwordHint")}</span>
+            </div>
+          </div>
         ) : null}
 
         {error ? (

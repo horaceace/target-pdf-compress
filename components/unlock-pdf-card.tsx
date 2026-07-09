@@ -79,14 +79,8 @@ export function UnlockPdfCard() {
   return (
     <aside className="panel upload-card">
       <div className="upload-card__top">
-        <div className="upload-card__header">
-          <span className="eyebrow">{t("eyebrow")}</span>
-          <h2>{t("heading")}</h2>
-          <p>{t("description")}</p>
-        </div>
-
+        {/* Home switcher already shows title/copy under Secure & mark — keep card compact */}
         <aside className="capability-callout capability-callout--inline" role="note">
-          <strong>{t("heading")}</strong>
           <span>{t("capabilityNote")}</span>
         </aside>
 
@@ -136,19 +130,6 @@ export function UnlockPdfCard() {
             onChange={handleFileChange}
           />
         </div>
-
-        {pdfFile ? (
-          <div className="upload-summary">
-            <div>
-              <strong>{pdfFile.name}</strong>
-              <span>{t("removeFile")}</span>
-            </div>
-            <div>
-              <strong>{formatBytes(pdfFile.size)}</strong>
-              <span>PDF</span>
-            </div>
-          </div>
-        ) : null}
 
         {error ? (
           <div className="tool-card__error">

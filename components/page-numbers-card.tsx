@@ -92,12 +92,7 @@ export function PageNumbersCard() {
   return (
     <aside className="panel upload-card">
       <div className="upload-card__top">
-        <div className="upload-card__header">
-          <span className="eyebrow">{t("eyebrow")}</span>
-          <h2>{t("heading")}</h2>
-          <p>{t("description")}</p>
-        </div>
-
+        {/* Title/copy shown by home switcher under Secure & mark */}
         <div
           className={`upload-dropzone${isDragging ? " upload-dropzone--active" : ""}`}
           onDragEnter={(event) => {

@@ -124,12 +124,7 @@ export function WatermarkCard() {
   return (
     <aside className="panel upload-card">
       <div className="upload-card__top">
-        <div className="upload-card__header">
-          <span className="eyebrow">{t("eyebrow")}</span>
-          <h2>{t("heading")}</h2>
-          <p>{t("description")}</p>
-        </div>
-
+        {/* Title/copy shown by home switcher under Secure & mark */}
         <div className="upload-mode">
           <div className="upload-mode__row">
             <label htmlFor="watermark-type">{t("watermarkTypeLabel")}</label>
