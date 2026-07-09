@@ -328,10 +328,10 @@ export default async function HomePage() {
                 const Icon = item.icon;
                 return (
                   <div className="stat-chip" key={item.label}>
-                    <Icon />
-                    <div>
-                      <strong>{item.value}</strong>
-                      <span>{item.label}</span>
+                    <Icon aria-hidden="true" />
+                    <div className="stat-chip__text">
+                      <strong className="stat-chip__value">{item.value}</strong>
+                      <span className="stat-chip__label">{item.label}</span>
                     </div>
                   </div>
                 );
