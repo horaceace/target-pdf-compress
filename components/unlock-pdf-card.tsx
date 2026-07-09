@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useRef, useState, useTransition } from "react";
+import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { unlockPdf, UnlockResult } from "@/lib/pdf/unlock";
@@ -24,35 +24,23 @@ export function UnlockPdfCard() {
     inputRef.current?.click();
   }
 
+  function setFile(file: File | null) {
+    setPdfFile(file);
+    setError(null);
+    setResult(null);
+  }
+
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      setError(null);
-      setResult(null);
-    }
+    const file = event.target.files?.[0] ?? null;
+    if (file) setFile(file);
     event.target.value = "";
-  }
-
-  function onDragOver(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(true);
-  }
-
-  function onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(false);
   }
 
   function onDrop(event: DragEvent) {
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      setError(null);
-      setResult(null);
-    }
+    if (file) setFile(file);
   }
 
   function handleUnlock() {
@@ -69,7 +57,7 @@ export function UnlockPdfCard() {
         if (lowered.includes("password") || lowered.includes("encrypt")) {
           setError({
             title: t("errors.passwordProtected"),
-            message: t("errors.passwordProtectedHint"),
+            message: t("errors.passwordProtectedHint")
           });
         } else {
           setError({ title: t("errors.unlockFailed"), message });
@@ -88,63 +76,88 @@ export function UnlockPdfCard() {
     URL.revokeObjectURL(url);
   }
 
-  const dropzoneContent = pdfFile ? (
-    <div className="dropzone-uploaded">
-      <p className="dropzone-file-name">{pdfFile.name}</p>
-      <p className="dropzone-file-meta">
-        <span>{formatBytes(pdfFile.size)}</span>
-        <span> · PDF</span>
-      </p>
-      <button
-        className="button button--outline button--sm"
-        type="button"
-        onClick={() => {
-          setPdfFile(null);
-          setResult(null);
-          setError(null);
-        }}
-      >
-        {t("removeFile")}
-      </button>
-    </div>
-  ) : (
-    <button className="dropzone-trigger" type="button" onClick={triggerPicker}>
-      <p className="dropzone-title">{t("dropzoneTitle")}</p>
-      <p className="dropzone-hint">{t("dropzoneHint")}</p>
-    </button>
-  );
-
   return (
-    <div className="panel tool-card">
-      <div>
+    <aside className="panel upload-card">
+      <div className="upload-card__top">
+        <div className="upload-card__header">
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
+        </div>
+
         <aside className="capability-callout capability-callout--inline" role="note">
           <strong>{t("heading")}</strong>
           <span>{t("capabilityNote")}</span>
         </aside>
+
         <div
-          className={`dropzone ${isDragging ? "dropzone--dragging" : ""} ${pdfFile ? "dropzone--filled" : ""}`}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
+          className={`upload-dropzone${isDragging ? " upload-dropzone--active" : ""}`}
+          onDragEnter={(event) => {
+            event.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
+          }}
+          onDragOver={(event) => event.preventDefault()}
           onDrop={onDrop}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            if (!pdfFile) triggerPicker();
+          }}
+          onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
+            if ((event.key === "Enter" || event.key === " ") && !pdfFile) {
+              event.preventDefault();
+              triggerPicker();
+            }
+          }}
         >
+          {pdfFile ? (
+            <>
+              <strong>{pdfFile.name}</strong>
+              <span>
+                {formatBytes(pdfFile.size)} · PDF
+              </span>
+              <small>{t("dropzoneHint")}</small>
+            </>
+          ) : (
+            <>
+              <strong>{t("dropzoneTitle")}</strong>
+              <span>{t("dropzoneHint")}</span>
+            </>
+          )}
           <input
             ref={inputRef}
+            className="upload-dropzone__input"
             type="file"
-            accept="application/pdf"
-            className="dropzone-input"
+            accept="application/pdf,.pdf"
             onChange={handleFileChange}
           />
-          {dropzoneContent}
         </div>
 
-        {error && (
+        {pdfFile ? (
+          <div className="upload-summary">
+            <div>
+              <strong>{pdfFile.name}</strong>
+              <span>{t("removeFile")}</span>
+            </div>
+            <div>
+              <strong>{formatBytes(pdfFile.size)}</strong>
+              <span>PDF</span>
+            </div>
+          </div>
+        ) : null}
+
+        {error ? (
           <div className="tool-card__error">
             <strong>{error.title}</strong>
             <span>{error.message}</span>
           </div>
-        )}
+        ) : null}
 
-        {result && (
+        {result ? (
           <div className="tool-card__result">
             <p className="tool-card__result-title">
               {result.wasEncrypted ? t("resultTitleUnlocked") : t("resultTitleNotEncrypted")}
@@ -153,30 +166,36 @@ export function UnlockPdfCard() {
               {t("resultPages", { count: result.pageCount })} ·{" "}
               {t("resultSize", {
                 original: formatBytes(result.originalBytes),
-                output: formatBytes(result.outputBytes),
+                output: formatBytes(result.outputBytes)
               })}
             </p>
-            <button
-              className="button button--primary"
-              type="button"
-              onClick={downloadResult}
-            >
+            <button className="button button--primary" type="button" onClick={downloadResult}>
               {t("downloadButton")}
             </button>
           </div>
-        )}
+        ) : null}
 
-        <div className="tool-card__actions">
+        <div className="upload-actions">
           <button
-            className="button button--primary"
             type="button"
+            className="button button--primary button--wide"
             disabled={!pdfFile || isPending}
             onClick={handleUnlock}
           >
             {isPending ? t("processing") : t("unlockPdf")}
           </button>
+          <div className="upload-actions__secondary">
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!pdfFile || isPending}
+              onClick={() => setFile(null)}
+            >
+              {t("removeFile")}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useRef, useState, useTransition } from "react";
+import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { protectPdf, ProtectResult } from "@/lib/pdf/protect";
@@ -21,35 +21,27 @@ export function ProtectPdfCard() {
     inputRef.current?.click();
   }
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      setError(null);
-      setResult(null);
+  function setFile(file: File | null) {
+    setPdfFile(file);
+    setError(null);
+    setResult(null);
+    if (!file) {
+      setPassword("");
+      setConfirmPassword("");
     }
+  }
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    if (file) setFile(file);
     event.target.value = "";
-  }
-
-  function onDragOver(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(true);
-  }
-
-  function onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(false);
   }
 
   function onDrop(event: DragEvent) {
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      setError(null);
-      setResult(null);
-    }
+    if (file) setFile(file);
   }
 
   function handleProtect() {
@@ -80,118 +72,149 @@ export function ProtectPdfCard() {
     URL.revokeObjectURL(url);
   }
 
-  const dropzoneContent = pdfFile ? (
-    <div className="dropzone-uploaded">
-      <p className="dropzone-file-name">{pdfFile.name}</p>
-      <p className="dropzone-file-meta">
-        <span>{formatBytes(pdfFile.size)}</span>
-        <span> · PDF</span>
-      </p>
-      <button
-        className="button button--outline button--sm"
-        type="button"
-        onClick={() => {
-          setPdfFile(null);
-          setResult(null);
-          setError(null);
-          setPassword("");
-          setConfirmPassword("");
-        }}
-      >
-        {t("removeFile")}
-      </button>
-    </div>
-  ) : (
-    <button className="dropzone-trigger" type="button" onClick={triggerPicker}>
-      <p className="dropzone-title">{t("dropzoneTitle")}</p>
-      <p className="dropzone-hint">{t("dropzoneHint")}</p>
-    </button>
-  );
-
   return (
-    <div className="panel tool-card">
-      <div>
-        <div
-          className={`dropzone ${isDragging ? "dropzone--dragging" : ""} ${pdfFile ? "dropzone--filled" : ""}`}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-        >
-          <input
-            ref={inputRef}
-            type="file"
-            accept="application/pdf"
-            className="dropzone-input"
-            onChange={handleFileChange}
-          />
-          {dropzoneContent}
+    <aside className="panel upload-card">
+      <div className="upload-card__top">
+        <div className="upload-card__header">
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
-        {pdfFile && (
-          <div className="tool-card__options" style={{ marginTop: 16 }}>
-            <label className="tool-card__label" htmlFor="protect-password">
-              {t("passwordLabel")}
-            </label>
-            <input
-              id="protect-password"
-              className="tool-card__input"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={t("passwordPlaceholder")}
-            />
-            <label className="tool-card__label" htmlFor="protect-confirm" style={{ marginTop: 12 }}>
-              {t("confirmPasswordLabel")}
-            </label>
-            <input
-              id="protect-confirm"
-              className="tool-card__input"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder={t("confirmPasswordPlaceholder")}
-            />
-            <p className="tool-card__hint">{t("passwordHint")}</p>
-          </div>
-        )}
+        <div
+          className={`upload-dropzone${isDragging ? " upload-dropzone--active" : ""}`}
+          onDragEnter={(event) => {
+            event.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
+          }}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={onDrop}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            if (!pdfFile) triggerPicker();
+          }}
+          onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
+            if ((event.key === "Enter" || event.key === " ") && !pdfFile) {
+              event.preventDefault();
+              triggerPicker();
+            }
+          }}
+        >
+          {pdfFile ? (
+            <>
+              <strong>{pdfFile.name}</strong>
+              <span>
+                {formatBytes(pdfFile.size)} · PDF
+              </span>
+              <small>{t("dropzoneHint")}</small>
+            </>
+          ) : (
+            <>
+              <strong>{t("dropzoneTitle")}</strong>
+              <span>{t("dropzoneHint")}</span>
+            </>
+          )}
+          <input
+            ref={inputRef}
+            className="upload-dropzone__input"
+            type="file"
+            accept="application/pdf,.pdf"
+            onChange={handleFileChange}
+          />
+        </div>
 
-        {error && (
+        {pdfFile ? (
+          <>
+            <div className="upload-summary">
+              <div>
+                <strong>{pdfFile.name}</strong>
+                <span>PDF</span>
+              </div>
+              <div>
+                <strong>{formatBytes(pdfFile.size)}</strong>
+                <span>PDF</span>
+              </div>
+            </div>
+
+            <div className="upload-mode">
+              <div className="upload-mode__row">
+                <label htmlFor="protect-password">{t("passwordLabel")}</label>
+                <input
+                  id="protect-password"
+                  className="upload-mode__input"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={t("passwordPlaceholder")}
+                />
+              </div>
+              <div className="upload-mode__row">
+                <label htmlFor="protect-confirm">{t("confirmPasswordLabel")}</label>
+                <input
+                  id="protect-confirm"
+                  className="upload-mode__input"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder={t("confirmPasswordPlaceholder")}
+                />
+              </div>
+              <div className="upload-mode__meta">
+                <strong>{t("passwordLabel")}</strong>
+                <span>{t("passwordHint")}</span>
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        {error ? (
           <div className="tool-card__error">
             <span>{error}</span>
           </div>
-        )}
+        ) : null}
 
-        {result && (
+        {result ? (
           <div className="tool-card__result">
             <p className="tool-card__result-title">{t("resultTitle")}</p>
             <p className="tool-card__result-meta">
               {t("resultPages", { count: result.pageCount })} ·{" "}
               {t("resultSize", {
                 original: formatBytes(result.originalBytes),
-                output: formatBytes(result.outputBytes),
+                output: formatBytes(result.outputBytes)
               })}
             </p>
-            <button
-              className="button button--primary"
-              type="button"
-              onClick={downloadResult}
-            >
+            <button className="button button--primary" type="button" onClick={downloadResult}>
               {t("downloadButton")}
             </button>
           </div>
-        )}
+        ) : null}
 
-        <div className="tool-card__actions">
+        <div className="upload-actions">
           <button
-            className="button button--primary"
             type="button"
+            className="button button--primary button--wide"
             disabled={!pdfFile || !password || isPending}
             onClick={handleProtect}
           >
             {isPending ? t("processing") : t("protectPdf")}
           </button>
+          <div className="upload-actions__secondary">
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!pdfFile || isPending}
+              onClick={() => setFile(null)}
+            >
+              {t("removeFile")}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

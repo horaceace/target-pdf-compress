@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useRef, useState, useTransition } from "react";
+import { ChangeEvent, DragEvent, KeyboardEvent, useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { formatBytes } from "@/lib/pdf/compress";
 import { addPageNumbers, PageNumberPosition, PageNumbersResult } from "@/lib/pdf/page-numbers";
@@ -16,7 +16,7 @@ const POSITIONS: PageNumberPosition[] = [
   "bottom-left",
   "top-center",
   "top-right",
-  "top-left",
+  "top-left"
 ];
 
 export function PageNumbersCard() {
@@ -39,35 +39,23 @@ export function PageNumbersCard() {
     inputRef.current?.click();
   }
 
+  function setFile(file: File | null) {
+    setPdfFile(file);
+    setError(null);
+    setResult(null);
+  }
+
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      setError(null);
-      setResult(null);
-    }
+    const file = event.target.files?.[0] ?? null;
+    if (file) setFile(file);
     event.target.value = "";
-  }
-
-  function onDragOver(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(true);
-  }
-
-  function onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    setIsDragging(false);
   }
 
   function onDrop(event: DragEvent) {
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      setError(null);
-      setResult(null);
-    }
+    if (file) setFile(file);
   }
 
   function applyPageNumbers() {
@@ -81,7 +69,7 @@ export function PageNumbersCard() {
           startAt,
           prefix: prefix || undefined,
           fontSize,
-          fontFamily: fontFamily as keyof typeof import("pdf-lib").StandardFonts,
+          fontFamily: fontFamily as keyof typeof import("pdf-lib").StandardFonts
         });
         setResult(res);
       } catch (err) {
@@ -101,107 +89,121 @@ export function PageNumbersCard() {
     URL.revokeObjectURL(url);
   }
 
-  const dropzoneContent = pdfFile ? (
-    <div className="dropzone-uploaded">
-      <p className="dropzone-file-name">{pdfFile.name}</p>
-      <p className="dropzone-file-meta">
-        <span>{formatBytes(pdfFile.size)}</span>
-        <span> · PDF</span>
-      </p>
-      <button
-        className="button button--outline button--sm"
-        type="button"
-        onClick={() => {
-          setPdfFile(null);
-          setResult(null);
-          setError(null);
-        }}
-      >
-        {t("removeFile")}
-      </button>
-    </div>
-  ) : (
-    <button className="dropzone-trigger" type="button" onClick={triggerPicker}>
-      <p className="dropzone-title">{t("dropzoneTitle")}</p>
-      <p className="dropzone-hint">{t("dropzoneHint")}</p>
-    </button>
-  );
-
   return (
-    <div className="panel tool-card">
-      <div>
-        <div
-          className={`dropzone ${isDragging ? "dropzone--dragging" : ""} ${pdfFile ? "dropzone--filled" : ""}`}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-        >
-          <input
-            ref={inputRef}
-            type="file"
-            accept="application/pdf"
-            className="dropzone-input"
-            onChange={handleFileChange}
-          />
-          {dropzoneContent}
+    <aside className="panel upload-card">
+      <div className="upload-card__top">
+        <div className="upload-card__header">
+          <span className="eyebrow">{t("eyebrow")}</span>
+          <h2>{t("heading")}</h2>
+          <p>{t("description")}</p>
         </div>
 
-        {pdfFile && (
-          <div className="watermark-controls">
-            <div className="watermark-controls__row">
-              <label className="watermark-field">
-                <span>{t("positionLabel")}</span>
-                <select
-                  value={position}
-                  onChange={(e) => setPosition(e.target.value as PageNumberPosition)}
-                >
-                  {POSITIONS.map((pos) => (
-                    <option key={pos} value={pos}>
-                      {t(`positions.${pos.replace(/-/g, "")}`)}
-                    </option>
-                  ))}
-                </select>
-              </label>
+        <div
+          className={`upload-dropzone${isDragging ? " upload-dropzone--active" : ""}`}
+          onDragEnter={(event) => {
+            event.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
+          }}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={onDrop}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            if (!pdfFile) triggerPicker();
+          }}
+          onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
+            if ((event.key === "Enter" || event.key === " ") && !pdfFile) {
+              event.preventDefault();
+              triggerPicker();
+            }
+          }}
+        >
+          {pdfFile ? (
+            <>
+              <strong>{pdfFile.name}</strong>
+              <span>
+                {formatBytes(pdfFile.size)} · PDF
+              </span>
+              <small>{t("dropzoneHint")}</small>
+            </>
+          ) : (
+            <>
+              <strong>{t("dropzoneTitle")}</strong>
+              <span>{t("dropzoneHint")}</span>
+            </>
+          )}
+          <input
+            ref={inputRef}
+            className="upload-dropzone__input"
+            type="file"
+            accept="application/pdf,.pdf"
+            onChange={handleFileChange}
+          />
+        </div>
 
-              <label className="watermark-field watermark-field--sm">
-                <span>{t("startAtLabel")}</span>
-                <input
-                  type="number"
-                  className="field"
-                  min={1}
-                  value={startAt}
-                  onChange={(e) => setStartAt(Math.max(1, Number(e.target.value)))}
-                />
-              </label>
+        {pdfFile ? (
+          <div className="upload-mode">
+            <div className="upload-mode__row">
+              <label htmlFor="page-numbers-position">{t("positionLabel")}</label>
+              <select
+                id="page-numbers-position"
+                value={position}
+                onChange={(e) => setPosition(e.target.value as PageNumberPosition)}
+              >
+                {POSITIONS.map((pos) => (
+                  <option key={pos} value={pos}>
+                    {t(`positions.${pos.replace(/-/g, "")}`)}
+                  </option>
+                ))}
+              </select>
             </div>
-
-            <div className="watermark-controls__row">
-              <label className="watermark-field watermark-field--sm">
-                <span>{t("prefixLabel")}</span>
-                <input
-                  type="text"
-                  className="field"
-                  value={prefix}
-                  onChange={(e) => setPrefix(e.target.value)}
-                  placeholder={t("prefixPlaceholder")}
-                />
-              </label>
-
-              <label className="watermark-field watermark-field--sm">
-                <span>{t("fontSizeLabel")} ({fontSize}pt)</span>
-                <input
-                  type="range"
-                  min={6}
-                  max={36}
-                  value={fontSize}
-                  onChange={(e) => setFontSize(Number(e.target.value))}
-                />
-              </label>
+            <div className="upload-mode__row">
+              <label htmlFor="page-numbers-start">{t("startAtLabel")}</label>
+              <input
+                id="page-numbers-start"
+                className="upload-mode__input"
+                type="number"
+                min={1}
+                value={startAt}
+                onChange={(e) => setStartAt(Math.max(1, Number(e.target.value)))}
+              />
             </div>
-
-            <label className="watermark-field watermark-field--sm">
-              <span>{t("fontFamilyLabel")}</span>
-              <select value={fontFamily} onChange={(e) => setFontFamily(e.target.value)}>
+            <div className="upload-mode__row">
+              <label htmlFor="page-numbers-prefix">{t("prefixLabel")}</label>
+              <input
+                id="page-numbers-prefix"
+                className="upload-mode__input"
+                type="text"
+                value={prefix}
+                onChange={(e) => setPrefix(e.target.value)}
+                placeholder={t("prefixPlaceholder")}
+              />
+            </div>
+            <div className="upload-mode__row">
+              <label htmlFor="page-numbers-size">
+                {t("fontSizeLabel")} ({fontSize}pt)
+              </label>
+              <input
+                id="page-numbers-size"
+                className="upload-mode__input"
+                type="range"
+                min={6}
+                max={36}
+                value={fontSize}
+                onChange={(e) => setFontSize(Number(e.target.value))}
+              />
+            </div>
+            <div className="upload-mode__row">
+              <label htmlFor="page-numbers-font">{t("fontFamilyLabel")}</label>
+              <select
+                id="page-numbers-font"
+                value={fontFamily}
+                onChange={(e) => setFontFamily(e.target.value)}
+              >
                 <option value="Helvetica">Helvetica</option>
                 <option value="HelveticaBold">Helvetica Bold</option>
                 <option value="TimesRoman">Times Roman</option>
@@ -209,48 +211,54 @@ export function PageNumbersCard() {
                 <option value="Courier">Courier</option>
                 <option value="CourierBold">Courier Bold</option>
               </select>
-            </label>
+            </div>
           </div>
-        )}
+        ) : null}
 
-        {error && (
+        {error ? (
           <div className="tool-card__error">
             <strong>{error.title}</strong>
             <span>{error.message}</span>
           </div>
-        )}
+        ) : null}
 
-        {result && (
+        {result ? (
           <div className="tool-card__result">
             <p className="tool-card__result-title">{t("resultTitle")}</p>
             <p className="tool-card__result-meta">
               {t("resultPages", { count: result.pageCount })} ·{" "}
               {t("resultSize", {
                 original: formatBytes(result.originalBytes),
-                output: formatBytes(result.outputBytes),
+                output: formatBytes(result.outputBytes)
               })}
             </p>
-            <button
-              className="button button--primary"
-              type="button"
-              onClick={downloadResult}
-            >
+            <button className="button button--primary" type="button" onClick={downloadResult}>
               {t("downloadButton")}
             </button>
           </div>
-        )}
+        ) : null}
 
-        <div className="tool-card__actions">
+        <div className="upload-actions">
           <button
-            className="button button--primary"
             type="button"
+            className="button button--primary button--wide"
             disabled={!pdfFile || isPending}
             onClick={applyPageNumbers}
           >
             {isPending ? t("processing") : t("applyPageNumbers")}
           </button>
+          <div className="upload-actions__secondary">
+            <button
+              type="button"
+              className="button button--secondary"
+              disabled={!pdfFile || isPending}
+              onClick={() => setFile(null)}
+            >
+              {t("removeFile")}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
