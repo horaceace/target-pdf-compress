@@ -174,8 +174,8 @@
     "heroPoint2Title": "Strong and extreme",
     "heroPoint2Copy": "Best for upload portals, attachments, and tighter document size limits.",
     "heroPoint3Title": "Scanned PDF mode",
-    "metaTitle": "Compress PDF Online Free",
-    "metaDescription": "Compress PDF online free in your browser with modes for readability, uploads, scanned documents, and tighter file size limits.",
+    "metaTitle": "Compress PDF Online Free in Browser | FileSmaller",
+    "metaDescription": "Compress PDF online free in your browser. Shrink files for email, uploads, and scanned docs—no install, files stay on your device.",
     "defaultCopy": "Batch-ready PDF compression",
     "defaultHeading": "Compress PDF files",
     "tagline": "Upload, compress, download.",
@@ -411,8 +411,8 @@
     }
   },
   "MergePdfCard": {
-    "metaTitle": "Merge PDF Files Online Free",
-    "metaDescription": "Merge PDF files online free in your browser. Combine multiple PDF documents into one merged file and download it instantly.",
+    "metaTitle": "Merge PDF Files Online Free in Browser | FileSmaller",
+    "metaDescription": "Merge PDF files online free in your browser. Combine multiple PDFs into one file for applications, invoices, and archives—no upload server required.",
     "heroEyebrow": "Merge multiple documents into one",
     "heroHeading": "Build one merged PDF from multiple files",
     "heroIntro": "Upload PDF files, set the right order, and download one combined document in the browser.",
@@ -467,8 +467,8 @@
     }
   },
   "SplitPdfCard": {
-    "metaTitle": "Split PDF Files Online Free",
-    "metaDescription": "Split PDF files online free in your browser. Extract page ranges, create separate PDF files, and download them instantly.",
+    "metaTitle": "Split PDF Online Free by Page Range | FileSmaller",
+    "metaDescription": "Split PDF online free in your browser. Extract page ranges into smaller files for uploads and sharing—processing stays on your device.",
     "heroEyebrow": "Pull out only the pages you need",
     "heroHeading": "Split a large PDF into smaller documents",
     "heroIntro": "Upload one PDF, choose page ranges, and export separate files for forms, uploads, or follow-up compression.",
@@ -961,7 +961,12 @@
     "targetSize": "Target size: ",
     "compressionGoal": "Compression goal: ",
     "capabilityTitle": "Browser-side limits",
-    "capabilityBody": "Compression runs entirely in your browser. Target sizes (1MB, 500KB, etc.) are best-effort goals—not a guarantee. Password-protected PDFs cannot be opened without the password. Scanned or image-heavy files may need a stronger mode, splitting, or a desktop tool for very strict limits."
+    "capabilityBody": "Compression runs entirely in your browser. Target sizes (1MB, 500KB, etc.) are best-effort goals—not a guarantee. Password-protected PDFs cannot be opened without the password. Scanned or image-heavy files may need a stronger mode, splitting, or a desktop tool for very strict limits.",
+    "shortAnswerTitle": "Quick answer",
+    "trustTitle": "Browser-first & private",
+    "trustBody": "This tool runs in your browser. Files stay on your device unless you choose to download the result.",
+    "limitsTitle": "Good to know:",
+    "limitsBody": "Best for common office PDFs and light-to-medium scans. Extremely large or encrypted files may need a different workflow. Free, no account required."
   },
   "SplitPageTemplate": {
     "breadcrumbHome": "Home",

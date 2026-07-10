@@ -163,12 +163,21 @@ export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
         <span className="eyebrow">{page.targetLabel}</span>
         <h1>{page.h1}</h1>
         <p>{page.subheading}</p>
+        <aside className="capability-callout" role="note">
+          <strong>{t("shortAnswerTitle")}</strong>
+          <span>{page.intro}</span>
+        </aside>
         {page.tool === "compress-pdf" ? (
-          <aside className="capability-callout" role="note">
+          <aside className="capability-callout capability-callout--secondary" role="note">
             <strong>{t("capabilityTitle")}</strong>
             <span>{t("capabilityBody")}</span>
           </aside>
-        ) : null}
+        ) : (
+          <aside className="capability-callout capability-callout--secondary" role="note">
+            <strong>{t("trustTitle")}</strong>
+            <span>{t("trustBody")}</span>
+          </aside>
+        )}
       </section>
 
       <section className="hero">
@@ -177,6 +186,9 @@ export async function ToolPageTemplate({ page }: { page: ToolPageConfig }) {
             <span className="eyebrow">{toolLabelMap[page.tool]}</span>
             <h1>{page.h1}</h1>
             <p>{page.intro}</p>
+            <p className="tool-limits">
+              <strong>{t("limitsTitle")}</strong> {t("limitsBody")}
+            </p>
           </div>
           {renderToolCard()}
         </div>

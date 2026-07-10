@@ -955,7 +955,12 @@
     "commonQuestions": "सामान्य प्रश्न",
     "compressionMode": "संपीड़न मोड: ",
     "targetSize": "लक्ष्य आकार: ",
-    "compressionGoal": "संपीड़न लक्ष्य: "
+    "compressionGoal": "संपीड़न लक्ष्य: ",
+    "shortAnswerTitle": "Quick answer",
+    "trustTitle": "Browser-first & private",
+    "trustBody": "This tool runs in your browser. Files stay on your device unless you choose to download the result.",
+    "limitsTitle": "Good to know:",
+    "limitsBody": "Best for common office PDFs and light-to-medium scans. Extremely large or encrypted files may need a different workflow. Free, no account required."
   },
   "SplitPageTemplate": {
     "breadcrumbHome": "होम",

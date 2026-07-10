@@ -96,7 +96,7 @@ export const homepage = {
     {
       question: "Can I convert JPG to PDF online for free?",
       answer:
-        "Yes. Upload JPG or PNG files, reorder them if needed, and export one PDF in the browser."
+          "Yes. Upload JPG or PNG files, reorder them if needed, and export one PDF in the browser. Results download as a new file; original stays on your device."
     },
     {
       question: "Will this always reach the smallest possible PDF size?",
@@ -120,15 +120,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-online",
-    title: "Compress PDF Online Free",
+    title: "Compress PDF Online Free in Browser | FileSmaller",
     description:
       "Compress PDF online free in your browser. Make large PDF files smaller for upload, email, forms, and document sharing.",
     h1: "Compress PDF Online",
     subheading:
       "Reduce PDF file size online for uploads, email attachments, and everyday document sharing.",
     targetLabel: "Compression mode: online PDF shrinking",
-    intro:
-      "Use this page when you need a simple online PDF compressor that focuses on making documents smaller for common sharing and upload tasks.",
+    intro: "Use this page when you need a simple online PDF compressor that focuses on making documents smaller for common sharing and upload tasks. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF file",
       "Choose the compression mode that fits your use case",
@@ -166,15 +165,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-online",
-    title: "Reduce PDF Size Online Fast",
+    title: "Reduce PDF Size Online Free & Fast | FileSmaller",
     description:
       "Reduce PDF size online fast for email, uploads, and document portals. Make PDF files smaller without installing software.",
     h1: "Reduce PDF Size Online",
     subheading:
       "Make PDF files smaller online when you need a faster path to upload or share documents.",
     targetLabel: "Compression mode: smaller online file size",
-    intro:
-      "This page is for users searching for a quick way to reduce PDF size online before sending a file, submitting a form, or uploading documents.",
+    intro: "This page is for users searching for a quick way to reduce PDF size online before sending a file, submitting a form, or uploading documents. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload a PDF from your device",
       "Run compression for a smaller file size",
@@ -199,7 +197,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for upload limits and attachments?",
         answer:
-          "Yes. That is the main use case for this page."
+          "Yes. That is the main use case for this page. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -212,15 +210,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "free-pdf-compressor",
-    title: "Free PDF Compressor Online",
+    title: "Free PDF Compressor Online in Browser | FileSmaller",
     description:
       "Use a free PDF compressor online to reduce large PDF files for uploads, email, resumes, and sharing.",
     h1: "Free PDF Compressor",
     subheading:
       "Compress PDF files online for free when you need a smaller document for forms, email, or uploads.",
     targetLabel: "Compression mode: free PDF compression",
-    intro:
-      "This page targets users who want a free online PDF compressor without installing software before handling document uploads and attachments.",
+    intro: "This page targets users who want a free online PDF compressor without installing software before handling document uploads and attachments. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to shrink",
       "Run the available compression mode",
@@ -230,7 +227,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this PDF compressor free?",
         answer:
-          "Yes. The current version lets users compress PDF files online without a paid account."
+          "Yes. The current version lets users compress PDF files online without a paid account. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "What types of PDF files can I compress for free?",
@@ -245,7 +242,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is there a limit for basic use?",
         answer:
-          "This version is designed as a lightweight free tool for common compression tasks."
+          "This version is designed as a lightweight free tool for common compression tasks. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -258,15 +255,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-for-attachment",
-    title: "Reduce PDF Size for Attachment",
+    title: "Reduce PDF Size for Attachments Online Free",
     description:
       "Reduce PDF size for attachments before sending documents by email, forms, or messaging apps.",
     h1: "Reduce PDF Size for Attachment",
     subheading:
       "Make PDF attachments smaller before sending resumes, forms, contracts, or reports.",
     targetLabel: "Compression mode: smaller attachment size",
-    intro:
-      "This page is for users who need to reduce PDF size before attaching a file to email, job portals, or document-sharing workflows.",
+    intro: "This page is for users who need to reduce PDF size before attaching a file to email, job portals, or document-sharing workflows. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to attach",
       "Run compression to shrink the attachment size",
@@ -286,12 +282,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Will the PDF still open normally after compression?",
         answer:
-          "Yes in most cases. The goal is to keep the file usable while making it smaller."
+          "Yes in most cases. The goal is to keep the file usable while making it smaller. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can this help with mobile attachments too?",
         answer:
-          "Yes. Smaller PDFs are easier to upload and attach from phones as well as desktops."
+          "Yes. Smaller PDFs are easier to upload and attach from phones as well as desktops. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -304,15 +300,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-for-whatsapp",
-    title: "Reduce PDF Size for WhatsApp",
+    title: "Reduce PDF Size for WhatsApp Sharing Online Free",
     description:
       "Reduce PDF size for WhatsApp before sharing documents, forms, invoices, and office files on mobile.",
     h1: "Reduce PDF Size for WhatsApp",
     subheading:
       "Make PDFs smaller before sending them through WhatsApp on mobile or desktop.",
     targetLabel: "Compression mode: mobile sharing size",
-    intro:
-      "Use this page when a PDF feels too heavy to share comfortably through WhatsApp and you want a smaller file for faster sending.",
+    intro: "Use this page when a PDF feels too heavy to share comfortably through WhatsApp and you want a smaller file for faster sending. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to share",
       "Run compression for a smaller mobile-friendly file",
@@ -327,17 +322,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this good for invoices and forms?",
         answer:
-          "Yes. Common office PDFs often shrink enough to become easier to share."
+          "Yes. Common office PDFs often shrink enough to become easier to share. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will scanned PDFs shrink enough for messaging?",
         answer:
-          "Sometimes, but heavy scanned files are harder to compress than text-based documents."
+          "Sometimes, but heavy scanned files are harder to compress than text-based documents. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I use this on a phone?",
         answer:
-          "Yes. The flow is designed for browser-based sharing tasks."
+          "Yes. The flow is designed for browser-based sharing tasks. Results download as a new file; original stays on your device."
       }
     ],
     relatedSlugs: [
@@ -350,15 +345,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-for-gmail",
-    title: "Reduce PDF Size for Gmail",
+    title: "Reduce PDF Size for Gmail Attachments Online Free",
     description:
       "Reduce PDF size for Gmail attachments before sending documents, resumes, reports, and forms by email.",
     h1: "Reduce PDF Size for Gmail",
     subheading:
       "Make PDF files smaller for Gmail attachments and smoother email sending.",
     targetLabel: "Compression mode: Gmail attachment size",
-    intro:
-      "This page is meant for people who need to shrink a PDF before attaching it in Gmail, especially when the file is too large to send comfortably.",
+    intro: "This page is meant for people who need to shrink a PDF before attaching it in Gmail, especially when the file is too large to send comfortably. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to send with Gmail",
       "Run compression to reduce the attachment size",
@@ -373,7 +367,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this good for resumes and job applications?",
         answer:
-          "Yes. Resume and application PDFs often need to be smaller before sending through email."
+          "Yes. Resume and application PDFs often need to be smaller before sending through email. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "What if the PDF is still too large after compression?",
@@ -383,7 +377,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for contracts and reports too?",
         answer:
-          "Yes. Those are common Gmail attachment use cases."
+          "Yes. Those are common Gmail attachment use cases. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -396,15 +390,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-for-job-application",
-    title: "Reduce PDF Size for Job Application",
+    title: "Reduce PDF Size for Job Application Online Free | FileSmaller",
     description:
       "Reduce PDF size for job applications before uploading resumes, cover letters, certificates, and supporting documents.",
     h1: "Reduce PDF Size for Job Application",
     subheading:
       "Make application PDFs smaller for ATS systems, hiring portals, and recruiter email submissions.",
     targetLabel: "Compression mode: job application file size",
-    intro:
-      "Use this page when a hiring system rejects your resume, certificate, or application PDF because the file is too large.",
+    intro: "Use this page when a hiring system rejects your resume, certificate, or application PDF because the file is too large. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your application PDF",
       "Run compression for a smaller job-ready file",
@@ -414,12 +407,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Why reduce PDF size for a job application?",
         answer:
-          "Many job portals and applicant tracking systems reject files that exceed upload limits."
+          "Many job portals and applicant tracking systems reject files that exceed upload limits. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this only for resumes?",
         answer:
-          "No. It is also useful for cover letters, certificates, portfolios, and supporting forms."
+          "No. It is also useful for cover letters, certificates, portfolios, and supporting forms. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will the PDF stay readable for recruiters?",
@@ -442,15 +435,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-to-send-by-email",
-    title: "Compress PDF to Send by Email",
+    title: "Compress PDF to Send by Email Online Free",
     description:
       "Compress PDF to send by email before attaching documents, reports, forms, or resumes.",
     h1: "Compress PDF to Send by Email",
     subheading:
       "Shrink PDFs before email sending so attachments are easier to deliver and open.",
     targetLabel: "Compression mode: send by email",
-    intro:
-      "This page is designed for users who need to compress a PDF quickly before sending it by email to a recruiter, client, teammate, or portal.",
+    intro: "This page is designed for users who need to compress a PDF quickly before sending it by email to a recruiter, client, teammate, or portal. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to email",
       "Compress it for a smaller sendable file",
@@ -465,7 +457,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for resumes and reports?",
         answer:
-          "Yes. Both are common email attachment cases."
+          "Yes. Both are common email attachment cases. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will the recipient notice a difference?",
@@ -488,15 +480,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-large-pdf",
-    title: "Compress Large PDF Online",
+    title: "Compress Large PDF Files Online Free | FileSmaller",
     description:
       "Compress large PDF files online for uploads, sharing, attachments, and document portals.",
     h1: "Compress Large PDF",
     subheading:
       "Shrink large PDF files when they are too heavy for uploads, email, or document sharing.",
     targetLabel: "Compression mode: large file reduction",
-    intro:
-      "Use this page when the starting PDF is already large and you need maximum practical reduction before trying to send or upload it.",
+    intro: "Use this page when the starting PDF is already large and you need maximum practical reduction before trying to send or upload it. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the large PDF file",
       "Run strong compression to reduce its size",
@@ -506,17 +497,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "What counts as a large PDF?",
         answer:
-          "Usually any file that feels too heavy to upload, email, or share comfortably."
+          "Usually any file that feels too heavy to upload, email, or share comfortably. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Why are some PDFs much larger than others?",
         answer:
-          "Scans, embedded images, and complex page assets usually make PDFs much larger."
+          "Scans, embedded images, and complex page assets usually make PDFs much larger. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can this shrink very large scanned PDFs?",
         answer:
-          "Sometimes, but scans are the hardest files to reduce dramatically in the browser."
+          "Sometimes, but scans are the hardest files to reduce dramatically in the browser. Results download as a new file; original stays on your device."
       },
       {
         question: "Should I use this instead of a readability-focused page?",
@@ -534,15 +525,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-under-upload-limit",
-    title: "Compress PDF Under Upload Limit",
+    title: "Compress PDF Under Upload Limit Online Free | FileSmaller",
     description:
       "Compress PDF under upload limits for forms, document portals, visa systems, and application websites.",
     h1: "Compress PDF Under Upload Limit",
     subheading:
       "Make your PDF small enough to pass upload limits on websites, forms, and application portals.",
     targetLabel: "Compression mode: under upload limit",
-    intro:
-      "This page targets users who do not care about an exact number and only need the PDF to become small enough to upload successfully.",
+    intro: "This page targets users who do not care about an exact number and only need the PDF to become small enough to upload successfully. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF that is being rejected",
       "Run compression to shrink it under the practical limit",
@@ -557,7 +547,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Will this help with government and school forms?",
         answer:
-          "Yes. Forms and portals are a major reason users need smaller PDFs."
+          "Yes. Forms and portals are a major reason users need smaller PDFs. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "What if the upload still fails?",
@@ -567,7 +557,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for mobile uploads too?",
         answer:
-          "Yes. Upload limits affect both mobile and desktop workflows."
+          "Yes. Upload limits affect both mobile and desktop workflows. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -580,7 +570,7 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-to-500kb",
-    title: "Compress PDF to 500KB",
+    title: "Compress PDF to 500KB Online Free | FileSmaller",
     description:
       "Try to compress a PDF toward 500KB in your browser for forms and portals. Best-effort—not guaranteed for scans or large files.",
     h1: "Compress PDF toward 500KB",
@@ -608,7 +598,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is 500KB a common upload target?",
         answer:
-          "Yes. Many forms and application systems use limits around this range."
+          "Yes. Many forms and application systems use limits around this range. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will compression toward 500KB affect quality?",
@@ -626,15 +616,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-to-200kb",
-    title: "Compress PDF to 200KB",
+    title: "Compress PDF to 200KB Online Free | FileSmaller",
     description:
       "Compress PDF to 200KB online for strict upload limits, application forms, and lightweight attachments.",
     h1: "Compress PDF to 200KB",
     subheading:
       "Reduce PDFs toward 200KB when you are dealing with very strict file size limits on forms and portals.",
     targetLabel: "Compression goal: around 200KB",
-    intro:
-      "This page is for cases where a portal or form has a very small file size allowance and you need to push the PDF much lower than a normal upload-ready size.",
+    intro: "This page is for cases where a portal or form has a very small file size allowance and you need to push the PDF much lower than a normal upload-ready size. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF that needs a stricter size cut",
       "Run aggressive compression in the browser",
@@ -672,7 +661,7 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-to-1mb",
-    title: "Compress PDF to 1MB",
+    title: "Compress PDF to 1MB Online Free | FileSmaller",
     description:
       "Try to compress a PDF toward 1MB in your browser for attachments and uploads. Best-effort—not guaranteed for every file.",
     h1: "Compress PDF toward 1MB",
@@ -723,15 +712,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-to-2mb",
-    title: "Compress PDF to 2MB",
+    title: "Compress PDF to 2MB Online Free | FileSmaller",
     description:
       "Compress PDF to 2MB online for attachments, applications, and upload systems that allow moderate file sizes.",
     h1: "Compress PDF to 2MB",
     subheading:
       "Make a PDF smaller toward 2MB when you need a simpler upload or attachment size target.",
     targetLabel: "Compression goal: around 2MB",
-    intro:
-      "This page is useful when you only need a moderate reduction and a size around 2MB is enough for the website, form, or document system you are using.",
+    intro: "This page is useful when you only need a moderate reduction and a size around 2MB is enough for the website, form, or document system you are using. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you need to shrink",
       "Run compression for a more manageable size",
@@ -769,15 +757,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "pdf-to-jpg",
     slug: "pdf-to-jpg-online",
-    title: "PDF to JPG Online Free",
+    title: "PDF to JPG Online Free in Your Browser | FileSmaller",
     description:
       "Convert PDF to JPG online free in your browser. Export one JPG image per PDF page for previews, uploads, and sharing.",
     h1: "PDF to JPG Online",
     subheading:
       "Turn PDF pages into JPG images online for previews, uploads, sharing, and simple page extraction.",
     targetLabel: "Conversion workflow: PDF pages to JPG images",
-    intro:
-      "Use this page when you need to convert a PDF into JPG images online and download one image per page without installing desktop software.",
+    intro: "Use this page when you need to convert a PDF into JPG images online and download one image per page without installing desktop software. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload one PDF file",
       "Choose the JPG output quality that fits your use case",
@@ -802,7 +789,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I download all JPG pages at once?",
         answer:
-          "Yes. Multi-page results can be downloaded together as a ZIP file."
+          "Yes. Multi-page results can be downloaded together as a ZIP file. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -815,15 +802,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "pdf-to-jpg",
     slug: "convert-pdf-pages-to-jpg",
-    title: "Convert PDF Pages to JPG",
+    title: "Convert PDF Pages to JPG Online Free | FileSmaller",
     description:
       "Convert PDF pages to JPG images online and export each page as a separate image file for preview and reuse.",
     h1: "Convert PDF Pages to JPG",
     subheading:
       "Export each PDF page as a JPG image when you need page-by-page images instead of another PDF file.",
     targetLabel: "Conversion workflow: page-by-page JPG export",
-    intro:
-      "This page is for users who want to convert PDF pages into JPG images one page at a time for sharing, design review, or upload workflows.",
+    intro: "This page is for users who want to convert PDF pages into JPG images one page at a time for sharing, design review, or upload workflows. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF whose pages you want as images",
       "Run the PDF to JPG conversion in the browser",
@@ -833,22 +819,22 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Why convert PDF pages to JPG?",
         answer:
-          "It is useful when a site, app, or teammate needs image files instead of a PDF document."
+          "It is useful when a site, app, or teammate needs image files instead of a PDF document. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I use this for page previews?",
         answer:
-          "Yes. Page previews are one of the main reasons to export PDF pages as JPG images."
+          "Yes. Page previews are one of the main reasons to export PDF pages as JPG images. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will this work for multi-page PDFs?",
         answer:
-          "Yes. Each page is exported separately, even when the source PDF has many pages."
+          "Yes. Each page is exported separately, even when the source PDF has many pages. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Do I need a separate PDF editor?",
         answer:
-          "No. The current conversion flow works directly in the browser."
+          "No. The current conversion flow works directly in the browser. Results download as a new file; original stays on your device."
       }
     ],
     relatedSlugs: [
@@ -861,15 +847,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "pdf-to-jpg",
     slug: "pdf-page-to-jpg-for-preview",
-    title: "PDF Page to JPG for Preview",
+    title: "PDF Page to JPG for Preview Online Free Tool",
     description:
       "Convert PDF pages to JPG for preview images before uploading, sharing, or embedding them elsewhere.",
     h1: "PDF Page to JPG for Preview",
     subheading:
       "Make PDF preview images fast by turning each page into a separate JPG file in the browser.",
     targetLabel: "Conversion workflow: preview-ready JPG pages",
-    intro:
-      "Use this page when you need JPG preview images from a PDF for CMS uploads, asset handoff, approvals, or quick visual review.",
+    intro: "Use this page when you need JPG preview images from a PDF for CMS uploads, asset handoff, approvals, or quick visual review. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to preview",
       "Convert the pages into JPG images",
@@ -884,7 +869,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use lower JPG quality for smaller previews?",
         answer:
-          "Yes. Lower JPG output modes are useful when the goal is a lighter preview image."
+          "Yes. Lower JPG output modes are useful when the goal is a lighter preview image. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Does this help with document review?",
@@ -894,7 +879,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I still keep the original PDF?",
         answer:
-          "Yes. The source PDF stays separate while you download JPG preview copies."
+          "Yes. The source PDF stays separate while you download JPG preview copies. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -907,15 +892,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "pdf-to-jpg",
     slug: "extract-images-from-pdf-pages",
-    title: "Extract Images From PDF Pages",
+    title: "Extract Images From PDF Pages Online Free | FileSmaller",
     description:
       "Extract images from PDF pages by converting each page into a JPG file online in your browser.",
     h1: "Extract Images From PDF Pages",
     subheading:
       "Turn PDF pages into JPG files when you need reusable images from a document workflow.",
     targetLabel: "Conversion workflow: image extraction from page renders",
-    intro:
-      "This page is for users who want reusable page images from a PDF for previews, uploads, documentation, or simple visual extraction.",
+    intro: "This page is for users who want reusable page images from a PDF for previews, uploads, documentation, or simple visual extraction. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF document",
       "Render the pages as JPG images",
@@ -930,7 +914,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for scanned PDFs too?",
         answer:
-          "Yes. Scanned PDFs can also be rendered as JPG page images."
+          "Yes. Scanned PDFs can also be rendered as JPG page images. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Why export full page images?",
@@ -940,7 +924,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I redownload all image pages together?",
         answer:
-          "Yes. Multi-page JPG exports can be downloaded in one ZIP file."
+          "Yes. Multi-page JPG exports can be downloaded in one ZIP file. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -953,15 +937,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "jpg-to-pdf",
     slug: "jpg-to-pdf-online",
-    title: "JPG to PDF Online Free",
+    title: "JPG to PDF Online Free in Your Browser | FileSmaller",
     description:
       "Convert JPG to PDF online free in your browser. Combine multiple JPG or PNG images into one PDF document fast.",
     h1: "JPG to PDF Online",
     subheading:
       "Turn JPG and PNG images into one PDF online for uploads, screenshots, scans, and document sharing.",
     targetLabel: "Conversion workflow: images into one PDF",
-    intro:
-      "Use this page when you need to convert JPG to PDF online and combine several images into one PDF without installing extra software.",
+    intro: "Use this page when you need to convert JPG to PDF online and combine several images into one PDF without installing extra software. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload JPG or PNG images",
       "Set the image order and page mode you want",
@@ -971,17 +954,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I convert JPG to PDF online for free?",
         answer:
-          "Yes. Upload image files in the browser and export one PDF without a paid account."
+          "Yes. Upload image files in the browser and export one PDF without a paid account. Results download as a new file; original stays on your device."
       },
       {
         question: "Can I combine multiple JPG files into one PDF?",
         answer:
-          "Yes. Each image becomes a PDF page in the final output."
+          "Yes. Each image becomes a PDF page in the final output. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Does this also support PNG files?",
         answer:
-          "Yes. The current flow accepts both JPG and PNG images."
+          "Yes. The current flow accepts both JPG and PNG images. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "What is JPG to PDF best for?",
@@ -999,15 +982,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "jpg-to-pdf",
     slug: "convert-images-to-pdf",
-    title: "Convert Images to PDF Online",
+    title: "Convert Images to PDF Online Free in Browser | FileSmaller",
     description:
       "Convert images to PDF online by combining JPG and PNG files into one PDF document in your browser.",
     h1: "Convert Images to PDF",
     subheading:
       "Make one PDF from multiple image files for uploads, archiving, and document workflows.",
     targetLabel: "Conversion workflow: image files to PDF document",
-    intro:
-      "This page is for users who want to convert image files into a PDF, especially when several screenshots or scans need to become one shareable document.",
+    intro: "This page is for users who want to convert image files into a PDF, especially when several screenshots or scans need to become one shareable document. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the images you want in the PDF",
       "Arrange them in the right order",
@@ -1017,17 +999,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Why convert images to PDF?",
         answer:
-          "A PDF is easier to upload, send, archive, and keep in one file than a loose image set."
+          "A PDF is easier to upload, send, archive, and keep in one file than a loose image set. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I use screenshots and phone photos?",
         answer:
-          "Yes. That is a common use case for image-to-PDF conversion."
+          "Yes. That is a common use case for image-to-PDF conversion. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I control the order of pages?",
         answer:
-          "Yes. You can reorder the uploaded images before exporting the PDF."
+          "Yes. You can reorder the uploaded images before exporting the PDF. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this different from JPG to PDF?",
@@ -1045,15 +1027,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "jpg-to-pdf",
     slug: "combine-jpg-into-one-pdf",
-    title: "Combine JPG Into One PDF",
+    title: "Combine JPG Into One PDF Online Free | FileSmaller",
     description:
       "Combine JPG into one PDF online. Merge multiple JPG files into a single PDF document in your browser.",
     h1: "Combine JPG Into One PDF",
     subheading:
       "Merge multiple JPG images into one PDF file for sharing, upload forms, and document handoff.",
     targetLabel: "Conversion workflow: combine JPG files into one PDF",
-    intro:
-      "Use this page when you have several JPG files and need one PDF instead of sending or uploading separate images one by one.",
+    intro: "Use this page when you have several JPG files and need one PDF instead of sending or uploading separate images one by one. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the JPG files you want to combine",
       "Set the order of the images",
@@ -1063,22 +1044,22 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I combine several JPG files into one PDF?",
         answer:
-          "Yes. Multiple JPG files can be merged into one PDF, with one image per page."
+          "Yes. Multiple JPG files can be merged into one PDF, with one image per page. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this useful for scanned pages?",
         answer:
-          "Yes. It is useful when each scanned page exists as a separate JPG file."
+          "Yes. It is useful when each scanned page exists as a separate JPG file. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I use this for client handoff or forms?",
         answer:
-          "Yes. A single PDF is often easier to submit or share than many image files."
+          "Yes. A single PDF is often easier to submit or share than many image files. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will PNG images work too?",
         answer:
-          "Yes. PNG is also supported in the current browser flow."
+          "Yes. PNG is also supported in the current browser flow. Results download as a new file; original stays on your device."
       }
     ],
     relatedSlugs: [
@@ -1091,15 +1072,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "jpg-to-pdf",
     slug: "images-to-pdf-for-upload",
-    title: "Images to PDF for Upload",
+    title: "Images to PDF for Upload Online Free | FileSmaller",
     description:
       "Convert images to PDF for upload by combining JPG or PNG files into one upload-ready PDF document.",
     h1: "Images to PDF for Upload",
     subheading:
       "Make one upload-ready PDF from screenshots, receipts, scans, and other image files.",
     targetLabel: "Conversion workflow: upload-ready image bundle to PDF",
-    intro:
-      "Use this page when a portal, form, or document system wants one PDF file and your source material is still spread across several image files.",
+    intro: "Use this page when a portal, form, or document system wants one PDF file and your source material is still spread across several image files. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the images required for the submission",
       "Arrange them into the correct order",
@@ -1109,22 +1089,22 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Why convert images to PDF before upload?",
         answer:
-          "Many systems accept one PDF more easily than several separate images."
+          "Many systems accept one PDF more easily than several separate images. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this good for receipts and screenshots?",
         answer:
-          "Yes. Receipts, screenshots, scans, and mobile photos are strong image-to-PDF use cases."
+          "Yes. Receipts, screenshots, scans, and mobile photos are strong image-to-PDF use cases. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I compress the PDF afterward?",
         answer:
-          "Yes. If the resulting PDF is still too large, you can run Compress PDF next."
+          "Yes. If the resulting PDF is still too large, you can run Compress PDF next. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I build one PDF from a phone photo set?",
         answer:
-          "Yes. That is one of the main reasons to convert images into one PDF."
+          "Yes. That is one of the main reasons to convert images into one PDF. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1137,15 +1117,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "make-scanned-pdf-smaller",
-    title: "Make Scanned PDF Smaller",
+    title: "Make Scanned PDF Smaller Online Free Browser Tool",
     description:
       "Make scanned PDF smaller online for uploads, attachments, forms, and sharing image-heavy documents.",
     h1: "Make Scanned PDF Smaller",
     subheading:
       "Reduce the size of scanned PDFs when image-heavy files are too large to upload or send.",
     targetLabel: "Compression mode: smaller scanned file",
-    intro:
-      "This page is for image-heavy scanned PDFs that need to be made smaller before submission, sharing, or storage.",
+    intro: "This page is for image-heavy scanned PDFs that need to be made smaller before submission, sharing, or storage. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the scanned PDF",
       "Run the strongest available reduction mode",
@@ -1155,22 +1134,22 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Why are scanned PDFs so large?",
         answer:
-          "Scanned pages are essentially images, which makes the file heavier than a text-based PDF."
+          "Scanned pages are essentially images, which makes the file heavier than a text-based PDF. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will quality drop when making a scanned PDF smaller?",
         answer:
-          "It can. Image-heavy PDFs usually trade more visual detail for size reduction."
+          "It can. Image-heavy PDFs usually trade more visual detail for size reduction. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this better than a general PDF page for scans?",
         answer:
-          "Yes. The wording and intent here focus specifically on scanned documents."
+          "Yes. The wording and intent here focus specifically on scanned documents. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I use this for IDs, forms, and certificates?",
         answer:
-          "Yes. Those are common scanned PDF use cases."
+          "Yes. Those are common scanned PDF use cases. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1183,7 +1162,7 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "best-pdf-compressor-online",
-    title: "Best PDF Compressor Online",
+    title: "Best PDF Compressor Online Free in Browser | FileSmaller",
     description:
       "Find the best PDF compressor online for uploads, attachments, resumes, and scanned files.",
     h1: "Best PDF Compressor Online",
@@ -1206,7 +1185,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is one compression mode enough for every PDF?",
         answer:
-          "No. Upload-heavy, resume-safe, and scanned-PDF cases often need different trade-offs."
+          "No. Upload-heavy, resume-safe, and scanned-PDF cases often need different trade-offs. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Why does this site use scenario pages?",
@@ -1216,7 +1195,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can this work as a free PDF compressor too?",
         answer:
-          "Yes. The current version is a lightweight free browser-based tool."
+          "Yes. The current version is a lightweight free browser-based tool. Results download as a new file; original stays on your device."
       }
     ],
     relatedSlugs: [
@@ -1229,15 +1208,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-for-visa-application",
-    title: "Reduce PDF Size for Visa Application",
+    title: "Reduce PDF Size for Visa Application Online Free | FileSmaller",
     description:
       "Reduce PDF size for visa applications before uploading passports, forms, statements, and supporting documents.",
     h1: "Reduce PDF Size for Visa Application",
     subheading:
       "Make visa application PDFs smaller for embassy portals, form systems, and document submission sites.",
     targetLabel: "Compression mode: visa application upload size",
-    intro:
-      "Use this page when a visa portal or immigration form system rejects your PDF because the uploaded document is too large.",
+    intro: "Use this page when a visa portal or immigration form system rejects your PDF because the uploaded document is too large. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the visa-related PDF",
       "Run compression to reduce the file for submission",
@@ -1252,17 +1230,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for passports and scanned documents?",
         answer:
-          "Yes, but scanned image-heavy files may not shrink as much as text-based PDFs."
+          "Yes, but scanned image-heavy files may not shrink as much as text-based PDFs. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will the document stay readable after compression?",
         answer:
-          "Usually yes, but strong compression on scans may reduce some visual detail."
+          "Usually yes, but strong compression on scans may reduce some visual detail. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this better than targeting one exact size?",
         answer:
-          "Usually yes. The real goal is getting the document accepted by the upload system."
+          "Usually yes. The real goal is getting the document accepted by the upload system. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1275,15 +1253,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "make-pdf-smaller-for-email-attachment",
-    title: "Make PDF Smaller for Email Attachment",
+    title: "Make PDF Smaller for Email Attachment Online Free | FileSmaller",
     description:
       "Make PDF smaller for email attachments before sending reports, forms, contracts, and application documents.",
     h1: "Make PDF Smaller for Email Attachment",
     subheading:
       "Shrink PDFs before attaching them to email so they are easier to send and receive.",
     targetLabel: "Compression mode: smaller email attachment",
-    intro:
-      "This page is for users who just need to make a PDF smaller before attaching it in email without overthinking exact file sizes.",
+    intro: "This page is for users who just need to make a PDF smaller before attaching it in email without overthinking exact file sizes. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to email",
       "Run compression to create a smaller attachment",
@@ -1298,17 +1275,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for office documents?",
         answer:
-          "Yes. Contracts, invoices, resumes, and reports are common email PDF use cases."
+          "Yes. Contracts, invoices, resumes, and reports are common email PDF use cases. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will a smaller attachment still look normal?",
         answer:
-          "Usually yes for text-heavy PDFs. Image-heavy files may show more visible compression."
+          "Usually yes for text-heavy PDFs. Image-heavy files may show more visible compression. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "How is this different from a general PDF compressor?",
         answer:
-          "The use case is narrower and focused on email attachment intent."
+          "The use case is narrower and focused on email attachment intent. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1321,15 +1298,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-for-mobile-upload",
-    title: "Compress PDF for Mobile Upload",
+    title: "Compress PDF for Mobile Upload Online Free | FileSmaller",
     description:
       "Compress PDF for mobile upload before submitting documents on phone-based forms, portals, and application systems.",
     h1: "Compress PDF for Mobile Upload",
     subheading:
       "Make PDFs smaller for mobile uploads on websites, apps, forms, and account portals.",
     targetLabel: "Compression mode: mobile upload",
-    intro:
-      "Use this page when you are uploading a PDF from your phone and the file is too large for the mobile form or portal to accept comfortably.",
+    intro: "Use this page when you are uploading a PDF from your phone and the file is too large for the mobile form or portal to accept comfortably. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF from your phone or browser",
       "Compress it for a smaller mobile-friendly size",
@@ -1344,17 +1320,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for job or school forms on phone?",
         answer:
-          "Yes. Mobile submissions are a common reason users need smaller PDFs."
+          "Yes. Mobile submissions are a common reason users need smaller PDFs. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will this help with slow mobile networks?",
         answer:
-          "Yes. Smaller files upload faster and fail less often."
+          "Yes. Smaller files upload faster and fail less often. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can scanned PDFs still be hard to upload from mobile?",
         answer:
-          "Yes. Large scanned files are the hardest category to shrink."
+          "Yes. Large scanned files are the hardest category to shrink. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1367,15 +1343,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "reduce-pdf-size-for-college-form",
-    title: "Reduce PDF Size for College Form",
+    title: "Reduce PDF Size for College Form Online Free | FileSmaller",
     description:
       "Reduce PDF size for college forms before uploading transcripts, statements, certificates, and application documents.",
     h1: "Reduce PDF Size for College Form",
     subheading:
       "Make PDFs smaller for college application forms, admissions portals, and student document uploads.",
     targetLabel: "Compression mode: college form upload size",
-    intro:
-      "This page is built for students who need to reduce PDF size before submitting academic documents through college websites and application systems.",
+    intro: "This page is built for students who need to reduce PDF size before submitting academic documents through college websites and application systems. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the academic PDF",
       "Run compression for a smaller submission file",
@@ -1390,7 +1365,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for transcripts and recommendation letters?",
         answer:
-          "Yes. Those are common college application PDFs."
+          "Yes. Those are common college application PDFs. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will text stay readable?",
@@ -1400,7 +1375,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for scholarship forms too?",
         answer:
-          "Yes. Any academic or student portal with upload limits can fit this use case."
+          "Yes. Any academic or student portal with upload limits can fit this use case. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1413,15 +1388,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-for-portal-upload",
-    title: "Compress PDF for Portal Upload",
+    title: "Compress PDF for Portal Upload Online Free | FileSmaller",
     description:
       "Compress PDF for portal upload before submitting documents to dashboards, portals, form systems, and account websites.",
     h1: "Compress PDF for Portal Upload",
     subheading:
       "Shrink PDF files so they are easier to upload to account portals and document submission systems.",
     targetLabel: "Compression mode: portal upload",
-    intro:
-      "Use this page when a portal upload fails because the PDF is too large and you need a smaller version quickly.",
+    intro: "Use this page when a portal upload fails because the PDF is too large and you need a smaller version quickly. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF rejected by the portal",
       "Run compression to create a smaller file",
@@ -1441,12 +1415,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Will this work for scanned documents too?",
         answer:
-          "It can help, but scanned files are still harder to shrink dramatically."
+          "It can help, but scanned files are still harder to shrink dramatically. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this different from mobile upload?",
         answer:
-          "The core compression is similar, but this page is positioned for portal-specific intent."
+          "The core compression is similar, but this page is positioned for portal-specific intent. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1459,15 +1433,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-attachment-too-large",
-    title: "Compress PDF Attachment Too Large",
+    title: "Compress PDF Attachment Too Large Online Free | FileSmaller",
     description:
       "Compress a PDF when the attachment is too large to send by email, messaging apps, or upload forms.",
     h1: "Compress PDF Attachment Too Large",
     subheading:
       "Shrink PDFs when your attachment is too large to send, upload, or share comfortably.",
     targetLabel: "Compression mode: attachment too large",
-    intro:
-      "This page is for the exact moment when you try to send a PDF and get blocked because the attachment is too large.",
+    intro: "This page is for the exact moment when you try to send a PDF and get blocked because the attachment is too large. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the oversized PDF attachment",
       "Run compression to reduce the file size",
@@ -1482,17 +1455,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for work documents and resumes?",
         answer:
-          "Yes. Many users hit attachment problems with reports, contracts, resumes, and scans."
+          "Yes. Many users hit attachment problems with reports, contracts, resumes, and scans. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Why is this page different from email pages?",
         answer:
-          "Because some users search the exact error condition rather than the email channel."
+          "Because some users search the exact error condition rather than the email channel. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can this help if I only need the file slightly smaller?",
         answer:
-          "Yes. Even a moderate reduction may be enough to clear the attachment limit."
+          "Yes. Even a moderate reduction may be enough to clear the attachment limit. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1505,15 +1478,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "make-pdf-smaller-for-application",
-    title: "Make PDF Smaller for Application",
+    title: "Make PDF Smaller for Application Online Free | FileSmaller",
     description:
       "Make PDF smaller for applications before uploading forms, resumes, supporting files, and official documents.",
     h1: "Make PDF Smaller for Application",
     subheading:
       "Reduce PDF size for applications that reject files because they are too large.",
     targetLabel: "Compression mode: application upload size",
-    intro:
-      "Use this page when an application system, portal, or online form requires a smaller PDF before submission.",
+    intro: "Use this page when an application system, portal, or online form requires a smaller PDF before submission. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF required for the application",
       "Run compression to shrink the file",
@@ -1533,12 +1505,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Will the document remain usable?",
         answer:
-          "Usually yes, especially for text-based PDFs."
+          "Usually yes, especially for text-based PDFs. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this page good for resumes too?",
         answer:
-          "Yes, but resume-specific pages may match that search intent even more closely."
+          "Yes, but resume-specific pages may match that search intent even more closely. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1551,15 +1523,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-for-immigration-form",
-    title: "Compress PDF for Immigration Form",
+    title: "Compress PDF for Immigration Form Online Free | FileSmaller",
     description:
       "Compress PDF for immigration forms before uploading IDs, statements, application forms, and supporting documents.",
     h1: "Compress PDF for Immigration Form",
     subheading:
       "Make immigration-form PDFs smaller for online submission systems and official document uploads.",
     targetLabel: "Compression mode: immigration form upload size",
-    intro:
-      "This page is focused on immigration and government-style form submissions where document size limits are often strict.",
+    intro: "This page is focused on immigration and government-style form submissions where document size limits are often strict. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the immigration PDF",
       "Run compression for a smaller official-use file",
@@ -1574,17 +1545,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can this work for scanned IDs and proofs?",
         answer:
-          "Yes, though scanned image-heavy files may be harder to shrink."
+          "Yes, though scanned image-heavy files may be harder to shrink. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will the document still be readable for review?",
         answer:
-          "Usually yes, but strong compression may reduce some image detail."
+          "Usually yes, but strong compression may reduce some image detail. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is this similar to the visa application page?",
         answer:
-          "Yes, but it targets a slightly different official-form search intent."
+          "Yes, but it targets a slightly different official-form search intent. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1597,15 +1568,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-for-upload",
-    title: "Compress PDF for Upload Online",
+    title: "Compress PDF for Upload Limits Online Free",
     description:
       "Compress PDF for upload limits, forms, and portals. Reduce PDF size as much as possible before submitting documents online.",
     h1: "Compress PDF for Upload",
     subheading:
       "Shrink your PDF as much as possible for portals, forms, and document upload limits.",
     targetLabel: "Compression mode: maximum size reduction",
-    intro:
-      "Use this page when your PDF is too large to upload and you want the smallest practical file size instead of aiming for an exact number.",
+    intro: "Use this page when your PDF is too large to upload and you want the smallest practical file size instead of aiming for an exact number. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF",
       "Run maximum compression",
@@ -1643,15 +1613,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-resume-pdf",
-    title: "Compress Resume PDF Online",
+    title: "Compress Resume PDF Online Free Keep Text Clear",
     description:
       "Compress resume PDF files for job applications and career portals. Reduce file size while keeping the document readable and easy to upload.",
     h1: "Compress Resume PDF",
     subheading:
       "Make your resume PDF smaller for job applications, hiring systems, and document submissions.",
     targetLabel: "Compression mode: smaller resume file",
-    intro:
-      "Resume PDFs often need to stay small enough for applicant tracking systems while still looking clean and readable after compression.",
+    intro: "Resume PDFs often need to stay small enough for applicant tracking systems while still looking clean and readable after compression. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your resume PDF",
       "Run compression with a smaller-file focus",
@@ -1689,15 +1658,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-for-email",
-    title: "Compress PDF for Email Online",
+    title: "Compress PDF for Email Attachments Online Free",
     description:
       "Compress PDF files for email attachments. Reduce large PDFs before sending documents, contracts, reports, or resumes by email.",
     h1: "Compress PDF for Email",
     subheading:
       "Make PDF attachments smaller for easier email sharing and fewer attachment issues.",
     targetLabel: "Compression mode: email-friendly file size",
-    intro:
-      "Email attachments often fail because PDF files are too large. This page focuses on making the file smaller enough for easier sending and sharing.",
+    intro: "Email attachments often fail because PDF files are too large. This page focuses on making the file smaller enough for easier sending and sharing. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF attachment",
       "Run compression for a smaller file",
@@ -1722,7 +1690,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I use this for invoices and forms?",
         answer:
-          "Yes. It works well for common office PDFs that need a smaller attachment size."
+          "Yes. It works well for common office PDFs that need a smaller attachment size. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1735,15 +1703,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-scanned-pdf",
-    title: "Compress Scanned PDF Online",
+    title: "Compress Scanned PDF Online Free | FileSmaller",
     description:
       "Compress scanned PDF files online. Reduce file size for scanned documents, image-based forms, and uploaded PDF scans.",
     h1: "Compress Scanned PDF",
     subheading:
       "Reduce the size of scanned PDF files for uploads, forms, and sharing.",
     targetLabel: "Compression mode: aggressive for scanned files",
-    intro:
-      "Scanned PDFs are usually much larger than text-based files because they are image-heavy. This page focuses on shrinking scanned documents as much as possible.",
+    intro: "Scanned PDFs are usually much larger than text-based files because they are image-heavy. This page focuses on shrinking scanned documents as much as possible. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your scanned PDF",
       "Run the strongest available compression",
@@ -1781,15 +1748,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-without-losing-quality",
-    title: "Compress PDF Without Losing Quality",
+    title: "Compress PDF Without Losing Quality Online Free | FileSmaller",
     description:
       "Compress PDF without losing quality more than necessary. Reduce PDF size for sharing, uploads, and email while keeping documents usable.",
     h1: "Compress PDF Without Losing Quality",
     subheading:
       "Reduce PDF file size while keeping document quality as high as practical for uploads and sharing.",
     targetLabel: "Compression mode: balanced quality retention",
-    intro:
-      "This page is for users who want a smaller PDF but do not want to over-compress a file that still needs to look clean in reviews, applications, and office workflows.",
+    intro: "This page is for users who want a smaller PDF but do not want to over-compress a file that still needs to look clean in reviews, applications, and office workflows. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to optimize",
       "Run balanced compression with quality in mind",
@@ -1814,7 +1780,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for client-facing documents?",
         answer:
-          "Yes. It is a better fit when you need a smaller PDF that still looks professional."
+          "Yes. It is a better fit when you need a smaller PDF that still looks professional. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -1827,15 +1793,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "compress-pdf",
     slug: "compress-pdf-without-losing-readability",
-    title: "Compress PDF Without Losing Readability",
+    title: "Compress PDF Without Losing Readability Online Free",
     description:
       "Compress PDF files while keeping the document readable. Reduce file size for uploads and sharing without making the file hard to use.",
     h1: "Compress PDF Without Losing Readability",
     subheading:
       "Make your PDF smaller while keeping the text, layout, and document content usable.",
     targetLabel: "Compression mode: balanced readability",
-    intro:
-      "This page is for documents where readability matters more than extreme size reduction. It is useful for resumes, reports, and office documents that still need to look clean.",
+    intro: "This page is for documents where readability matters more than extreme size reduction. It is useful for resumes, reports, and office documents that still need to look clean. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF",
       "Run balanced compression",
@@ -1874,7 +1839,7 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "rotate-pdf",
     slug: "rotate-pdf-online",
-    title: "Rotate PDF Online Free",
+    title: "Rotate PDF Online Free in Your Browser | FileSmaller",
     description:
       "Rotate PDF online free in your browser. Turn all pages or selected pages 90, 180, or 270 degrees and download the fixed PDF.",
     h1: "Rotate PDF Online",
@@ -1910,15 +1875,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "rotate-pdf",
     slug: "rotate-pdf-pages",
-    title: "Rotate PDF Pages Online",
+    title: "Rotate PDF Pages Online Free in Browser | FileSmaller",
     description:
       "Rotate PDF pages online by page range. Fix specific sideways pages without changing the rest of the PDF.",
     h1: "Rotate PDF Pages",
     subheading:
       "Turn selected PDF pages upright while leaving the rest of the document unchanged.",
     targetLabel: "PDF workflow: selected page rotation",
-    intro:
-      "This page is for PDFs where only a few scanned pages or inserted pages have the wrong orientation.",
+    intro: "This page is for PDFs where only a few scanned pages or inserted pages have the wrong orientation. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF",
       "Enter the pages that need rotation",
@@ -1928,17 +1892,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I rotate one page in a PDF?",
         answer:
-          "Yes. Enter a single page number such as 3 to rotate only that page."
+          "Yes. Enter a single page number such as 3 to rotate only that page. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I rotate multiple ranges?",
         answer:
-          "Yes. Use formats like 1, 3-5, 8 to target several pages or ranges."
+          "Yes. Use formats like 1, 3-5, 8 to target several pages or ranges. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Will other pages stay the same?",
         answer:
-          "Yes. Pages outside the selected range keep their original orientation."
+          "Yes. Pages outside the selected range keep their original orientation. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["rotate-pdf-online", "rotate-scanned-pdf", "reorder-pdf-pages-online"]
@@ -1946,15 +1910,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "rotate-pdf",
     slug: "rotate-scanned-pdf",
-    title: "Rotate Scanned PDF Online",
+    title: "Rotate Scanned PDF Pages Online Free | FileSmaller",
     description:
       "Rotate scanned PDF pages online before sending, uploading, or compressing scan-heavy documents.",
     h1: "Rotate Scanned PDF",
     subheading:
       "Fix sideways scanned pages before you submit or compress the final PDF.",
     targetLabel: "PDF workflow: rotate scanned pages",
-    intro:
-      "Scanned PDFs often include sideways pages from a phone or office scanner. This page helps turn those pages upright before the next document step.",
+    intro: "Scanned PDFs often include sideways pages from a phone or office scanner. This page helps turn those pages upright before the next document step. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the scanned PDF",
       "Rotate all pages or only the sideways page range",
@@ -1964,7 +1927,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I rotate scanned PDF pages?",
         answer:
-          "Yes. The rotation tool works on scanned PDFs as long as the browser can open the file."
+          "Yes. The rotation tool works on scanned PDFs as long as the browser can open the file. Results download as a new file; original stays on your device."
       },
       {
         question: "Should I rotate before compressing?",
@@ -1974,7 +1937,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Does this use OCR?",
         answer:
-          "No. It rotates pages only. OCR is a separate advanced workflow."
+          "No. It rotates pages only. OCR is a separate advanced workflow. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["rotate-pdf-online", "compress-scanned-pdf", "remove-blank-pages-from-pdf"]
@@ -1982,15 +1945,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "remove-pdf-pages",
     slug: "remove-pages-from-pdf",
-    title: "Remove Pages from PDF Online",
+    title: "Remove Pages from PDF Online Free in Browser | FileSmaller",
     description:
       "Remove pages from a PDF online free. Delete unwanted pages, blank sheets, or duplicate pages and download a cleaned PDF.",
     h1: "Remove Pages from PDF",
     subheading:
       "Delete unnecessary PDF pages before uploading, sending, or compressing a cleaner document.",
     targetLabel: "PDF workflow: remove unwanted pages",
-    intro:
-      "Use this page when a PDF includes blank pages, duplicate pages, cover sheets, or instructions that should not be included in the final file.",
+    intro: "Use this page when a PDF includes blank pages, duplicate pages, cover sheets, or instructions that should not be included in the final file. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF",
       "Enter the pages or ranges to remove",
@@ -2005,12 +1967,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I remove multiple pages at once?",
         answer:
-          "Yes. Use commas to separate individual pages and ranges."
+          "Yes. Use commas to separate individual pages and ranges. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I remove every page?",
         answer:
-          "No. The output PDF must keep at least one page."
+          "No. The output PDF must keep at least one page. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["delete-pdf-pages", "remove-blank-pages-from-pdf", "reorder-pdf-pages-online"]
@@ -2018,15 +1980,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "remove-pdf-pages",
     slug: "delete-pdf-pages",
-    title: "Delete PDF Pages Online",
+    title: "Delete PDF Pages Online Free in Browser | FileSmaller",
     description:
       "Delete PDF pages online in your browser. Remove extra pages from a PDF and download the updated file.",
     h1: "Delete PDF Pages",
     subheading:
       "Delete extra or unwanted pages from a PDF without installing desktop software.",
     targetLabel: "PDF workflow: delete selected pages",
-    intro:
-      "This page targets users who need a fast way to delete pages from a PDF before submitting a document package.",
+    intro: "This page targets users who need a fast way to delete pages from a PDF before submitting a document package. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF file",
       "Type the pages you want to delete",
@@ -2041,12 +2002,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I delete page ranges?",
         answer:
-          "Yes. Use ranges like 4-6 or combine them with individual pages."
+          "Yes. Use ranges like 4-6 or combine them with individual pages. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I compress after deleting pages?",
         answer:
-          "Yes. Removing pages first can make the next compression step smaller and faster."
+          "Yes. Removing pages first can make the next compression step smaller and faster. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["remove-pages-from-pdf", "remove-blank-pages-from-pdf", "split-pdf-online"]
@@ -2054,15 +2015,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "remove-pdf-pages",
     slug: "remove-blank-pages-from-pdf",
-    title: "Remove Blank Pages from PDF",
+    title: "Remove Blank Pages from PDF Online Free Tool",
     description:
       "Remove blank pages from a PDF online. Delete empty scanned pages or extra blank sheets before sending the final document.",
     h1: "Remove Blank Pages from PDF",
     subheading:
       "Clean up scanned PDFs by deleting blank pages before upload or compression.",
     targetLabel: "PDF workflow: remove blank pages",
-    intro:
-      "Scanned documents often include blank separators or accidental empty pages. Use this page to remove them before compressing or submitting the PDF.",
+    intro: "Scanned documents often include blank separators or accidental empty pages. Use this page to remove them before compressing or submitting the PDF. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF with blank pages",
       "Enter the blank page numbers",
@@ -2082,7 +2042,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Does this work on scanned PDFs?",
         answer:
-          "Yes, as long as the PDF can be opened in the browser."
+          "Yes, as long as the PDF can be opened in the browser. Results download as a new file; original stays on your device."
       }
     ],
     relatedSlugs: ["remove-pages-from-pdf", "compress-scanned-pdf", "rotate-scanned-pdf"]
@@ -2090,15 +2050,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "reorder-pdf-pages",
     slug: "reorder-pdf-pages-online",
-    title: "Reorder PDF Pages Online",
+    title: "Reorder PDF Pages Online Free in Browser | FileSmaller",
     description:
       "Reorder PDF pages online free. Type a new page order, rearrange pages, and download the corrected PDF.",
     h1: "Reorder PDF Pages Online",
     subheading:
       "Move PDF pages into the right sequence before sending, uploading, or merging.",
     targetLabel: "PDF workflow: reorder pages online",
-    intro:
-      "Use this page when a PDF has pages in the wrong order and you need a quick way to rearrange them before export.",
+    intro: "Use this page when a PDF has pages in the wrong order and you need a quick way to rearrange them before export. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF",
       "Enter the new page order",
@@ -2108,17 +2067,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "How do I reorder PDF pages online?",
         answer:
-          "Upload the file, enter a page order like 3,1,2,4-6, and download the reordered PDF."
+          "Upload the file, enter a page order like 3,1,2,4-6, and download the reordered PDF. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I reorder page ranges?",
         answer:
-          "Yes. Ranges expand forward, so 4-6 means pages 4, 5, and 6 in that position."
+          "Yes. Ranges expand forward, so 4-6 means pages 4, 5, and 6 in that position. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I include the same page twice?",
         answer:
-          "No. The current version expects each output page once."
+          "No. The current version expects each output page once. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["rearrange-pdf-pages", "organize-pdf-pages", "remove-pages-from-pdf"]
@@ -2126,15 +2085,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "reorder-pdf-pages",
     slug: "rearrange-pdf-pages",
-    title: "Rearrange PDF Pages Online",
+    title: "Rearrange PDF Pages Online Free in Browser | FileSmaller",
     description:
       "Rearrange PDF pages online in your browser. Fix page sequence problems before submitting or sharing a PDF.",
     h1: "Rearrange PDF Pages",
     subheading:
       "Fix page sequence problems in a PDF before export, upload, or compression.",
     targetLabel: "PDF workflow: rearrange page sequence",
-    intro:
-      "This page is for PDFs where pages were scanned, merged, or exported in the wrong order.",
+    intro: "This page is for PDFs where pages were scanned, merged, or exported in the wrong order. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF",
       "Type the desired page sequence",
@@ -2144,17 +2102,17 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I rearrange a scanned PDF?",
         answer:
-          "Yes. If the scanned PDF opens in the browser, the page order can be rearranged."
+          "Yes. If the scanned PDF opens in the browser, the page order can be rearranged. Results download as a new file; original stays on your device."
       },
       {
         question: "Should I rearrange before merging?",
         answer:
-          "Yes. Fixing the order first makes the final merged document easier to review."
+          "Yes. Fixing the order first makes the final merged document easier to review. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I remove pages while rearranging?",
         answer:
-          "Yes. If you leave a page out of the order, it will not be included in the output PDF."
+          "Yes. If you leave a page out of the order, it will not be included in the output PDF. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["reorder-pdf-pages-online", "organize-pdf-pages", "delete-pdf-pages"]
@@ -2162,15 +2120,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "reorder-pdf-pages",
     slug: "organize-pdf-pages",
-    title: "Organize PDF Pages Online",
+    title: "Organize PDF Pages Online Free | Reorder & Clean",
     description:
       "Organize PDF pages online by reordering, removing extras, and preparing a cleaner document workflow.",
     h1: "Organize PDF Pages",
     subheading:
       "Put PDF pages into a cleaner order before upload, sharing, or compression.",
     targetLabel: "PDF workflow: organize page order",
-    intro:
-      "Use this page when a PDF package needs page order cleanup before it is sent to a portal, client, school, or employer.",
+    intro: "Use this page when a PDF package needs page order cleanup before it is sent to a portal, client, school, or employer. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF",
       "Enter the organized output order",
@@ -2185,12 +2142,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this a drag-and-drop editor?",
         answer:
-          "Not yet. The current version uses a text page order for a lighter browser-first workflow."
+          "Not yet. The current version uses a text page order for a lighter browser-first workflow. Results download as a new file; original stays on your device."
       },
       {
         question: "Can I compress after organizing pages?",
         answer:
-          "Yes. Organize first, then compress the final PDF if it is still too large."
+          "Yes. Organize first, then compress the final PDF if it is still too large. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["reorder-pdf-pages-online", "rearrange-pdf-pages", "compress-pdf-for-upload"]
@@ -2198,15 +2155,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "merge-pdf-online",
-    title: "Merge PDF Online Free",
+    title: "Merge PDF Online Free in Your Browser | FileSmaller",
     description:
       "Merge PDF online free in your browser. Combine multiple PDF files into one document and download the merged result instantly.",
     h1: "Merge PDF Online",
     subheading:
       "Combine PDF files online for free before sending, uploading, or sharing a single merged document.",
     targetLabel: "Merge workflow: online PDF combiner",
-    intro:
-      "Use this page when you need to merge PDF files online and export one combined document for forms, applications, or attachments.",
+    intro: "Use this page when you need to merge PDF files online and export one combined document for forms, applications, or attachments. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload two or more PDF files",
       "Arrange them into the order you want",
@@ -2221,7 +2177,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "How many PDFs can I merge at once?",
         answer:
-          "You can merge as many PDFs as your browser can handle comfortably in one session."
+          "You can merge as many PDFs as your browser can handle comfortably in one session. Results download as a new file; original stays on your device."
       },
       {
         question: "Will the merged PDF keep the original page order?",
@@ -2231,7 +2187,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I compress the merged PDF afterward?",
         answer:
-          "Yes. After merging, you can use Compress PDF if the combined file is too large."
+          "Yes. After merging, you can use Compress PDF if the combined file is too large. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["combine-pdf-files", "pdf-joiner", "pdf-combiner", "merge-two-pdf"]
@@ -2239,15 +2195,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "combine-pdf-files",
-    title: "Combine PDF Files Online Free",
+    title: "Combine PDF Files Online Free in Your Browser | FileSmaller",
     description:
       "Combine PDF files online free. Merge multiple documents, reports, or forms into one PDF before sending or uploading.",
     h1: "Combine PDF Files",
     subheading:
       "Join several PDF files into one document for easier sharing, archiving, and submission.",
     targetLabel: "Merge workflow: combine multiple files",
-    intro:
-      "Use this page when you have several separate PDF files that need to become one document for a portal, email, or application package.",
+    intro: "Use this page when you have several separate PDF files that need to become one document for a portal, email, or application package. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload all the PDF files you want to combine",
       "Set the page order for the combined result",
@@ -2262,7 +2217,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I combine scanned PDFs with regular PDFs?",
         answer:
-          "Yes. The tool merges all uploaded PDFs regardless of whether they are text or scan-based."
+          "Yes. The tool merges all uploaded PDFs regardless of whether they are text or scan-based. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Is there a file size limit for combining?",
@@ -2280,15 +2235,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "merge-pdf-for-upload",
-    title: "Merge PDF for Upload",
+    title: "Merge PDF for Upload Online Free | FileSmaller",
     description:
       "Merge PDF for upload by combining multiple documents into one upload-ready PDF before submitting to forms, portals, and systems.",
     h1: "Merge PDF for Upload",
     subheading:
       "Turn several PDFs into one upload-ready file for portals that accept only a single document.",
     targetLabel: "Merge workflow: upload-ready combined PDF",
-    intro:
-      "Use this page when a form, portal, or application system asks for one PDF file and your documents are currently spread across several separate files.",
+    intro: "Use this page when a form, portal, or application system asks for one PDF file and your documents are currently spread across several separate files. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the documents required for the submission",
       "Arrange them in the order the portal expects",
@@ -2303,7 +2257,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this useful for job applications?",
         answer:
-          "Yes. You can merge your resume, cover letter, and certificates into one upload-ready PDF."
+          "Yes. You can merge your resume, cover letter, and certificates into one upload-ready PDF. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I merge and compress in one step?",
@@ -2313,7 +2267,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "What if I need to split the merged file later?",
         answer:
-          "You can use the Split PDF tool to extract specific pages from the merged document."
+          "You can use the Split PDF tool to extract specific pages from the merged document. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "merge-multiple-pdf-into-one", "compress-pdf-for-upload"]
@@ -2321,15 +2275,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "merge-pdf-for-email",
-    title: "Merge PDF for Email",
+    title: "Merge PDF for Email Online Free | FileSmaller",
     description:
       "Merge PDF for email by combining multiple attachments into one PDF before sending documents, reports, or forms.",
     h1: "Merge PDF for Email",
     subheading:
       "Combine several PDFs into one attachment so recipients get a single file instead of many.",
     targetLabel: "Merge workflow: email-ready combined PDF",
-    intro:
-      "Use this page when you need to email multiple PDFs as one attachment instead of sending several separate files.",
+    intro: "Use this page when you need to email multiple PDFs as one attachment instead of sending several separate files. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDFs you want to send together",
       "Arrange them into a logical order",
@@ -2357,15 +2310,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "merge-pdf-without-software",
-    title: "Merge PDF Without Software",
+    title: "Merge PDF Without Software Online Free | FileSmaller",
     description:
       "Merge PDF without installing software. Combine PDF files online in your browser without downloading desktop tools or apps.",
     h1: "Merge PDF Without Software",
     subheading:
       "Combine PDF files in the browser without installing any desktop tools or apps.",
     targetLabel: "Merge workflow: no-install browser combiner",
-    intro:
-      "Use this page when you need to merge PDFs quickly and do not want to install desktop PDF software just for one task.",
+    intro: "Use this page when you need to merge PDFs quickly and do not want to install desktop PDF software just for one task. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF files to the browser",
       "Set the merge order",
@@ -2375,7 +2327,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I merge PDFs without installing anything?",
         answer:
-          "Yes. This tool runs entirely in the browser, so no download or install is required."
+          "Yes. This tool runs entirely in the browser, so no download or install is required. Results download as a new file; original stays on your device."
       },
       {
         question: "Is this as good as desktop PDF software?",
@@ -2393,15 +2345,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "combine-multiple-pdf",
-    title: "Combine Multiple PDF Files Into One",
+    title: "Combine Multiple PDF Files Into One Online Free | FileSmaller",
     description:
       "Combine multiple PDF files into one document online. Merge several reports, forms, or scanned files into a single PDF.",
     h1: "Combine Multiple PDF Into One",
     subheading:
       "Join several separate PDF documents into one file for easier sharing and submission.",
     targetLabel: "Merge workflow: many PDFs into one",
-    intro:
-      "Use this page when you have several PDFs from different sources and need to turn them into one complete document.",
+    intro: "Use this page when you have several PDFs from different sources and need to turn them into one complete document. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload all the PDF files",
       "Arrange them into the sequence you want",
@@ -2416,7 +2367,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Will the formatting stay the same?",
         answer:
-          "Yes. Each PDF keeps its original formatting inside the combined document."
+          "Yes. Each PDF keeps its original formatting inside the combined document. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I combine PDFs of different page sizes?",
@@ -2429,15 +2380,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "pdf-joiner",
-    title: "PDF Joiner Online Free",
+    title: "PDF Joiner Online Free in Your Browser | FileSmaller",
     description:
       "Use a free PDF joiner online to connect PDF files into one document. Join multiple PDFs before uploading, sharing, or archiving.",
     h1: "PDF Joiner",
     subheading:
       "Join PDF files together online to create one complete document from several parts.",
     targetLabel: "Merge workflow: join PDF files",
-    intro:
-      "This page is for users who search for a PDF joiner to connect separate files into one document before sending, uploading, or storing.",
+    intro: "This page is for users who search for a PDF joiner to connect separate files into one document before sending, uploading, or storing. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF files you want to join",
       "Set the order for the joined result",
@@ -2452,12 +2402,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this PDF joiner free?",
         answer:
-          "Yes. This browser-based PDF joiner is free to use without a paid account."
+          "Yes. This browser-based PDF joiner is free to use without a paid account. Results download as a new file; original stays on your device."
       },
       {
         question: "Can I join PDFs and then compress the result?",
         answer:
-          "Yes. After joining, use Compress PDF if the combined file needs to be smaller."
+          "Yes. After joining, use Compress PDF if the combined file needs to be smaller. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["merge-pdf-online", "pdf-combiner", "combine-pdf-files", "merge-two-pdf"]
@@ -2465,15 +2415,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "pdf-combiner",
-    title: "PDF Combiner Online Free",
+    title: "PDF Combiner Online Free in Your Browser | FileSmaller",
     description:
       "Use a free PDF combiner online to merge PDF documents into one file. Combine reports, forms, and scans before sharing.",
     h1: "PDF Combiner",
     subheading:
       "Combine separate PDF documents into one complete file for uploads, sharing, and archiving.",
     targetLabel: "Merge workflow: PDF combiner tool",
-    intro:
-      "This page is for users who search for a PDF combiner when they need to merge multiple documents into one file.",
+    intro: "This page is for users who search for a PDF combiner when they need to merge multiple documents into one file. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDFs you want to combine",
       "Arrange the order of documents",
@@ -2488,7 +2437,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Is this PDF combiner free to use?",
         answer:
-          "Yes. This browser-based PDF combiner is free and runs without a paid plan."
+          "Yes. This browser-based PDF combiner is free and runs without a paid plan. Results download as a new file; original stays on your device."
       },
       {
         question: "Can I combine PDFs of different types?",
@@ -2501,15 +2450,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "merge-two-pdf",
-    title: "Merge Two PDF Files Online",
+    title: "Merge Two PDF Files Online Free in Browser",
     description:
       "Merge two PDF files into one online. Combine a pair of documents, forms, or scanned pages into a single PDF.",
     h1: "Merge Two PDF",
     subheading:
       "Combine exactly two PDF files into one document for forms, applications, or document pairs.",
     targetLabel: "Merge workflow: two PDFs into one",
-    intro:
-      "Use this page when you only need to merge two PDF files into one document, such as a form and a supporting document.",
+    intro: "Use this page when you only need to merge two PDF files into one document, such as a form and a supporting document. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the two PDF files",
       "Choose which file comes first",
@@ -2519,7 +2467,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I merge exactly two PDFs?",
         answer:
-          "Yes. This page is focused on the simple case of merging two PDF files into one."
+          "Yes. This page is focused on the simple case of merging two PDF files into one. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I merge more than two PDFs?",
@@ -2537,15 +2485,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "merge-pdf",
     slug: "merge-multiple-pdf-into-one",
-    title: "Merge Multiple PDF Into One",
+    title: "Merge Multiple PDFs Into One Online Free Tool",
     description:
       "Merge multiple PDF files into one document online. Combine several reports, scanned pages, or forms into a single PDF file.",
     h1: "Merge Multiple PDF Into One",
     subheading:
       "Turn several separate PDFs into one combined file for easier submission and sharing.",
     targetLabel: "Merge workflow: multiple files into one PDF",
-    intro:
-      "Use this page when you have more than two PDFs that need to become one document for a portal, application, or email attachment.",
+    intro: "Use this page when you have more than two PDFs that need to become one document for a portal, application, or email attachment. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload all the PDFs you need to merge",
       "Arrange them in the right sequence",
@@ -2555,7 +2502,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "How many PDFs can I merge into one?",
         answer:
-          "There is no hard limit. Upload as many as your browser can handle in one session."
+          "There is no hard limit. Upload as many as your browser can handle in one session. Results download as a new file; original stays on your device."
       },
       {
         question: "Will the merged PDF be too large?",
@@ -2573,15 +2520,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "watermark-pdf",
     slug: "watermark-pdf",
-    title: "Add Watermark to PDF Online Free",
+    title: "Add Watermark to PDF Online Free in Your Browser | FileSmaller",
     description:
       "Add watermark to PDF online free. Stamp text or image watermarks on PDF pages for branding, confidentiality, and document protection.",
     h1: "Watermark PDF",
     subheading:
       "Add text or image watermarks to PDF pages for branding, copyright, confidentiality, and document sharing.",
     targetLabel: "Watermark workflow: add text or image to PDF",
-    intro:
-      "Use this page to add a watermark to your PDF before sharing, uploading, or distributing documents. Add text like CONFIDENTIAL or DRAFT, or overlay a logo image.",
+    intro: "Use this page to add a watermark to your PDF before sharing, uploading, or distributing documents. Add text like CONFIDENTIAL or DRAFT, or overlay a logo image. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF file",
       "Choose text watermark or upload a logo image",
@@ -2602,12 +2548,12 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Will the watermark appear on every page?",
         answer:
-          "Yes. The text or image watermark is applied to all pages of the PDF."
+          "Yes. The text or image watermark is applied to all pages of the PDF. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I adjust the watermark opacity?",
         answer:
-          "Yes. You can control how visible the watermark is by adjusting the opacity slider."
+          "Yes. You can control how visible the watermark is by adjusting the opacity slider. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["add-watermark-to-pdf", "add-text-to-pdf", "compress-pdf-for-upload"]
@@ -2615,15 +2561,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "watermark-pdf",
     slug: "add-watermark-to-pdf",
-    title: "Add Watermark to PDF Online",
+    title: "Add Watermark to PDF Online Free | FileSmaller",
     description:
       "Add watermark to PDF pages before sharing. Stamp CONFIDENTIAL, DRAFT, or a custom text on every page for document protection.",
     h1: "Add Watermark to PDF",
     subheading:
       "Stamp a text or logo watermark across PDF pages before sharing, sending, or publishing documents online.",
     targetLabel: "Watermark workflow: stamp PDF pages",
-    intro:
-      "Use this page when you need to mark a PDF as confidential, add a draft label, or stamp a company logo before distributing the document.",
+    intro: "Use this page when you need to mark a PDF as confidential, add a draft label, or stamp a company logo before distributing the document. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to watermark",
       "Enter your watermark text or upload a logo",
@@ -2651,15 +2596,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "watermark-pdf",
     slug: "add-text-to-pdf",
-    title: "Add Text to PDF Online Free",
+    title: "Add Text to PDF Online Free in Your Browser | FileSmaller",
     description:
       "Add text to PDF pages online free. Overlay labels, stamps, or notes on PDF documents before sharing or uploading.",
     h1: "Add Text to PDF",
     subheading:
       "Overlay text labels, stamps, or markers on PDF pages for review, identification, or document workflows.",
     targetLabel: "Watermark workflow: add text overlay to PDF",
-    intro:
-      "Use this page when you need to add text labels like CONFIDENTIAL, DRAFT, FOR REVIEW, or custom text to your PDF pages before sharing.",
+    intro: "Use this page when you need to add text labels like CONFIDENTIAL, DRAFT, FOR REVIEW, or custom text to your PDF pages before sharing. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF",
       "Type the text you want to overlay",
@@ -2688,15 +2632,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "page-numbers-pdf",
     slug: "add-page-numbers-to-pdf",
-    title: "Add Page Numbers to PDF Online Free",
+    title: "Add Page Numbers to PDF Online Free in Your Browser | FileSmaller",
     description:
       "Add page numbers to PDF online free. Number every page with adjustable position, font, starting number, and prefix — right in your browser.",
     h1: "Add Page Numbers to PDF",
     subheading:
       "Number PDF pages online for reports, contracts, manuals, and any document that needs visible page numbering.",
     targetLabel: "Page numbers workflow: add numbering to PDF",
-    intro:
-      "Use this page when you need to add page numbers to a PDF before printing, sharing, or submitting. Choose the position, starting number, font, and optional prefix.",
+    intro: "Use this page when you need to add page numbers to a PDF before printing, sharing, or submitting. Choose the position, starting number, font, and optional prefix. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF file",
       "Choose the page number position and style",
@@ -2729,15 +2672,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "page-numbers-pdf",
     slug: "number-pdf-pages",
-    title: "Number PDF Pages Online",
+    title: "Number PDF Pages Online Free in Browser Tool",
     description:
       "Number PDF pages online with customizable position, font, and starting number. Add visible page numbers before printing or sharing.",
     h1: "Number PDF Pages",
     subheading:
       "Add sequential page numbers to every page of your PDF for easier navigation and professional presentation.",
     targetLabel: "Page numbers workflow: sequential numbering",
-    intro:
-      "Use this page when you need to number the pages of a PDF document for navigation, printing, or to make the document order clearer for recipients.",
+    intro: "Use this page when you need to number the pages of a PDF document for navigation, printing, or to make the document order clearer for recipients. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF you want to number",
       "Set the numbering style and start position",
@@ -2765,15 +2707,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "page-numbers-pdf",
     slug: "add-page-number-to-pdf",
-    title: "Add Page Number to PDF Online",
+    title: "Add Page Numbers to PDF Online Free | FileSmaller",
     description:
       "Add page number to PDF documents online. Insert sequential numbers at the bottom or top of each page for reports and forms.",
     h1: "Add Page Number to PDF",
     subheading:
       "Insert page numbers into your PDF so every page is clearly labeled for readers and reviewers.",
     targetLabel: "Page numbers workflow: insert page numbers",
-    intro:
-      "Use this page when you need a quick way to add page numbers to a PDF before sending it to a client, employer, or reviewer.",
+    intro: "Use this page when you need a quick way to add page numbers to a PDF before sending it to a client, employer, or reviewer. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload your PDF",
       "Pick the number position and starting value",
@@ -2783,7 +2724,7 @@ export const toolPages: ToolPageConfig[] = [
       {
         question: "Can I add page numbers without installing software?",
         answer:
-          "Yes. This tool runs entirely in the browser — no download or install required."
+          "Yes. This tool runs entirely in the browser — no download or install required. Results download as a new file; original stays on your device."
       },
       {
         question: "Is this good for legal and business documents?",
@@ -2801,15 +2742,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "unlock-pdf",
     slug: "unlock-pdf",
-    title: "Unlock PDF Online Free",
+    title: "Unlock PDF Online Free in Your Browser | FileSmaller",
     description:
       "Unlock PDF online free. Remove password protection and download an unrestricted copy of your PDF — all in your browser.",
     h1: "Unlock PDF",
     subheading:
       "Remove password restrictions from PDF files so you can open, edit, merge, or compress them freely.",
     targetLabel: "Unlock workflow: remove PDF restrictions",
-    intro:
-      "Use this page when you have a password-protected PDF that you need to edit, merge, compress, or share without restrictions.",
+    intro: "Use this page when you have a password-protected PDF that you need to edit, merge, compress, or share without restrictions. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the protected PDF file",
       "Click unlock to remove restrictions",
@@ -2842,15 +2782,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "unlock-pdf",
     slug: "remove-pdf-password",
-    title: "Remove PDF Password Online",
+    title: "Remove PDF Password Online Free in Browser | FileSmaller",
     description:
       "Remove PDF password online free. Delete owner-level password restrictions so you can edit, print, and share your PDF without limits.",
     h1: "Remove PDF Password",
     subheading:
       "Delete password restrictions from your PDF so you can edit, merge, compress, and share it without limits.",
     targetLabel: "Unlock workflow: remove password",
-    intro:
-      "Use this page when a PDF has an owner password that prevents editing, printing, or copying and you want to remove those restrictions.",
+    intro: "Use this page when a PDF has an owner password that prevents editing, printing, or copying and you want to remove those restrictions. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the password-protected PDF",
       "Remove the restrictions in one click",
@@ -2878,15 +2817,14 @@ export const toolPages: ToolPageConfig[] = [
   {
     tool: "unlock-pdf",
     slug: "unlock-pdf-for-editing",
-    title: "Unlock PDF for Editing Online",
+    title: "Unlock PDF for Editing Online Free in Browser | FileSmaller",
     description:
       "Unlock PDF for editing online free. Remove restrictions so you can edit, merge, annotate, or compress a protected PDF file.",
     h1: "Unlock PDF for Editing",
     subheading:
       "Remove PDF restrictions that block editing, merging, or compressing so you can work with the document freely.",
     targetLabel: "Unlock workflow: enable editing",
-    intro:
-      "Use this page when a PDF is locked against editing and you need to merge, compress, annotate, or otherwise modify the document.",
+    intro: "Use this page when a PDF is locked against editing and you need to merge, compress, annotate, or otherwise modify the document. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the restricted PDF",
       "Remove the editing restrictions",
@@ -2962,8 +2900,7 @@ export const toolPages: ToolPageConfig[] = [
     subheading:
       "Add a password to your PDF so only people who know the password can open and read the file.",
     targetLabel: "Password protect PDF",
-    intro:
-      "Upload a PDF, set a strong password, and download a password-protected copy. Perfect for sensitive documents, contracts, and personal files you need to share securely.",
+    intro: "Upload a PDF, set a strong password, and download a password-protected copy. Perfect for sensitive documents, contracts, and personal files you need to share securely. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Drop your PDF file into the upload area.",
       "Create and confirm a strong password.",

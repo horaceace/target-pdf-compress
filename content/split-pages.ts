@@ -14,15 +14,14 @@ export type SplitPageConfig = {
 export const splitToolPages: SplitPageConfig[] = [
   {
     slug: "split-pdf-online",
-    title: "Split PDF Online Free",
+    title: "Split PDF Online Free in Your Browser | FileSmaller",
     description:
       "Split PDF online in your browser. Extract page ranges, create smaller PDF parts, and download them instantly.",
     h1: "Split PDF Online",
     subheading:
       "Break one PDF into smaller files by page range before upload, email, or document sharing.",
     targetLabel: "Split workflow: online PDF page ranges",
-    intro:
-      "Use this page when you need to split a PDF online and export only the pages you actually need for forms, attachments, or follow-up compression.",
+    intro: "Use this page when you need to split a PDF online and export only the pages you actually need for forms, attachments, or follow-up compression. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload one PDF file",
       "Enter page ranges like 1-3, 5, 7-9",
@@ -42,12 +41,12 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Can I split one page or multiple ranges?",
         answer:
-          "Yes. You can split a single page like 6 or multiple ranges like 1-3, 5, 7-9."
+          "Yes. You can split a single page like 6 or multiple ranges like 1-3, 5, 7-9. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Does this run in the browser?",
         answer:
-          "Yes. The first version is browser-first and does not depend on a server-side split queue."
+          "Yes. The first version is browser-first and does not depend on a server-side split queue. Results download as a new file; original stays on your device."
       }
     ],
     relatedSlugs: [
@@ -59,15 +58,14 @@ export const splitToolPages: SplitPageConfig[] = [
   },
   {
     slug: "extract-pdf-pages",
-    title: "Extract PDF Pages Online",
+    title: "Extract PDF Pages Online Free in Browser | FileSmaller",
     description:
       "Extract PDF pages online by page range and download smaller PDF files for forms, signatures, and supporting documents.",
     h1: "Extract PDF Pages",
     subheading:
       "Pull out only the pages you need from a larger PDF before sending or uploading the file.",
     targetLabel: "Split workflow: extract selected pages",
-    intro:
-      "This page is for users who need to extract only specific pages from a larger PDF, such as signature pages, certificates, forms, or selected report sections.",
+    intro: "This page is for users who need to extract only specific pages from a larger PDF, such as signature pages, certificates, forms, or selected report sections. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the full PDF",
       "Enter the page or page ranges you want to extract",
@@ -82,17 +80,17 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Can I extract a signature page only?",
         answer:
-          "Yes. This is one of the most common use cases for page-range splitting."
+          "Yes. This is one of the most common use cases for page-range splitting. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Can I extract multiple ranges at once?",
         answer:
-          "Yes. Use a format like 1-2, 5, 8-10 to create multiple split outputs from one PDF."
+          "Yes. Use a format like 1-2, 5, 8-10 to create multiple split outputs from one PDF. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Why extract pages before compression?",
         answer:
-          "A smaller page set is often easier to upload and may need less follow-up compression."
+          "A smaller page set is often easier to upload and may need less follow-up compression. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -104,15 +102,14 @@ export const splitToolPages: SplitPageConfig[] = [
   },
   {
     slug: "split-pdf-for-upload",
-    title: "Split PDF for Upload",
+    title: "Split PDF for Upload Online Free | FileSmaller",
     description:
       "Split PDF for upload by extracting only the required pages before sending files to forms, portals, and document systems.",
     h1: "Split PDF for Upload",
     subheading:
       "Create smaller upload-ready PDF parts by splitting out just the pages required by the form or portal.",
     targetLabel: "Split workflow: upload-ready page groups",
-    intro:
-      "Use this page when a portal asks for only part of a document, or when uploading a smaller extracted section is easier than sending the full PDF.",
+    intro: "Use this page when a portal asks for only part of a document, or when uploading a smaller extracted section is easier than sending the full PDF. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the original PDF",
       "Choose the exact pages required for the upload",
@@ -137,7 +134,7 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Can I export multiple upload-ready parts?",
         answer:
-          "Yes. Enter multiple ranges to generate several separate PDFs from one source file."
+          "Yes. Enter multiple ranges to generate several separate PDFs from one source file. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -149,15 +146,14 @@ export const splitToolPages: SplitPageConfig[] = [
   },
   {
     slug: "split-pdf-by-page-ranges",
-    title: "Split PDF by Page Ranges",
+    title: "Split PDF by Page Ranges Online Free | FileSmaller",
     description:
       "Split PDF by page ranges online. Use formats like 1-3, 5, 7-9 to export separate PDF files from one document.",
     h1: "Split PDF by Page Ranges",
     subheading:
       "Define exact page ranges and turn one PDF into multiple smaller PDF files in the browser.",
     targetLabel: "Split workflow: exact page-range exports",
-    intro:
-      "This page is for users who want precise control over how a PDF is split, especially when exporting multiple sections from one larger document.",
+    intro: "This page is for users who want precise control over how a PDF is split, especially when exporting multiple sections from one larger document. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload a PDF file",
       "Enter page ranges like 1-3, 5, 7-9",
@@ -172,7 +168,7 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Can I create several split files from one PDF?",
         answer:
-          "Yes. Each valid page range becomes its own exported PDF file."
+          "Yes. Each valid page range becomes its own exported PDF file. Processing runs in the browser for this free FileSmaller workflow."
       },
       {
         question: "Does this work for large scanned PDFs too?",
@@ -182,7 +178,7 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "What if my range is invalid?",
         answer:
-          "The tool shows a specific error so you can fix the page numbers before exporting."
+          "The tool shows a specific error so you can fix the page numbers before exporting. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -194,15 +190,14 @@ export const splitToolPages: SplitPageConfig[] = [
   },
   {
     slug: "split-large-pdf",
-    title: "Split Large PDF Online",
+    title: "Split Large PDF Online Free in Browser | FileSmaller",
     description:
       "Split large PDF files online by extracting smaller sections before upload, email, or follow-up compression.",
     h1: "Split Large PDF",
     subheading:
       "Break one large PDF into smaller parts when the original file is too heavy to send or upload comfortably.",
     targetLabel: "Split workflow: large document into smaller parts",
-    intro:
-      "Use this page when one PDF feels too large to work with and you need to break it into smaller sections before sending, submitting, or compressing each part.",
+    intro: "Use this page when one PDF feels too large to work with and you need to break it into smaller sections before sending, submitting, or compressing each part. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the large PDF",
       "Select the smaller page groups you want to create",
@@ -227,7 +222,7 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Can this create several smaller PDFs from one big file?",
         answer:
-          "Yes. Each page range becomes its own output file."
+          "Yes. Each page range becomes its own output file. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: [
@@ -239,15 +234,14 @@ export const splitToolPages: SplitPageConfig[] = [
   },
   {
     slug: "merge-pdf-for-forms",
-    title: "Merge PDF for Forms Online",
+    title: "Merge PDF for Forms Online Free in Browser | FileSmaller",
     description:
       "Merge PDF for forms by combining application pages, signed documents, and supporting files into one submission-ready PDF.",
     h1: "Merge PDF for Forms",
     subheading:
       "Combine separate PDF pages into one form-ready document before submitting to portals and systems.",
     targetLabel: "Merge workflow: form submission PDF",
-    intro:
-      "Use this page when you need to combine several PDF form pages or supporting documents into one file for a single form submission.",
+    intro: "Use this page when you need to combine several PDF form pages or supporting documents into one file for a single form submission. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF pages or documents for the form",
       "Arrange them in submission order",
@@ -274,15 +268,14 @@ export const splitToolPages: SplitPageConfig[] = [
   },
   {
     slug: "merge-pdf-documents-online",
-    title: "Merge PDF Documents Online",
+    title: "Merge PDF Documents Online Free in Browser | FileSmaller",
     description:
       "Merge PDF documents online by combining reports, contracts, invoices, and official files into one organized PDF.",
     h1: "Merge PDF Documents",
     subheading:
       "Combine business and official PDF documents into one organized file for sharing or archiving.",
     targetLabel: "Merge workflow: document bundling",
-    intro:
-      "Use this page when you need to bundle several official PDF documents into one organized file for clients, archives, or submissions.",
+    intro: "Use this page when you need to bundle several official PDF documents into one organized file for clients, archives, or submissions. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the PDF documents you want to bundle",
       "Arrange them into a logical document order",
@@ -302,22 +295,21 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Is this good for client document packages?",
         answer:
-          "Yes. Merging documents into one PDF makes client handoffs cleaner and easier to track."
+          "Yes. Merging documents into one PDF makes client handoffs cleaner and easier to track. Processing runs in the browser for this free FileSmaller workflow."
       }
     ],
     relatedSlugs: ["merge-pdf-online", "combine-pdf-files", "pdf-combiner", "merge-pdf-for-email"]
   },
   {
     slug: "merge-scanned-pdf",
-    title: "Merge Scanned PDF Files Online",
+    title: "Merge Scanned PDF Files Online Free in Browser | FileSmaller",
     description:
       "Merge scanned PDF files online by combining scanned pages, receipts, certificates, and image-based documents into one PDF.",
     h1: "Merge Scanned PDF",
     subheading:
       "Combine scanned pages and image-based PDFs into one document for uploads, forms, and sharing.",
     targetLabel: "Merge workflow: scanned document combining",
-    intro:
-      "Use this page when your PDFs are scanned or image-based and you need to merge them into one file before uploading or sharing.",
+    intro: "Use this page when your PDFs are scanned or image-based and you need to merge them into one file before uploading or sharing. Files are processed in your browser and stay on your device—no server upload required for this workflow.",
     steps: [
       "Upload the scanned PDF files",
       "Set the merge order for the scanned pages",
@@ -327,7 +319,7 @@ export const splitToolPages: SplitPageConfig[] = [
       {
         question: "Can I merge scanned PDFs?",
         answer:
-          "Yes. Scanned and image-based PDFs merge the same way as text PDFs in the browser."
+          "Yes. Scanned and image-based PDFs merge the same way as text PDFs in the browser. Results download as a new file; original stays on your device."
       },
       {
         question: "Will merging scanned PDFs make the file very large?",
