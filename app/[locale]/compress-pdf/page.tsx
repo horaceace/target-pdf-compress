@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { UploadCard } from "@/components/upload-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("UploadCard");
@@ -52,6 +53,7 @@ export default async function CompressPdfPage() {
           <UploadCard copy={t("defaultCopy")} heading={t("defaultHeading")} />
         </div>
       </section>
+      <CoreToolRelated current="compress-pdf" />
     </main>
   );
 }

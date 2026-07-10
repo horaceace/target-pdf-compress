@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { MergePdfCard } from "@/components/merge-pdf-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("MergePdfCard");
@@ -51,6 +52,7 @@ export default async function MergePdfPage() {
           <MergePdfCard />
         </div>
       </section>
+      <CoreToolRelated current="merge-pdf" />
     </main>
   );
 }

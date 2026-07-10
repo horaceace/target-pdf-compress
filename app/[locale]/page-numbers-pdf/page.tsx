@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { PageNumbersCard } from "@/components/page-numbers-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("PageNumbersCard");
@@ -51,6 +52,7 @@ export default async function PageNumbersPdfPage() {
           <PageNumbersCard />
         </div>
       </section>
+      <CoreToolRelated current="page-numbers-pdf" />
     </main>
   );
 }

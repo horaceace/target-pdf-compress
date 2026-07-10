@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SplitPdfCard } from "@/components/split-pdf-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("SplitPdfCard");
@@ -51,6 +52,7 @@ export default async function SplitPdfPage() {
           <SplitPdfCard />
         </div>
       </section>
+      <CoreToolRelated current="split-pdf" />
     </main>
   );
 }

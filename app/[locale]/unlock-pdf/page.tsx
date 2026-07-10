@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { UnlockPdfCard } from "@/components/unlock-pdf-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("UnlockPdfCard");
@@ -51,6 +52,7 @@ export default async function UnlockPdfPage() {
           <UnlockPdfCard />
         </div>
       </section>
+      <CoreToolRelated current="unlock-pdf" />
     </main>
   );
 }

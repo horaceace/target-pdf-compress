@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { JpgToPdfCard } from "@/components/jpg-to-pdf-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("JpgToPdfCard");
@@ -51,6 +52,7 @@ export default async function JpgToPdfPage() {
           <JpgToPdfCard />
         </div>
       </section>
+      <CoreToolRelated current="jpg-to-pdf" />
     </main>
   );
 }

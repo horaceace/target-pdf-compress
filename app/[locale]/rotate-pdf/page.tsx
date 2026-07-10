@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { RotatePdfCard } from "@/components/rotate-pdf-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RotatePdfCard");
@@ -51,6 +52,7 @@ export default async function RotatePdfPage() {
           <RotatePdfCard />
         </div>
       </section>
+      <CoreToolRelated current="rotate-pdf" />
     </main>
   );
 }

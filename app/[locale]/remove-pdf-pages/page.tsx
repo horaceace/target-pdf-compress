@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { RemovePdfPagesCard } from "@/components/remove-pdf-pages-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RemovePdfPagesCard");
@@ -51,6 +52,7 @@ export default async function RemovePdfPagesPage() {
           <RemovePdfPagesCard />
         </div>
       </section>
+      <CoreToolRelated current="remove-pdf-pages" />
     </main>
   );
 }

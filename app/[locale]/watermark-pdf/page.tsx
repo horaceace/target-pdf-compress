@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { WatermarkCard } from "@/components/watermark-card";
 import { buildAlternates, buildOpenGraph, buildTwitter } from "@/lib/metadata";
+import { CoreToolRelated } from "@/components/core-tool-related";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("WatermarkCard");
@@ -51,6 +52,7 @@ export default async function WatermarkPdfPage() {
           <WatermarkCard />
         </div>
       </section>
+      <CoreToolRelated current="watermark-pdf" />
     </main>
   );
 }

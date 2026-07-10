@@ -3097,3 +3097,21 @@ img {
     flex-direction: column;
   }
 }
+
+/* Core tool cross-links (SEO FS-3) */
+.related-core-tools {
+  margin: 2.5rem 0 1rem;
+  padding: 0;
+}
+.related-core-tools .section-title {
+  margin-bottom: 0.5rem;
+}
+.related-core-tools .section-lead {
+  margin: 0 0 1rem;
+  color: var(--muted, #6b7280);
+  font-size: 0.95rem;
+  max-width: 40rem;
+}
+.related-core-tools .related-links {
+  margin-top: 0.75rem;
+}
